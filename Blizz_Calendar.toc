@@ -1,0 +1,7 @@
+## Interface: 11304
+## Title: Blizz Calendar
+Patches.lua
+Patches.xml
+Blizz_Calendar.lua
+Blizz_Calendar.xml
+Localization.lua
