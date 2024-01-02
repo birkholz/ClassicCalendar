@@ -99,7 +99,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-Deadmines"
 		})
 		tinsert(original_textures, {
-			title="Razoren Kraul",
+			title="Razorfen Kraul",
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
