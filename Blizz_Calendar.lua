@@ -844,7 +844,7 @@ local function _CalendarFrame_CacheEventDungeons(eventType)
 	if ( eventType ~= CalendarEventDungeonCacheType ) then
 		CalendarEventDungeonCacheType = eventType;
 		if ( eventType ) then
-			return  _CalendarFrame_CacheEventDungeons_Internal(eventType, C_Calendar.EventGetTextures(eventType));
+			return  _CalendarFrame_CacheEventDungeons_Internal(eventType, StubbedEventGetTextures(eventType));
 		end
 	end
 	return true;
