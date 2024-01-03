@@ -3140,9 +3140,9 @@ function CalendarViewEventFrame_Update()
 	CalendarEventFrameBlocker_Update();
 end
 
-function CalendarViewEventRSVPButton_OnUpdate(self)
-	self.flashTexture:SetAlpha(CalendarViewEventFlashTimer:GetSmoothProgress());
-end
+-- function CalendarViewEventRSVPButton_OnUpdate(self)
+-- 	self.flashTexture:SetAlpha(CalendarViewEventFlashTimer:GetSmoothProgress());
+-- end
 
 function CalendarViewEventAcceptButton_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT");
@@ -4317,7 +4317,7 @@ function CalendarInviteContextMenu_ClearModerator()
 end
 
 function CalendarInviteContextMenu_InviteToGroup(self)
-	C_PartyInfo.InviteUnit(self.value);
+	--C_PartyInfo.InviteUnit(self.value);
 	InviteToGroup(self.value);
 end
 
