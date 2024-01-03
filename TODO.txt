@@ -1,0 +1,6 @@
+* Darkmoon Faire schedule (needs confirmation of an accurate schedule)
+* Holidays, e.g. Winter's Veil (needs confirmation of schedule)
+* Battleground Weekends (needs confirmation of schedule, maybe monthly?)
+* tainted Escape bug
+* Bug: not all event info updating when switching
+* Raid Resets
