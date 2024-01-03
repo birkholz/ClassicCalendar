@@ -459,3 +459,9 @@ function stubbedSetMonth(offset)
 	state.monthOffset = state.monthOffset + offset
 	C_Calendar.SetMonth(offset)
 end
+
+function communityName()
+	-- Gets Guild Name from Player since built in functionality is broken
+    local communityName = GetGuildInfo("player");
+	return communityName
+end

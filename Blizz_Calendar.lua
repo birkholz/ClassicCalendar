@@ -2142,7 +2142,7 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 		if ( IsInGuild() ) then
 			UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_EVENT, nil, CalendarDayContextMenu_CreateGuildEvent);
 
-			if ( CanEditGuildEvent() ) then
+			if ( IsInGuild() ) then --CanEditGuildEvent()
 				UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_ANNOUNCEMENT, nil, CalendarDayContextMenu_CreateGuildAnnouncement);
 			end
 		end
@@ -3025,11 +3025,6 @@ function CalendarViewEventDescriptionContainer_OnLoad(self)
 	local scrollBox = self.ScrollingFont:GetScrollBox();
 	ScrollUtil.InitScrollBar(scrollBox, self.ScrollBar);
 	CalendarEvent_InitManagedScrollBarVisibility(self, scrollBox, self.ScrollBar);
-end
- 
-function communityName()
-    local communityName = GetGuildInfo("player");
-	return communityName
 end
 
 function CalendarViewEventFrame_Update()
@@ -4573,7 +4568,7 @@ function CalendarMassInviteFrame_OnEvent(self, event, ...)
 		end
 	end
 	if ( self:IsShown() ) then
-		if ( not CanEditGuildEvent() ) then
+		if ( not IsInGuild() ) then --CanEditGuildEvent()
 			-- if we are no longer in a guild, we can't mass invite
 			CalendarMassInviteFrame:Hide();
 			CalendarCreateEventMassInviteButton_Update();
