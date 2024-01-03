@@ -543,6 +543,7 @@ local CALENDAR_CALENDARTYPE_COLORS = {
 };
 
 local CALENDAR_CALENDARTYPE_COLORS_TOOLTIP = {
+	["GUILD_EVENT"]			= YELLOW_FONT_COLOR,
 	["HOLIDAY"]				= HIGHLIGHT_FONT_COLOR, --NORMAL_FONT_COLOR,
 	["RAID_RESET"]			= YELLOW_FONT_COLOR,
 };
@@ -779,8 +780,8 @@ local function _CalendarFrame_CacheEventDungeons_Internal(eventType, textures)
 	local numTextures = #textures;
 	if ( numTextures <= 0 ) then
 		return false;
-	end
-
+	end																									
+	
 	local cacheIndex = 1;
 	for textureIndex = 1, numTextures do
 		if ( not CalendarEventDungeonCache[cacheIndex] ) then
@@ -2138,11 +2139,23 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 
 
 		-- add guild selections if the player has a guild
-		if ( CanEditGuildEvent() ) then
+		if ( IsInGuild() ) then
 			UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_EVENT, nil, CalendarDayContextMenu_CreateGuildEvent);
-			UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_ANNOUNCEMENT, nil, CalendarDayContextMenu_CreateGuildAnnouncement);
-		end
 
+			if ( CanEditGuildEvent() ) then
+				UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_ANNOUNCEMENT, nil, CalendarDayContextMenu_CreateGuildAnnouncement);
+			end
+		end
+		--[[
+		-- add community selections if the player is in a character community
+		local clubs = C_Club.GetSubscribedClubs();
+		for i, clubInfo in ipairs(clubs) do
+			if clubInfo.clubType == Enum.ClubType.Character then
+				UIMenu_AddButton(self, CALENDAR_CREATE_COMMUNITY_EVENT, nil, CalendarDayContextMenu_CreateCommunityEvent);
+				break;
+			end
+		end
+		--]]
 		needSpacer = true;
 	end
 
@@ -3014,7 +3027,13 @@ function CalendarViewEventDescriptionContainer_OnLoad(self)
 	CalendarEvent_InitManagedScrollBarVisibility(self, scrollBox, self.ScrollBar);
 end
  
+function communityName()
+    local communityName = GetGuildInfo("player");
+	return communityName
+end
+
 function CalendarViewEventFrame_Update()
+	local communityName = communityName();
 	local eventInfo = C_Calendar.GetEventInfo();
 	if ( not eventInfo or not eventInfo.title ) then
 		-- event was probably deleted
@@ -3059,7 +3078,7 @@ function CalendarViewEventFrame_Update()
 	-- set the community or Guild name
 	if ( eventInfo.calendarType == "GUILD_EVENT" or eventInfo.calendarType == "COMMUNITY_EVENT" ) then
 		CalendarViewEventCommunityName:Show();
-		CalendarViewEventCommunityName:SetText(eventInfo.communityName)
+		CalendarViewEventCommunityName:SetText(communityName()) --eventInfo.communityName
 		CalendarViewEventTypeName:SetPoint("TOPLEFT", CalendarViewEventCommunityName, "BOTTOMLEFT")
 		if ( eventInfo.calendarType == "GUILD_EVENT" ) then
 			CalendarViewEventCommunityName:SetTextColor(GREEN_FONT_COLOR:GetRGB())
@@ -3121,9 +3140,9 @@ function CalendarViewEventFrame_Update()
 	CalendarEventFrameBlocker_Update();
 end
 
---function CalendarViewEventRSVPButton_OnUpdate(self)
-	--self.flashTexture:SetAlpha(CalendarViewEventFlashTimer:GetSmoothProgress());
---end
+-- function CalendarViewEventRSVPButton_OnUpdate(self)
+-- 	self.flashTexture:SetAlpha(CalendarViewEventFlashTimer:GetSmoothProgress());
+-- end
 
 function CalendarViewEventAcceptButton_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT");
@@ -3666,7 +3685,7 @@ function CalendarCreateEventFrame_Update()
 
 		if eventInfo.calendarType == "COMMUNITY_EVENT" or eventInfo.calendarType == "GUILD_EVENT" then
 			CalendarCreateEventCommunityName:Show();
-			CalendarCreateEventCommunityName:SetText(eventInfo.communityName)
+			CalendarCreateEventCommunityName:SetText(communityName()) --eventInfo.communityName
 			if(eventInfo.calendarType == "GUILD_EVENT") then
 				CalendarCreateEventCommunityName:SetTextColor(GREEN_FONT_COLOR:GetRGB())
 			else
@@ -4402,7 +4421,13 @@ function CalendarCreateEventMassInviteButton_OnUpdate(self)
 end
 
 function CalendarCreateEventMassInviteButton_Update()
-	if ( C_Calendar.CanSendInvite() and CanEditGuildEvent() ) then
+	if ( C_Calendar.CanSendInvite() ) then
+--  and CanEditGuildEvent() 
+--[[
+	local clubs = C_Club.GetSubscribedClubs()
+
+	if (#clubs > 
+ --]]
 		CalendarCreateEventMassInviteButton:Enable();
 	else
 		CalendarCreateEventMassInviteButton:Disable();
@@ -4635,7 +4660,7 @@ function CalendarMassInviteCommunityDropDown_Initialize()
 		info.func = CalendarMassInviteCommunityDropDown_OnClick;
 		if ( i == CalendarMassInviteFrame.selectedRank ) then
 			info.checked = 1;
-			--UIDropDownMenu_SetText(CalendarMassInviteCommunityDropDown, info.text);
+			UIDropDownMenu_SetText(CalendarMassInviteCommunityDropDown, info.text);
 		else
 			info.checked = nil;
 		end
