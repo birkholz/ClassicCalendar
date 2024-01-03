@@ -780,8 +780,8 @@ local function _CalendarFrame_CacheEventDungeons_Internal(eventType, textures)
 	local numTextures = #textures;
 	if ( numTextures <= 0 ) then
 		return false;
-	end																									
-	
+	end
+
 	local cacheIndex = 1;
 	for textureIndex = 1, numTextures do
 		if ( not CalendarEventDungeonCache[cacheIndex] ) then
@@ -1475,7 +1475,7 @@ function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventInd
 	local dayButton = CalendarDayButtons[index];
 	local dayButtonName = dayButton:GetName();
 
-	local numEvents = C_Calendar.GetNumDayEvents(monthOffset, day);
+	local numEvents = stubbedGetNumDayEvents(monthOffset, day);
 
 	-- turn pending invite on if we have one on this day
 	local pendingInviteIndex = C_Calendar.GetFirstPendingInvite(monthOffset, day);
@@ -1492,7 +1492,7 @@ function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventInd
 	local numViewableEvents = 0;
 	local firstHolidayIndex;
 	for i = 1, numEvents do
-		local event = C_Calendar.GetDayEvent(monthOffset, day, i);
+		local event = stubbedGetDayEvent(monthOffset, day, i);
 		if ( event ) then
 			if ( event.calendarType == "HOLIDAY" and not firstHolidayIndex ) then
 				-- record the first holiday index...the first holiday can have sequenceType "ONGOING"
@@ -1545,7 +1545,7 @@ function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventInd
 		eventButtonText1 = _G[eventButtonName.."Text1"];
 		eventButtonText2 = _G[eventButtonName.."Text2"];
 
-		local event = C_Calendar.GetDayEvent(monthOffset, day, eventIndex);
+		local event = stubbedGetDayEvent(monthOffset, day, eventIndex);
 
 		if ( ShouldDisplayEventOnCalendar(event) ) then
 			local date = (event.sequenceType == "END") and event.endTime or event.startTime;
@@ -1652,7 +1652,7 @@ function CalendarFrame_UpdateDayTextures(dayButton, numEvents, firstEventButton,
 		eventBackgroundTex:Show();
 
 		-- set day texture
-		local event = C_Calendar.GetDayEvent(monthOffset, day, firstEventButton.eventIndex);
+		local event = stubbedGetDayEvent(monthOffset, day, firstEventButton.eventIndex);
 		eventTex:SetTexture();
 		tcoords = _CalendarFrame_GetTextureCoords(event.calendarType, event.eventType);
 		if ( event.iconTexture ) then
@@ -1672,7 +1672,7 @@ function CalendarFrame_UpdateDayTextures(dayButton, numEvents, firstEventButton,
 	local overlayTex = _G[dayButtonName.."OverlayFrameTexture"];
 	if ( firstHolidayIndex ) then
 		-- for now, the overlay texture is the first holiday's sequence texture
-		local event = C_Calendar.GetDayEvent(monthOffset, day, firstHolidayIndex);
+		local event = stubbedGetDayEvent(monthOffset, day, firstHolidayIndex);
 		if ( event.numSequenceDays > 2 and not event.dontDisplayBanner ) then
 			-- by art/design request, we're not going to show sequence textures if the sequence only lasts up to 2 days
 			overlayTex:SetTexture();
@@ -1768,7 +1768,7 @@ function CalendarFrame_CloseEvent()
 end
 
 function CalendarFrame_OffsetMonth(offset)
-	C_Calendar.SetMonth(offset);
+	stubbedSetMonth(offset);
 	CalendarContextMenu_Hide();
 	StaticPopup_Hide("CALENDAR_DELETE_EVENT");
 	CalendarEventPickerFrame_Hide();
@@ -1821,7 +1821,7 @@ function CalendarFrame_OpenToGuildEventIndex(guildEventIndex)
 	local day = info.monthDay;
 	local eventIndex = info.eventIndex;
 	if ( monthOffset ) then
-		C_Calendar.SetMonth(monthOffset);
+		stubbedSetMonth(monthOffset);
 	end
 	-- need to highlight the proper day/event in calendar
 	local monthInfo = C_Calendar.GetMonthInfo();
@@ -2161,7 +2161,7 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 
 	if ( showEvent ) then
 		local eventIndex = eventButton.eventIndex;
-		local event = C_Calendar.GetDayEvent(monthOffset, day, eventIndex);
+		local event = stubbedGetDayEvent(monthOffset, day, eventIndex);
 		-- add context items for the selected event
 		if ( _CalendarFrame_IsPlayerCreatedEvent(event.calendarType) ) then
 			local canEdit = C_Calendar.ContextMenuEventCanEdit(monthOffset, day, eventIndex);
@@ -2403,7 +2403,7 @@ function CalendarDayButton_OnEnter(self)
 
 	local monthOffset = self.monthOffset;
 	local day = self.day;
-	local numEvents = C_Calendar.GetNumDayEvents(monthOffset, day);
+	local numEvents = stubbedGetNumDayEvents(monthOffset, day);
 	if ( numEvents <= 0 ) then
 		return;
 	end
@@ -2411,7 +2411,7 @@ function CalendarDayButton_OnEnter(self)
 	local events = {};
 	-- gather up the events we are going to show
 	for i = 1, numEvents do
-		local event = C_Calendar.GetDayEvent(monthOffset, day, i);
+		local event = stubbedGetDayEvent(monthOffset, day, i);
 		if (event) then
 			tinsert(events, event);
 		end
@@ -4748,7 +4748,7 @@ function CalendarEventPickerFrame_InitButton(button, elementData)
 	local eventIndex = elementData.index;
 	button.eventIndex = eventIndex;
 
-	local event = C_Calendar.GetDayEvent(monthOffset, day, eventIndex);
+	local event = stubbedGetDayEvent(monthOffset, day, eventIndex);
 	local title = event.title;
 	local buttonIcon = button.Icon;
 	local buttonTitle = button.Title;
@@ -4805,8 +4805,9 @@ function CalendarEventPickerFrame_Update()
 	local day = dayButton.day;
 
 	local newDataProvider = CreateDataProvider();
-	for index = 1, C_Calendar.GetNumDayEvents(monthOffset, day) do
-		local event = C_Calendar.GetDayEvent(monthOffset, day, index);
+
+	for index = 1, stubbedGetNumDayEvents(monthOffset, day) do
+		local event = stubbedGetDayEvent(monthOffset, day, index);
 		if event.title and event.sequenceType ~= "ONGOING" then
 			newDataProvider:Insert({index = index});
 		end

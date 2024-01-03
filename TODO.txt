@@ -3,4 +3,4 @@
 * Battleground Weekends (needs confirmation of schedule, maybe monthly?)
 * tainted Escape bug
 * Bug: not all event info updating when switching
-* Raid Resets
+* Chat alerts or similar for when you receive an invite, maybe make the ToD indicator glow?
