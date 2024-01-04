@@ -144,7 +144,16 @@ local function addDaysToDate(date, dayCount)
 end
 
 local function dateIsOnFrequency(eventDate, epochDate, frequency)
-	return ((time(eventDate) - time(epochDate)) / (SECONDS_IN_DAY)) % frequency == 0
+	-- If one date has DST and the other doesn't, this fails
+	local eventDateTime = time(eventDate)
+	local epochDateTime = time(epochDate)
+
+	if date("*t", eventDateTime).isdst then
+		-- add an hour to DST datetimes
+		 eventDateTime = eventDateTime + 60*60
+	end
+
+	return ((eventDateTime - epochDateTime) / (SECONDS_IN_DAY)) % frequency == 0
 end
 
 local function isDateInRepeatingRange(eventDate, startEpoch, endEpoch, frequency)
@@ -688,10 +697,11 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 				return darkmoonOngoing(eventDate, darkmoonLocations.Elwynn)
 			elseif isDarkmoonEnd(eventDate, darkmoonLocations.Elwynn) then
 				return darkmoonEnd(eventDate, darkmoonLocations.Elwynn)
-			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Mulgore) then
-				return darkmoonOngoing(eventDate, darkmoonLocations.Mulgore)
+			-- Mulgore
 			elseif isDarkmoonStart(eventDate, darkmoonLocations.Mulgore) then
 				return darkmoonStart(eventDate, darkmoonLocations.Mulgore)
+			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Mulgore) then
+				return darkmoonOngoing(eventDate, darkmoonLocations.Mulgore)
 			elseif isDarkmoonEnd(eventDate, darkmoonLocations.Mulgore) then
 				return darkmoonEnd(eventDate, darkmoonLocations.Mulgore)
 			end
