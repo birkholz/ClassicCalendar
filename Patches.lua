@@ -86,6 +86,7 @@ local darkmoonLocations = {
 	Elwynn = DARKMOON_ELWYNN_LOCATION,
 	Mulgore = DARKMOON_MULGORE_LOCATION
 }
+CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
 
 local holidays = {
 	DarkmoonFaire = 0,
