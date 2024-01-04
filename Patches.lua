@@ -182,16 +182,15 @@ local function fixLuaDate(dateD)
 	return result
 end
 
-local function changeWeekdayOfDate(dateD, weekday)
+local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
 	-- Change date to the chosen weekday of the same week
 	local dateTime = time(dateD)
 	local dateWeekday = date("*t", dateTime)["wday"]
 
 	local delta = (dateWeekday - weekday) * SECONDS_IN_DAY
 	local result = dateTime - delta
-	if weekday == WEEKDAYS.Sunday then
-		-- As sunday is the first weekday, we have to add a week to get the next week's Sunday
-		result = result + (7 * SECONDS_IN_DAY)
+	if weekAdjustment ~= nil then
+		result = result + (weekAdjustment * (7 * SECONDS_IN_DAY))
 	end
 	return fixLuaDate(date("*t", result))
 end
@@ -319,7 +318,7 @@ local function darkmoonStart(eventDate, location)
 	}))
 	startTime.hour = 0
 	startTime.minute = 1
-	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday)
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday, 1)
 	endTime.hour = 23
 	endTime.minute = 59
 
@@ -359,7 +358,7 @@ local function darkmoonOngoing(eventDate, location)
 
 	-- Calculate weekDay of eventDate, set StartTime to Monday and endTime to Sunday
 	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday)
-	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday)
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday, 1)
 	local sequenceIndex = ((time(eventDate) - time(startTime)) / SECONDS_IN_DAY) + 1
 	startTime.hour = 0
 	startTime.minute = 1
@@ -515,6 +514,142 @@ function getAbsDate(monthOffset, monthDay)
 	return eventDate
 end
 
+function dayHasBattleground(eventDate)
+	if GetCVar("calendarShowBattlegrounds") == "0" then
+		return false
+	end
+
+	-- Is it midnight to midnight? or daily reset to reset?
+	local startEpoch = time{year=2023,month=12,day=15,hour=0,minute=1}
+	local endEpoch = time{year=2023,month=12,day=18,hour=23,minute=59}
+
+	-- Currently only WSG weekend, so 1 week every 4 weeks
+
+	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 28)
+end
+
+local function isBattlegroundStart(eventDate)
+	local firstDarkmoonStart = { year=2023, month=12, day=15 }
+	return dateIsOnFrequency(eventDate, firstDarkmoonStart, 28)
+end
+
+local function isBattlegroundOngoing(eventDate)
+	local startEpoch = time{ year=2023, month=12, day=15 }
+	local endEpoch = time{ year=2023, month=12, day=18 }
+	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 28)
+end
+
+local function isBattlegroundEnd(eventDate)
+	local firstBattlegroundEnd = { year=2023, month=12, day=18 }
+	return dateIsOnFrequency(eventDate, firstBattlegroundEnd, 28)
+end
+
+local function battlegroundStart(eventDate)
+	local startTime = fixLuaDate(date("*t", time{
+		year=eventDate.year,
+		month=eventDate.month,
+		day=eventDate.day
+	}))
+	startTime.hour = 0
+	startTime.minute = 1
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday, 1)
+	endTime.hour = 23
+	endTime.minute = 59
+
+	local event = {
+		title="Call to Arms (WSG)", -- I have no idea what these events are called
+		isCustomTitle=true,
+		startTime=startTime,
+		endTime=endTime,
+		calendarType="HOLIDAY",
+		sequenceType="START",
+		eventType=CalendarEventType.Other,
+		iconTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		modStatus="",
+		inviteStatus=0,
+		invitedBy="",
+		inviteType=CalendarInviteType.Normal,
+		sequenceIndex=1,
+		numSequenceDays=4,
+		difficultyName="",
+		dontDisplayBanner=false,
+		dontDisplayEnd=false,
+		isLocked=false,
+	}
+	return event
+end
+
+local function battlegroundOngoing(eventDate)
+	local weekAdjustment = 0
+	if date("*t", time(eventDate))['wday'] == WEEKDAYS.Sunday then
+		weekAdjustment = -1
+	end
+	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Friday, weekAdjustment)
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday, weekAdjustment + 1)
+	local sequenceIndex = ((time(eventDate) - time(startTime)) / SECONDS_IN_DAY) + 1
+	startTime.hour = 0
+	startTime.minute = 1
+	endTime.hour = 23
+	endTime.minute = 59
+
+	local event = {
+		title="Call to Arms (WSG)",
+		isCustomTitle=true,
+		startTime=startTime, 
+		endTime=endTime,
+		calendarType="HOLIDAY",
+		sequenceType="ONGOING",
+		eventType=CalendarEventType.Other,
+		iconTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		modStatus="",
+		inviteStatus=0,
+		invitedBy="",
+		inviteType=CalendarInviteType.Normal,
+		sequenceIndex=sequenceIndex,
+		numSequenceDays=4,
+		difficultyName="",
+		dontDisplayBanner=false,
+		dontDisplayEnd=false,
+		isLocked=false,
+	}
+	return event
+end
+
+local function battlegroundEnd(eventDate)
+	local endTime = fixLuaDate(date("*t", time{
+		year=eventDate.year,
+		month=eventDate.month,
+		day=eventDate.day
+	}))
+	endTime.hour = 23
+	endTime.minute = 59
+	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Friday, -1)
+	startTime.hour = 0
+	startTime.minute = 1
+
+	local fakeDarkmoonEvent = {
+		title="Call to Arms (WSG)",
+		isCustomTitle=true,
+		startTime=startTime,
+		endTime=endTime,
+		calendarType="HOLIDAY",
+		sequenceType="END",
+		eventType=CalendarEventType.Other,
+		iconTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		modStatus="",
+		inviteStatus=0,
+		invitedBy="",
+		inviteType=CalendarInviteType.Normal,
+		sequenceIndex=4,
+		numSequenceDays=4,
+		difficultyName="",
+		dontDisplayBanner=false,
+		dontDisplayEnd=false,
+		isLocked=false,
+	}
+	return fakeDarkmoonEvent
+end
+
 function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
@@ -527,20 +662,22 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	if dayHasReset(eventDate) then
 		originalEventCount = originalEventCount + 1
 	end
+	if dayHasBattleground(eventDate) then
+		originalEventCount = originalEventCount + 1
+	end
 
 	return originalEventCount
 end
 
 function stubbedGetDayEvent(monthOffset, monthDay, index)
-	-- Stubbing  C_Calendar.GetDayEvent to return events
+	-- Stubbing C_Calendar.GetDayEvent to return events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
 	local monthOffset = trueMonthOffset(monthOffset)
 	local eventDate = getAbsDate(monthOffset, monthDay)
 
-	if originalEvent == nil then -- Fake Event
+	if originalEvent == nil then
 		if (dayHasDarkmoon(eventDate) and index == originalEventCount + 1) then
-			-- Holiday is always the first event processed, because there's only 1 at a time
 			if isDarkmoonStart(eventDate, darkmoonLocations.Elwynn) then
 				return darkmoonStart(eventDate, darkmoonLocations.Elwynn)
 			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Elwynn) then
@@ -554,9 +691,15 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 			elseif isDarkmoonEnd(eventDate, darkmoonLocations.Mulgore) then
 				return darkmoonEnd(eventDate, darkmoonLocations.Mulgore)
 			end
-		end
-	
-		if dayHasReset(eventDate) then
+		elseif (dayHasBattleground(eventDate) and (index == originalEventCount + 1 or (dayHasDarkmoon(eventDate) and index == originalEventCount + 2))) then
+			if isBattlegroundStart(eventDate) then
+				return battlegroundStart(eventDate)
+			elseif isBattlegroundOngoing(eventDate) then
+				return battlegroundOngoing(eventDate)
+			elseif isBattlegroundEnd(eventDate) then
+				return battlegroundEnd(eventDate)
+			end
+		elseif dayHasReset(eventDate) then
 			return createResetEvent(eventDate)
 		end
 	end
