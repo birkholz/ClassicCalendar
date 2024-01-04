@@ -557,7 +557,6 @@ local function battlegroundStart(eventDate)
 	endTime.minute = 59
 
 	local event = {
-		title="Call to Arms (WSG)", -- I have no idea what these events are called
 		title="Call to Arms: Warsong Gulch",
 		isCustomTitle=true,
 		startTime=startTime,
@@ -628,7 +627,6 @@ local function battlegroundEnd(eventDate)
 	startTime.hour = 0
 	startTime.minute = 1
 
-	local fakeDarkmoonEvent = {
 	local event = {
 		title="Call to Arms: Warsong Gulch",
 		isCustomTitle=true,
