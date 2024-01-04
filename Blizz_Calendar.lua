@@ -2141,12 +2141,13 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 		-- add guild selections if the player has a guild
 		if ( IsInGuild() ) then
 			UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_EVENT, nil, CalendarDayContextMenu_CreateGuildEvent);
-
+			--[[ Commented out for future implimentation
 			if ( CanEditGuildEvent() ) then
 				UIMenu_AddButton(self, CALENDAR_CREATE_GUILD_ANNOUNCEMENT, nil, CalendarDayContextMenu_CreateGuildAnnouncement);
 			end
+			]]--
 		end
-		--[[
+		--[[ Commented out for future implimentation
 		-- add community selections if the player is in a character community
 		local clubs = C_Club.GetSubscribedClubs();
 		for i, clubInfo in ipairs(clubs) do
@@ -2155,7 +2156,7 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 				break;
 			end
 		end
-		--]]
+		]]--
 		needSpacer = true;
 	end
 
@@ -3025,11 +3026,6 @@ function CalendarViewEventDescriptionContainer_OnLoad(self)
 	local scrollBox = self.ScrollingFont:GetScrollBox();
 	ScrollUtil.InitScrollBar(scrollBox, self.ScrollBar);
 	CalendarEvent_InitManagedScrollBarVisibility(self, scrollBox, self.ScrollBar);
-end
- 
-function communityName()
-    local communityName, _ = GetGuildInfo("player");
-	return communityName
 end
 
 function CalendarViewEventFrame_Update()
@@ -4420,13 +4416,12 @@ function CalendarCreateEventMassInviteButton_OnUpdate(self)
 end
 
 function CalendarCreateEventMassInviteButton_Update()
-	if ( C_Calendar.CanSendInvite() ) then
---  and CanEditGuildEvent() 
---[[
+	if ( C_Calendar.CanSendInvite() and CanViewOfficerNote() ) then --and CanEditGuildEvent()
+	--[[ Commented out for future implimentation
 	local clubs = C_Club.GetSubscribedClubs()
 
 	if (#clubs > 
- --]]
+	]]--
 		CalendarCreateEventMassInviteButton:Enable();
 	else
 		CalendarCreateEventMassInviteButton:Disable();
