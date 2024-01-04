@@ -691,6 +691,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 
 	if originalEvent == nil then
 		if (dayHasDarkmoon(eventDate) and index == originalEventCount + 1) then
+			-- Elwynn
 			if isDarkmoonStart(eventDate, darkmoonLocations.Elwynn) then
 				return darkmoonStart(eventDate, darkmoonLocations.Elwynn)
 			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Elwynn) then
