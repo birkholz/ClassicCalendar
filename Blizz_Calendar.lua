@@ -1106,10 +1106,10 @@ function CalendarFrame_OnShow(self)
 	self.militaryTime = GetCVarBool("timeMgrUseMilitaryTime");
 
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime();
-	C_Calendar.SetAbsMonth(currentCalendarTime.month, currentCalendarTime.year);
+	stubbedSetAbsMonth(currentCalendarTime.month, currentCalendarTime.year);
 	CalendarFrame_Update();
 
-	stubbedOpenCalendar();
+	C_Calendar.OpenCalendar();
 
 	PlaySound(SOUNDKIT.IG_SPELLBOOK_OPEN);
 end

@@ -734,13 +734,12 @@ function stubbedSetMonth(offset)
 	adjustMonthByOffset(state.presentDate, offset)
 end
 
-function stubbedOpenCalendar()
+function stubbedSetAbsMonth(month, year)
 	-- Reset state
-	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-	state.presentDate.year = currentCalendarTime.year
-	state.presentDate.month = currentCalendarTime.month
+	state.presentDate.year = year
+	state.presentDate.month = month
 	state.monthOffset = 0
-	C_Calendar.OpenCalendar()
+	C_Calendar.SetAbsMonth(month, year)
 end
 
 function communityName()
