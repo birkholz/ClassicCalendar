@@ -520,9 +520,8 @@ function dayHasBattleground(eventDate)
 		return false
 	end
 
-	-- Is it midnight to midnight? or daily reset to reset?
 	local startEpoch = time{year=2023,month=12,day=15,hour=0,minute=1}
-	local endEpoch = time{year=2023,month=12,day=18,hour=23,minute=59}
+	local endEpoch = time{year=2023,month=12,day=19,hour=13,minute=0}
 
 	-- Currently only WSG weekend, so 1 week every 4 weeks
 
@@ -536,12 +535,12 @@ end
 
 local function isBattlegroundOngoing(eventDate)
 	local startEpoch = time{ year=2023, month=12, day=15 }
-	local endEpoch = time{ year=2023, month=12, day=18 }
+	local endEpoch = time{ year=2023, month=12, day=18, hour=13 }
 	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 28)
 end
 
 local function isBattlegroundEnd(eventDate)
-	local firstBattlegroundEnd = { year=2023, month=12, day=18 }
+	local firstBattlegroundEnd = { year=2023, month=12, day=19 }
 	return dateIsOnFrequency(eventDate, firstBattlegroundEnd, 28)
 end
 
@@ -553,9 +552,9 @@ local function battlegroundStart(eventDate)
 	}))
 	startTime.hour = 0
 	startTime.minute = 1
-	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday, 1)
-	endTime.hour = 23
-	endTime.minute = 59
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Tuesday, 1)
+	endTime.hour = 8
+	endTime.minute = 0
 
 	local event = {
 		title="Call to Arms: Warsong Gulch",
@@ -571,7 +570,7 @@ local function battlegroundStart(eventDate)
 		invitedBy="",
 		inviteType=CalendarInviteType.Normal,
 		sequenceIndex=1,
-		numSequenceDays=4,
+		numSequenceDays=5,
 		difficultyName="",
 		dontDisplayBanner=false,
 		dontDisplayEnd=false,
@@ -582,16 +581,16 @@ end
 
 local function battlegroundOngoing(eventDate)
 	local weekAdjustment = 0
-	if date("*t", time(eventDate))['wday'] == WEEKDAYS.Sunday then
+	if date("*t", time(eventDate))['wday'] <= WEEKDAYS.Tuesday then
 		weekAdjustment = -1
 	end
 	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Friday, weekAdjustment)
-	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday, weekAdjustment + 1)
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Tuesday, weekAdjustment + 1)
 	local sequenceIndex = ((time(eventDate) - time(startTime)) / SECONDS_IN_DAY) + 1
 	startTime.hour = 0
 	startTime.minute = 1
-	endTime.hour = 23
-	endTime.minute = 59
+	endTime.hour = 8
+	endTime.minute = 0
 
 	local event = {
 		title="Call to Arms: Warsong Gulch",
@@ -607,7 +606,7 @@ local function battlegroundOngoing(eventDate)
 		invitedBy="",
 		inviteType=CalendarInviteType.Normal,
 		sequenceIndex=sequenceIndex,
-		numSequenceDays=4,
+		numSequenceDays=5,
 		difficultyName="",
 		dontDisplayBanner=false,
 		dontDisplayEnd=false,
@@ -617,16 +616,20 @@ local function battlegroundOngoing(eventDate)
 end
 
 local function battlegroundEnd(eventDate)
+	local weekAdjustment = 0
+	if date("*t", time(eventDate))['wday'] <= WEEKDAYS.Monday then
+		weekAdjustment = -1
+	end
+	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Friday, weekAdjustment)
+	startTime.hour = 0
+	startTime.minute = 1
 	local endTime = fixLuaDate(date("*t", time{
 		year=eventDate.year,
 		month=eventDate.month,
 		day=eventDate.day
 	}))
-	endTime.hour = 23
-	endTime.minute = 59
-	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Friday, -1)
-	startTime.hour = 0
-	startTime.minute = 1
+	endTime.hour = 8
+	endTime.minute = 0
 
 	local event = {
 		title="Call to Arms: Warsong Gulch",
@@ -641,8 +644,8 @@ local function battlegroundEnd(eventDate)
 		inviteStatus=0,
 		invitedBy="",
 		inviteType=CalendarInviteType.Normal,
-		sequenceIndex=4,
-		numSequenceDays=4,
+		sequenceIndex=5,
+		numSequenceDays=5,
 		difficultyName="",
 		dontDisplayBanner=false,
 		dontDisplayEnd=false,
