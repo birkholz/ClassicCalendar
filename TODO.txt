@@ -1,5 +1,4 @@
 * Holidays, e.g. Winter's Veil (needs confirmation of schedule)
-* Battleground Weekends (4 week schedule, WSG > AB > AV, epoch 12/15/23-12/18/23)
 * tainted Escape bug
 * Bug: Calendar events are incorrect when changing month then closing and reopening
 * Bug: not all event info updating when switching
