@@ -558,6 +558,7 @@ local function battlegroundStart(eventDate)
 
 	local event = {
 		title="Call to Arms (WSG)", -- I have no idea what these events are called
+		title="Call to Arms: Warsong Gulch",
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -593,7 +594,7 @@ local function battlegroundOngoing(eventDate)
 	endTime.minute = 59
 
 	local event = {
-		title="Call to Arms (WSG)",
+		title="Call to Arms: Warsong Gulch",
 		isCustomTitle=true,
 		startTime=startTime, 
 		endTime=endTime,
@@ -628,7 +629,8 @@ local function battlegroundEnd(eventDate)
 	startTime.minute = 1
 
 	local fakeDarkmoonEvent = {
-		title="Call to Arms (WSG)",
+	local event = {
+		title="Call to Arms: Warsong Gulch",
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -647,7 +649,7 @@ local function battlegroundEnd(eventDate)
 		dontDisplayEnd=false,
 		isLocked=false,
 	}
-	return fakeDarkmoonEvent
+	return event
 end
 
 function stubbedGetNumDayEvents(monthOffset, monthDay)
