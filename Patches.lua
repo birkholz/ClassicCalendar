@@ -71,8 +71,12 @@ CalendarTexturesType = {
 	Raid = 1,
 }
 
+local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
+
 local state = {
-	monthOffset=0
+	monthOffset=0,
+	presentYear=currentCalendarTime.year,
+	presentMonth=currentCalendarTime.month
 }
 
 local DARKMOON_ELWYNN_LOCATION = 0
@@ -81,6 +85,19 @@ local DARKMOON_MULGORE_LOCATION = 1
 local darkmoonLocations = {
 	Elwynn = DARKMOON_ELWYNN_LOCATION,
 	Mulgore = DARKMOON_MULGORE_LOCATION
+}
+
+local holidays = {
+	DarkmoonFaire = 0,
+	WintersVeil = 1,
+	Noblegarden = 2,
+	ChildrensWeek = 3,
+	HarvestFestival = 4,
+	HallowsEnd = 5,
+	LunarFestival = 6,
+	LoveisintheAir = 7,
+	MidsummerFireFestival = 8,
+	PeonDay = 9
 }
 
 local function deep_copy(t, seen)
@@ -105,6 +122,78 @@ local function tableHasValue(tab, val)
     end
 
     return false
+end
+
+-- Date Utilities
+
+local SECONDS_IN_DAY = 24 * 60 * 60
+
+local function dateGreaterThan(date1, date2)
+	return time(date1) > time(date2)
+end
+
+local function dateLessThan(date1, date2)
+	return time(date1) < time(date2)
+end
+
+local function addDaysToDate(date, dayCount)
+	local dateSeconds = time(date)
+	dateSeconds = dateSeconds + dayCount * SECONDS_IN_DAY
+	return fixLuaDate(date("*t", dateSeconds))
+end
+
+local function dateIsOnFrequency(eventDate, epochDate, frequency)
+	return ((time(eventDate) - time(epochDate)) / (SECONDS_IN_DAY)) % frequency == 0
+end
+
+local function isDateInRepeatingRange(eventDate, startEpoch, endEpoch, frequency)
+	local dateTime = time(eventDate)
+	local darkmoonFrequency = frequency * SECONDS_IN_DAY
+
+	while dateTime > startEpoch do
+		if dateTime > startEpoch and dateTime < endEpoch then
+			return true
+		end
+		
+		dateTime = dateTime - darkmoonFrequency
+	end
+
+	return false
+end
+
+local WEEKDAYS = {
+	Sunday = 1,
+	Monday = 2,
+	Tuesday = 3,
+	Wednesday = 4,
+	Thursday = 5,
+	Friday = 6,
+	Saturday = 7
+}
+
+local function fixLuaDate(dateD)
+	local result = {
+		year=dateD.year,
+		month=dateD.month,
+		monthDay=dateD.day,
+		weekDay=dateD.wday,
+		day=dateD.day,
+	}
+	return result
+end
+
+local function changeWeekdayOfDate(dateD, weekday)
+	-- Change date to the chosen weekday of the same week
+	local dateTime = time(dateD)
+	local dateWeekday = date("*t", dateTime)["wday"]
+
+	local delta = (dateWeekday - weekday) * SECONDS_IN_DAY
+	local result = dateTime - delta
+	if weekday == WEEKDAYS.Sunday then
+		-- As sunday is the first weekday, we have to add a week to get the next week's Sunday
+		result = result + (7 * SECONDS_IN_DAY)
+	end
+	return fixLuaDate(date("*t", result))
 end
 
 function StubbedEventGetTextures(eventType)
@@ -181,40 +270,66 @@ function StubbedEventGetTextures(eventType)
 	return original_textures
 end
 
-local function darkmoonStart(monthOffset, monthDay, location)
-	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-	local presentWeekday = currentCalendarTime.weekday
-	local presentMonth = currentCalendarTime.month
-	local presentDay = currentCalendarTime.monthDay
-	local presentYear = currentCalendarTime.year
+local function isDarkmoonStart(eventDate, location)
+	local firstDarkmoonStart
+	if location == darkmoonLocations.Elwynn then
+		firstDarkmoonStart = { year=2023, month=12, day=18 }
+	elseif location == darkmoonLocations.Mulgore then
+		firstDarkmoonStart = { year=2023, month=12, day=4 }
+	end
+	return dateIsOnFrequency(eventDate, firstDarkmoonStart, 28)
+end
+
+local function isDarkmoonOngoing(eventDate, location)
+	local startEpoch
+	local endEpoch
+	if location == darkmoonLocations.Mulgore then
+		startEpoch = time{ year=2023, month=12, day=4 }
+		endEpoch = time{ year=2023, month=12, day=10 }
+	elseif location == darkmoonLocations.Elwynn then
+		startEpoch = time{ year=2023, month=12, day=18 }
+		endEpoch = time{ year=2023, month=12, day=24 }
+	end
+
+	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 28)
+end
+
+local function isDarkmoonEnd(eventDate, location)
+	local firstDarkmoonStart
+	if location == darkmoonLocations.Elwynn then
+		firstDarkmoonStart = { year=2023, month=12, day=24 }
+	elseif location == darkmoonLocations.Mulgore then
+		firstDarkmoonStart = { year=2023, month=12, day=10 }
+	end
+	return dateIsOnFrequency(eventDate, firstDarkmoonStart, 28)
+end
+
+local function darkmoonStart(eventDate, location)
 	local iconTexture
 	if location == darkmoonLocations.Elwynn then
-		iconTexture = 235448
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnStart"
 	elseif location == darkmoonLocations.Mulgore then
-		iconTexture = 235451
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreStart"
 	end
+
+	local startTime = fixLuaDate(date("*t", time{
+		year=eventDate.year,
+		month=eventDate.month,
+		day=eventDate.day
+	}))
+	startTime.hour = 0
+	startTime.minute = 1
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday)
+	endTime.hour = 23
+	endTime.minute = 59
 
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
 		title="Darkmoon Faire",
 		isCustomTitle=true,
-		startTime={ -- CalendarTime
-			year=presentYear,
-			month=presentMonth,
-			monthDay=7,
-			weekDay=1,
-			hour=0,
-			minute=1
-		}, 
-		endTime={
-			year=presentYear,
-			month=presentMonth,
-			monthDay=13,
-			weekDay=monthDay,
-			hour=23,
-			minute=59
-		},
+		startTime=startTime,
+		endTime=endTime,
 		calendarType="HOLIDAY",
 		sequenceType="START",
 		eventType=CalendarEventType.Other,
@@ -234,35 +349,30 @@ local function darkmoonStart(monthOffset, monthDay, location)
 	return fakeDarkmoonEvent
 end
 
-local function darkmoonOngoing(monthOffset, monthDay, sequenceIndex, location)
+local function darkmoonOngoing(eventDate, location)
 	local iconTexture
 	if location == darkmoonLocations.Elwynn then
-		iconTexture = 235447
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnOngoing"
 	elseif location == darkmoonLocations.Mulgore then
-		iconTexture = 235450
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreOngoing"
 	end
+
+	-- Calculate weekDay of eventDate, set StartTime to Monday and endTime to Sunday
+	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday)
+	local endTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Sunday)
+	local sequenceIndex = ((time(eventDate) - time(startTime)) / SECONDS_IN_DAY) + 1
+	startTime.hour = 0
+	startTime.minute = 1
+	endTime.hour = 23
+	endTime.minute = 59
 
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
 		title="Darkmoon Faire",
 		isCustomTitle=true,
-		startTime={ -- CalendarTime
-			year=2024,
-			month=1,
-			monthDay=7,
-			weekDay=1,
-			hour=0,
-			minute=1
-		}, 
-		endTime={
-			year=2024,
-			month=1,
-			monthDay=13,
-			weekDay=7,
-			hour=23,
-			minute=59
-		},
+		startTime=startTime, 
+		endTime=endTime,
 		calendarType="HOLIDAY",
 		sequenceType="ONGOING",
 		eventType=CalendarEventType.Other,
@@ -282,35 +392,32 @@ local function darkmoonOngoing(monthOffset, monthDay, sequenceIndex, location)
 	return fakeDarkmoonEvent
 end
 
-local function darkmoonEnd(monthOffset, monthDay, location)
+local function darkmoonEnd(eventDate, location)
 	local iconTexture
 	if location == darkmoonLocations.Elwynn then
-		iconTexture = 235446
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnEnd"
 	elseif location == darkmoonLocations.Mulgore then
-		iconTexture = 235449
+		iconTexture = "Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreEnd"
 	end
+
+	local endTime = fixLuaDate(date("*t", time{
+		year=eventDate.year,
+		month=eventDate.month,
+		day=eventDate.day
+	}))
+	endTime.hour = 23
+	endTime.minute = 59
+	local startTime = changeWeekdayOfDate(eventDate, WEEKDAYS.Monday)
+	startTime.hour = 0
+	startTime.minute = 1
 
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
 		title="Darkmoon Faire",
 		isCustomTitle=true,
-		startTime={ -- CalendarTime
-			year=2024,
-			month=1,
-			monthDay=7,
-			weekDay=1,
-			hour=0,
-			minute=1
-		}, 
-		endTime={
-			year=2024,
-			month=1,
-			monthDay=13,
-			weekDay=7,
-			hour=23,
-			minute=59
-		},
+		startTime=startTime,
+		endTime=endTime,
 		calendarType="HOLIDAY",
 		sequenceType="END",
 		eventType=CalendarEventType.Other,
@@ -330,42 +437,25 @@ local function darkmoonEnd(monthOffset, monthDay, location)
 	return fakeDarkmoonEvent
 end
 
-local function createResetEvent(monthOffset, monthDay)
-	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-	local presentMonth = currentCalendarTime.month
-	local presentYear = currentCalendarTime.year
-
-	local fakeResetEvent = { -- CalendarEvent
-		clubID=0,
-		-- eventID="0x1F410000035FB4A7",
+local function createResetEvent(eventDate)
+	local fakeResetEvent = {
 		eventType=CalendarEventType.Other,
 		sequenceType="",
 		isCustomTitle=true,
-		startTime={ -- CalendarTime
-			year=presentYear,
-			month=presentMonth,
-			monthDay=monthDay,
-			-- weekDay=1,
+		startTime={
+			year=eventDate.year,
+			month=eventDate.month,
+			monthDay=eventDate.day,
 			hour=8,
 			minute=0
 		},
 		difficultyName="",
-		-- endTime={
-		-- 	year=presentYear,
-		-- 	month=presentMonth,
-		-- 	monthDay=monthDay,
-		-- 	-- weekDay=1,
-		-- 	hour=23,
-		-- 	minute=59
-		-- },
 		invitedBy="",
 		inviteStatus=0,
 		dontDisplayEnd=false,
-		-- difficulty=198,
 		isLocked=false,
 		title="Blackfathom Deeps",
 		calendarType="RAID_RESET",
-		-- iconTexture=235448,
 		inviteType=CalendarInviteType.Normal,
 		sequenceIndex=1,
 		dontDisplayBanner=false,
@@ -375,27 +465,32 @@ local function createResetEvent(monthOffset, monthDay)
 	return fakeResetEvent
 end
 
-function dayHasDarkmoon(monthOffset, monthDay)
+function dayHasDarkmoon(eventDate)
 	if GetCVar("calendarShowDarkmoon") == "0" then
 		return false
 	end
-	local event1 = (monthOffset == -1 and monthDay > 17 and monthDay < 25)
-	local event2 = (monthOffset == 0 and monthDay > 0 and monthDay < 8)
-	local event3 = (monthOffset == 0 and monthDay > 14 and monthDay < 22)
-	local event4 = ((monthOffset == 0 and monthDay > 28) or (monthOffset == 1 and monthDay < 5))
-	return event1 or event2 or event3 or event4
+
+	local startEpoch = time{year=2023,month=12,day=18,hour=0,minute=1}
+	local endEpoch = time{year=2023,month=12,day=24,hour=23,minute=59}
+
+	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 14)
 end
 
-function dayHasReset(monthOffset, monthDay)
+function dayHasReset(eventDate)
 	if GetCVar("calendarShowResets") == "0" then
 		return false
 	end
 
-	local resets_last_month = (monthOffset == -1 and tableHasValue({3,6,9,12,15,18,21,24,27,30}, monthDay))
-	local resets_this_month = (monthOffset == 0 and tableHasValue({2,5,8,11,14,17,20,23,26,29}, monthDay))
-	local resets_next_month = (monthOffset == 1 and tableHasValue({1,4,7,10,13,16,19,22,25,28}, monthDay))
+	local firstReset = {
+		year=2023,
+		month=12,
+		day=3
+	}
+	if dateLessThan(eventDate, firstReset) then
+		return false
+	end
 
-	return resets_last_month or resets_this_month or resets_next_month
+	return dateIsOnFrequency(eventDate, firstReset, 3)
 end
 
 function trueMonthOffset(monthOffset)
@@ -403,15 +498,33 @@ function trueMonthOffset(monthOffset)
 	return monthOffset + state.monthOffset
 end
 
+function getAbsDate(monthOffset, monthDay)
+	local eventDate = {
+		year=state.presentYear,
+		month=state.presentMonth,
+		day=monthDay
+	}
+	if monthOffset > 0 then
+		eventDate.year = state.presentYear + math.floor(monthOffset / 12)
+	elseif monthOffset < 0 then
+		eventDate.year = state.presentYear + math.ceil(monthOffset / 12)
+	end
+
+	eventDate.month = eventDate.month + monthOffset
+
+	return eventDate
+end
+
 function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local monthOffset = trueMonthOffset(monthOffset)
+	local eventDate = getAbsDate(monthOffset, monthDay)
 
-	if dayHasDarkmoon(monthOffset, monthDay) then
+	if dayHasDarkmoon(eventDate) then
 		originalEventCount = originalEventCount + 1
 	end
-	if dayHasReset(monthOffset, monthDay) then
+	if dayHasReset(eventDate) then
 		originalEventCount = originalEventCount + 1
 	end
 
@@ -423,27 +536,28 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
 	local monthOffset = trueMonthOffset(monthOffset)
+	local eventDate = getAbsDate(monthOffset, monthDay)
 
 	if originalEvent == nil then -- Fake Event
-		if (dayHasDarkmoon(monthOffset, monthDay) and index == originalEventCount + 1) then
+		if (dayHasDarkmoon(eventDate) and index == originalEventCount + 1) then
 			-- Holiday is always the first event processed, because there's only 1 at a time
-			if (monthOffset == -1 and monthDay == 18) or (monthOffset == 0 and monthDay == 15) then
-				return darkmoonStart(monthOffset, monthDay, darkmoonLocations.Elwynn)
-			elseif (monthOffset == 0 and monthDay == 1) or (monthOffset == 0 and monthDay == 29) then
-				return darkmoonStart(monthOffset, monthDay, darkmoonLocations.Mulgore)
-			elseif (monthOffset == -1 and monthDay > 17 and monthDay < 24 ) or (monthOffset == 0 and monthDay > 14 and monthDay < 21 ) then
-				return darkmoonOngoing(monthOffset, monthDay, monthDay - 6, darkmoonLocations.Elwynn)
-			elseif (monthOffset == 0 and monthDay > 1 and monthDay < 7 ) or (monthOffset == 0 and monthDay > 29) or (monthOffset == 1 and monthDay < 4) then
-				return darkmoonOngoing(monthOffset, monthDay, monthDay - 6, darkmoonLocations.Mulgore)
-			elseif (monthOffset == -1 and monthDay == 24) or (monthOffset == 0 and monthDay == 21) then
-				return darkmoonEnd(monthOffset, monthDay, darkmoonLocations.Elwynn)
-			elseif (monthOffset == 0 and monthDay == 7) or (monthOffset == 1 and monthDay == 4) then
-				return darkmoonEnd(monthOffset, monthDay, darkmoonLocations.Mulgore)
+			if isDarkmoonStart(eventDate, darkmoonLocations.Elwynn) then
+				return darkmoonStart(eventDate, darkmoonLocations.Elwynn)
+			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Elwynn) then
+				return darkmoonOngoing(eventDate, darkmoonLocations.Elwynn)
+			elseif isDarkmoonEnd(eventDate, darkmoonLocations.Elwynn) then
+				return darkmoonEnd(eventDate, darkmoonLocations.Elwynn)
+			elseif isDarkmoonOngoing(eventDate, darkmoonLocations.Mulgore) then
+				return darkmoonOngoing(eventDate, darkmoonLocations.Mulgore)
+			elseif isDarkmoonStart(eventDate, darkmoonLocations.Mulgore) then
+				return darkmoonStart(eventDate, darkmoonLocations.Mulgore)
+			elseif isDarkmoonEnd(eventDate, darkmoonLocations.Mulgore) then
+				return darkmoonEnd(eventDate, darkmoonLocations.Mulgore)
 			end
 		end
 	
-		if dayHasReset(monthOffset, monthDay) then
-			return createResetEvent(monthOffset, monthDay)
+		if dayHasReset(eventDate) then
+			return createResetEvent(eventDate)
 		end
 	end
 
@@ -458,4 +572,17 @@ function stubbedSetMonth(offset)
 	-- we have to stub it to do the same for our stubbed methods
 	state.monthOffset = state.monthOffset + offset
 	C_Calendar.SetMonth(offset)
+
+	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
+	state.presentMonth = currentCalendarTime.month
+	state.presentYear = currentCalendarTime.year
+end
+
+function stubbedOpenCalendar()
+	-- Reset state
+	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
+	state.presentMonth = currentCalendarTime.month
+	state.presentYear = currentCalendarTime.year
+	state.monthOffset = 0
+	C_Calendar.OpenCalendar()
 end

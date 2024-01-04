@@ -1,7 +1,7 @@
-* Darkmoon Faire schedule (needs confirmation of an accurate schedule)
 * Holidays, e.g. Winter's Veil (needs confirmation of schedule)
-* Battleground Weekends (needs confirmation of schedule, maybe monthly?)
+* Battleground Weekends (4 week schedule, WSG > AB > AV, epoch 12/15/23-12/18/23)
 * tainted Escape bug
 * Bug: not all event info updating when switching
+* Bug: error when scrolling to March
 * Chat alerts or similar for when you receive an invite, maybe make the ToD indicator glow?
 * Support both Classic Era and SoD

@@ -1109,7 +1109,7 @@ function CalendarFrame_OnShow(self)
 	C_Calendar.SetAbsMonth(currentCalendarTime.month, currentCalendarTime.year);
 	CalendarFrame_Update();
 
-	C_Calendar.OpenCalendar();
+	stubbedOpenCalendar();
 
 	PlaySound(SOUNDKIT.IG_SPELLBOOK_OPEN);
 end
