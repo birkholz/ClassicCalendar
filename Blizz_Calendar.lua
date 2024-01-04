@@ -3028,12 +3028,11 @@ function CalendarViewEventDescriptionContainer_OnLoad(self)
 end
  
 function communityName()
-    local communityName = GetGuildInfo("player");
+    local communityName, _ = GetGuildInfo("player");
 	return communityName
 end
 
 function CalendarViewEventFrame_Update()
-	local communityName = communityName();
 	local eventInfo = C_Calendar.GetEventInfo();
 	if ( not eventInfo or not eventInfo.title ) then
 		-- event was probably deleted
@@ -4447,7 +4446,7 @@ function CalendarCreateEventRaidInviteButton_OnEvent(self, event, ...)
 			if ( IsInGroup(LE_PARTY_CATEGORY_HOME) and not IsInRaid(LE_PARTY_CATEGORY_HOME) and self.inviteLostMembers ) then
 				-- in case we weren't able to convert to a raid when the player clicked the raid invite button
 				-- (which means the player was not in a party), we want to convert to a raid now since he has a party
-				C_PartyInfo.ConvertToRaid();
+				ConvertToRaid();
 			end
 		end
 	end
@@ -4463,7 +4462,7 @@ function CalendarCreateEventRaidInviteButton_OnClick(self)
 			self.inviteLostMembers = true;
 			if ( realNumGroupMembers > 0 ) then
 				--...and I'm already in a party, then I need to form a raid first to fit everyone
-				C_PartyInfo.ConvertToRaid();
+				ConvertToRaid();
 				return;
 			end
 		end
