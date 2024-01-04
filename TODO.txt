@@ -2,6 +2,5 @@
 * tainted Escape bug
 * Bug: Calendar events are incorrect when changing month then closing and reopening
 * Bug: not all event info updating when switching
-* Bug: error when scrolling to March
 * Chat alerts or similar for when you receive an invite, maybe make the ToD indicator glow?
 * Support both Classic Era and SoD

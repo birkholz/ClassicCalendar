@@ -75,8 +75,10 @@ local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
 
 local state = {
 	monthOffset=0,
-	presentYear=currentCalendarTime.year,
-	presentMonth=currentCalendarTime.month
+	presentDate={
+		year=currentCalendarTime.year,
+		month=currentCalendarTime.month
+	}
 }
 
 local DARKMOON_ELWYNN_LOCATION = 0
@@ -203,6 +205,17 @@ local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
 		result = result + (weekAdjustment * (7 * SECONDS_IN_DAY))
 	end
 	return fixLuaDate(date("*t", result))
+end
+
+local function adjustMonthByOffset(date, offset)
+	date.month = date.month + offset
+	if date.month > 12 then
+		date.year = date.year + 1
+		date.month = 1
+	elseif date.month == 0 then
+		date.year = date.year - 1
+		date.month = 12
+	end
 end
 
 function StubbedEventGetTextures(eventType)
@@ -474,7 +487,7 @@ local function createResetEvent(eventDate)
 	return fakeResetEvent
 end
 
-function dayHasDarkmoon(eventDate)
+local function dayHasDarkmoon(eventDate)
 	if GetCVar("calendarShowDarkmoon") == "0" then
 		return false
 	end
@@ -485,7 +498,7 @@ function dayHasDarkmoon(eventDate)
 	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 14)
 end
 
-function dayHasReset(eventDate)
+local function dayHasReset(eventDate)
 	if GetCVar("calendarShowResets") == "0" then
 		return false
 	end
@@ -502,29 +515,18 @@ function dayHasReset(eventDate)
 	return dateIsOnFrequency(eventDate, firstReset, 3)
 end
 
-function trueMonthOffset(monthOffset)
-	-- Apply the month offset accumulated by stubbedSetMonth
-	return monthOffset + state.monthOffset
-end
-
-function getAbsDate(monthOffset, monthDay)
+local function getAbsDate(monthOffset, monthDay)
 	local eventDate = {
-		year=state.presentYear,
-		month=state.presentMonth,
+		year=state.presentDate.year,
+		month=state.presentDate.month,
 		day=monthDay
 	}
-	if monthOffset > 0 then
-		eventDate.year = state.presentYear + math.floor(monthOffset / 12)
-	elseif monthOffset < 0 then
-		eventDate.year = state.presentYear + math.ceil(monthOffset / 12)
-	end
-
-	eventDate.month = eventDate.month + monthOffset
+	adjustMonthByOffset(eventDate, monthOffset)
 
 	return eventDate
 end
 
-function dayHasBattleground(eventDate)
+local function dayHasBattleground(eventDate)
 	if GetCVar("calendarShowBattlegrounds") == "0" then
 		return false
 	end
@@ -666,7 +668,6 @@ end
 function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
-	local monthOffset = trueMonthOffset(monthOffset)
 	local eventDate = getAbsDate(monthOffset, monthDay)
 
 	if dayHasDarkmoon(eventDate) then
@@ -686,7 +687,6 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	-- Stubbing C_Calendar.GetDayEvent to return events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
-	local monthOffset = trueMonthOffset(monthOffset)
 	local eventDate = getAbsDate(monthOffset, monthDay)
 
 	if originalEvent == nil then
@@ -731,16 +731,14 @@ function stubbedSetMonth(offset)
 	state.monthOffset = state.monthOffset + offset
 	C_Calendar.SetMonth(offset)
 
-	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-	state.presentMonth = currentCalendarTime.month
-	state.presentYear = currentCalendarTime.year
+	adjustMonthByOffset(state.presentDate, offset)
 end
 
 function stubbedOpenCalendar()
 	-- Reset state
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-	state.presentMonth = currentCalendarTime.month
-	state.presentYear = currentCalendarTime.year
+	state.presentDate.year = currentCalendarTime.year
+	state.presentDate.month = currentCalendarTime.month
 	state.monthOffset = 0
 	C_Calendar.OpenCalendar()
 end
