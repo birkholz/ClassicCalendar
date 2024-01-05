@@ -62,21 +62,22 @@ CalendarEventTypeNames =
 };
 
 -- this function will attempt to close the first open menu in the CalendarMenus table
-function CloseCalendarMenus()
-	for _, menuName in next, CalendarMenus do
-		local menu = _G[menuName];
-		if ( menu and menu:IsShown() ) then
-			if ( menu == CalendarFrame_GetEventFrame() ) then
-				CalendarFrame_CloseEvent();
-				PlaySound(SOUNDKIT.IG_MAINMENU_QUIT);
-			else
-				menu:Hide();
-			end
-			return true;
-		end
-	end
-	return false;
-end
+-- Note: This function taints execution of ToggleGameMenu, so it's commented out
+-- function CloseCalendarMenus()
+-- 	for _, menuName in next, CalendarMenus do
+-- 		local menu = _G[menuName];
+-- 		if ( menu and menu:IsShown() ) then
+-- 			if ( menu == CalendarFrame_GetEventFrame() ) then
+-- 				CalendarFrame_CloseEvent();
+-- 				PlaySound(SOUNDKIT.IG_MAINMENU_QUIT);
+-- 			else
+-- 				menu:Hide();
+-- 			end
+-- 			return true;
+-- 		end
+-- 	end
+-- 	return false;
+-- end
 
 -- tab handling
 local tabFocusGroup = nil;
