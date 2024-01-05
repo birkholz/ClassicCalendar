@@ -1234,7 +1234,7 @@ function CalendarFrame_Update()
 	local selectedMonth = CalendarFrame.selectedMonth;
 	local selectedDay = CalendarFrame.selectedDay;
 	local selectedYear = CalendarFrame.selectedYear;
-	local indexInfo = C_Calendar.GetEventIndex();
+	local indexInfo = stubbedGetEventIndex();
 	local selectedEventMonthOffset = indexInfo ~= nil and indexInfo.offsetMonths or 0;
 	local selectedEventDay = indexInfo ~= nil and indexInfo.monthDay or 0;
 	local selectedEventIndex = indexInfo ~= nil and indexInfo.eventIndex or 0;
@@ -2670,11 +2670,13 @@ function CalendarDayEventButton_Click(button, openEvent)
 		return;
 	end
 
+	print(dumpTable(buutton), openEvent)
+
 	local dayButton = button:GetParent();
 	local day = dayButton.day;
 	local monthOffset = dayButton.monthOffset;
 	local eventIndex = button.eventIndex;
-	local indexInfo = C_Calendar.GetEventIndex();
+	local indexInfo = stubbedGetEventIndex();
 	local selectedEventMonthOffset = indexInfo ~= nil and indexInfo.offsetMonths or 0;
 	local selectedEventDay = indexInfo ~= nil and indexInfo.monthDay or 0;
 	local selectedEventIndex = indexInfo ~= nil and indexInfo.eventIndex or 0;
@@ -2704,9 +2706,9 @@ end
 -- CalendarViewHolidayFrame
 
 function CalendarViewHolidayFrame_Update()
-	local indexInfo = C_Calendar.GetEventIndex();
+	local indexInfo = stubbedGetEventIndex();
 	if(indexInfo) then
-		local holidayInfo = C_Calendar.GetHolidayInfo(indexInfo.offsetMonths, indexInfo.monthDay, indexInfo.eventIndex);
+		local holidayInfo = newGetHolidayInfo(indexInfo.offsetMonths, indexInfo.monthDay, indexInfo.eventIndex);
 		if (holidayInfo) then
 			CalendarViewHolidayFrame.Header:Setup(holidayInfo.name);
 			local description = holidayInfo.description;
@@ -2750,7 +2752,7 @@ function CalendarViewRaidFrame_OnShow(self)
 end
 
 function CalendarViewRaidFrame_Update()
-	local indexInfo = C_Calendar.GetEventIndex();
+	local indexInfo = stubbedGetEventIndex();
 	local raidInfo = indexInfo and C_Calendar.GetRaidInfo(indexInfo.offsetMonths, indexInfo.monthDay, indexInfo.eventIndex);
 	local name = GetDungeonNameWithDifficulty(raidInfo.name, raidInfo.difficultyName);
 	if raidInfo and raidInfo.calendarType == "RAID_LOCKOUT" then

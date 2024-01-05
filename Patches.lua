@@ -78,7 +78,9 @@ local state = {
 	presentDate={
 		year=currentCalendarTime.year,
 		month=currentCalendarTime.month
-	}
+	},
+	currentEventIndex=0,
+	currentMonthOffset=0
 }
 
 local DARKMOON_ELWYNN_LOCATION = 0
@@ -91,16 +93,58 @@ local darkmoonLocations = {
 CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
 
 local holidays = {
-	DarkmoonFaire = 0,
-	WintersVeil = 1,
-	Noblegarden = 2,
-	ChildrensWeek = 3,
-	HarvestFestival = 4,
-	HallowsEnd = 5,
-	LunarFestival = 6,
-	LoveisintheAir = 7,
-	MidsummerFireFestival = 8,
-	PeonDay = 9
+	DarkmoonFaireElwynn = {
+		name="Darkmoon Faire",
+		description="The Darkmoon Faire is here, this time in idyllic Elwynn Forest.\n\nMeet Silas Darkmoon and his troupe, play games that test mind and nerve, and behold exotic sights from the four corners of Azeroth... and Beyond! ",
+	},
+	DarkmoonFaireMulgore = {
+		name="Darkmoon Faire",
+		description="The Darkmoon Faire is here, this time at the foot of Thunder Bluff.\n\nMeet Silas Darkmoon and his troupe, play games that test mind and nerve, and behold exotic sights from the four corners of Azeroth... and Beyond! ",
+	},
+	WintersVeil = {
+		name="Feast of Winter Veil",
+		description="Greatfather Winter is visiting the cities of Ironforge and Orgrimmar, courtesy of Smokywood Pastures. And throughout Azeroth, it is the season to be jolly!",
+	},
+	Noblegarden = {
+		name="Noblegarden",
+		description="The feast of Noblegarden has arrived. The proving grounds of each race, the place where young heroes first test their strength, each holds cleverly hidden treasure eggs. How many can you find?"
+	},
+	ChildrensWeek = {
+		name="Children's Week",
+		description="Show an orphan what the hero's life is like! Visit Orphan Matron Nightingale in Stormwind, Orphan Matron Battlewail in Orgrimmar, Orphan Matron Mercy in Shattrath, or Orphan Matron Aria in Dalaran and make a child's dream come true."
+	},
+	HarvestFestival = {
+		name="Harvest Festival",
+		description="The Harvest Festival is a time to commemorate those who have sacrificed their lives to help friends and allies. Feasts are held outside Orgrimmar and Ironforge in honor of these fallen heroes."
+	},
+	HallowsEnd = {
+		name="Hallow's End",
+		description="Hallow's End celebrates the break of the Forsaken from the Scourge.\n\nFun and mischief reign as the Innkeepers of Azeroth give treats, and tricks, to whomever asks."
+	},
+	LunarFestival = {
+		name="Lunar Festival",
+		description="Every year the druids of Moonglade hold a celebration of their city's great triumph over an ancient evil. During the Lunar Festival, citizens of Azeroth have the opportunity to honor their elders by celebrating their sage wisdom, sharing in magnificent feasts, and of course... shooting fireworks!"
+	},
+	LoveisintheAir = {
+		name="Love is in the Air",
+		description="Something is in the air in the major cities of Azeroth. Many guards and townsfolk spend their days giving and receiving gifts to other amorous citizens."
+	},
+	MidsummerFireFestival = {
+		name="Midsummer Fire Festival",
+		description="A time of merriment and celebration, dedicated to the hottest season of the year."
+	},
+	warsongGulch = {
+		name="Call to Arms: Warsong Gulch",
+		description="The battle for Warsong Gulch grows intense. Greater honor is given to those who pledge sword to their liege and battle in the Gulch."
+	},
+	arathiBasin = {
+		name="Call to Arms: Arathi Basin",
+		description="The battle for Arathi Basin grows intense. Greater honor is given to those who pledge sword to their liege and battle in Arathi."
+	},
+	alteracValley = {
+		name="Call to Arms: Alterac Valley",
+		description="The battle for Alterac Valley grows intense. Greater honor is given to those who pledge sword to their liege and battle in Alterac."
+	}
 }
 
 local function deep_copy(t, seen)
@@ -348,7 +392,7 @@ local function darkmoonStart(eventDate, location)
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
-		title="Darkmoon Faire",
+		title=holidays.DarkmoonFaireElwynn.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -391,7 +435,7 @@ local function darkmoonOngoing(eventDate, location)
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
-		title="Darkmoon Faire",
+		title=holidays.DarkmoonFaireElwynn.name,
 		isCustomTitle=true,
 		startTime=startTime, 
 		endTime=endTime,
@@ -436,7 +480,7 @@ local function darkmoonEnd(eventDate, location)
 	local fakeDarkmoonEvent = { -- CalendarEvent
 		clubID=0,
 		-- eventID=479,
-		title="Darkmoon Faire",
+		title=holidays.DarkmoonFaireElwynn.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -492,8 +536,8 @@ local function dayHasDarkmoon(eventDate)
 		return false
 	end
 
-	local startEpoch = time{year=2023,month=12,day=18,hour=0,minute=1}
-	local endEpoch = time{year=2023,month=12,day=24,hour=23,minute=59}
+	local startEpoch = time{year=2023,month=12,day=4,hour=0,minute=1}
+	local endEpoch = time{year=2023,month=12,day=10,hour=23,minute=59}
 
 	return isDateInRepeatingRange(eventDate, startEpoch, endEpoch, 14)
 end
@@ -568,7 +612,7 @@ local function battlegroundStart(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title="Call to Arms: Warsong Gulch",
+		title=holidays.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -604,7 +648,7 @@ local function battlegroundOngoing(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title="Call to Arms: Warsong Gulch",
+		title=holidays.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime, 
 		endTime=endTime,
@@ -643,7 +687,7 @@ local function battlegroundEnd(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title="Call to Arms: Warsong Gulch",
+		title=holidays.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -688,6 +732,9 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
 	local eventDate = getAbsDate(monthOffset, monthDay)
+
+	state.currentEventIndex = index
+	state.currentMonthOffset = monthOffset
 
 	if originalEvent == nil then
 		if (dayHasDarkmoon(eventDate) and index == originalEventCount + 1) then
@@ -739,6 +786,8 @@ function stubbedSetAbsMonth(month, year)
 	state.presentDate.year = year
 	state.presentDate.month = month
 	state.monthOffset = 0
+	state.currentEventIndex = 0
+	state.currentMonthOffset = 0
 	C_Calendar.SetAbsMonth(month, year)
 end
 
@@ -748,17 +797,61 @@ function communityName()
 	return communityName
 end
 
-function dumpTable(table, depth)
-  if (depth > 200) then
-    print("Error: Depth > 200 in dumpTable()")
-    return
-  end
-  for k,v in pairs(table) do
-    if (type(v) == "table") then
-      print(string.rep("  ", depth)..k..":")
-      dumpTable(v, depth+1)
-    else
-      print(string.rep("  ", depth)..k..": ",v)
-    end
-  end
+-- Slash command /calendar to open the calendar
+
+SLASH_CALENDAR1 = '/calendar'
+
+function SlashCmdList.CALENDAR(_msg, _editbox)
+	Calendar_Toggle()
+end
+
+function dumpTable(o)
+	if type(o) == 'table' then
+	   local s = '{ '
+	   for k,v in pairs(o) do
+		  if type(k) ~= 'number' then k = '"'..k..'"' end
+		  s = s .. '['..k..'] = ' .. dumpTable(v) .. ','
+	   end
+	   return s .. '} '
+	else
+	   return tostring(o)
+	end
+ end
+
+function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
+	-- return C_Calendar.GetHolidayInfo(offsetMonths, monthDay, eventIndex)
+	-- Because classic doesn't return any events, we're completely replacing this function
+	local event = stubbedGetDayEvent(offsetMonths, monthDay, eventIndex)
+
+	local eventName = event.title
+	local eventDesc
+	for _, holiday in next, holidays do
+		if eventName == holiday.name then
+			eventDesc = holiday.description
+		end
+	end
+
+	if eventDesc == nil then
+		return
+	else
+		return {
+			name=eventName,
+			startTime=event.startTime,
+			endTime=event.endTime,
+			description=eventDesc
+		}
+	end
+end
+
+function stubbedGetEventIndex()
+	local original = C_Calendar.GetEventIndex()
+	if original then
+		return original
+	end
+
+	return {
+		offsetMonths=state.currentMonthOffset,
+		monthDay=state.presentDate.day,
+		eventIndex=state.currentEventIndex
+	}
 end
