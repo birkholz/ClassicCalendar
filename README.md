@@ -5,6 +5,8 @@
 
 A port of the official Blizzard_Calendar addon from WotLK classic to Season of Discovery. Made possible because of the existence of the core calendar functions `C_Calendar` being present in the classic client even though the interface isn't there. However, even though the calendar functions exist, the only things that worked immediately were player-created events (oddly enough) and raid lockouts, so those functions worked without any changes necessary. For events such as holidays, the game simply acts as if they don't exist. So in the process of porting the addon, these issues have been fixed by injecting the responses we'd expect the game to provide. This means that while we've strived to make the data as accurate as possible, it's ultimately not the game itself as the source, so issues may arise with the dates/strings/textures not being correct. Anywhere where we didn't have an authoritative source of the data, we've made our best guess. Please report any issues you encounter [here](https://github.com/birkholz/ClassicCalendar/issues).
 
+![preview image](./preview.png)
+
 ## Features
 
 * A calendar that functions identically to the one found in WotlK classic and retail, while matching the expectations of being in Classic
