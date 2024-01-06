@@ -1,3 +1,5 @@
+local L = SOD_CALENDAR_L
+
 CALENDAR_INVITESTATUS_INFO = {
 	["UNKNOWN"] = {
 		name		= UNKNOWN,
@@ -94,56 +96,60 @@ CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
 
 local holidays = {
 	DarkmoonFaireElwynn = {
-		name="Darkmoon Faire",
-		description="The Darkmoon Faire is here, this time in idyllic Elwynn Forest.\n\nMeet Silas Darkmoon and his troupe, play games that test mind and nerve, and behold exotic sights from the four corners of Azeroth... and Beyond! ",
+		name=L.DarkmoonFaireElwynnName,
+		description=DarkmoonFaireElwynnDescription
 	},
 	DarkmoonFaireMulgore = {
-		name="Darkmoon Faire",
-		description="The Darkmoon Faire is here, this time at the foot of Thunder Bluff.\n\nMeet Silas Darkmoon and his troupe, play games that test mind and nerve, and behold exotic sights from the four corners of Azeroth... and Beyond! ",
+		name=L.DarkmoonFaireMulgoreName,
+		description=L.DarkmoonFaireMulgoreDescription
 	},
 	WintersVeil = {
-		name="Feast of Winter Veil",
-		description="Greatfather Winter is visiting the cities of Ironforge and Orgrimmar, courtesy of Smokywood Pastures. And throughout Azeroth, it is the season to be jolly!",
+		name=L.WintersVeilName,
+		description=L.WintersVeilDescription
 	},
 	Noblegarden = {
-		name="Noblegarden",
-		description="The feast of Noblegarden has arrived. The proving grounds of each race, the place where young heroes first test their strength, each holds cleverly hidden treasure eggs. How many can you find?"
+		name=L.NoblegardenName,
+		description=L.NoblegardenDescription
 	},
 	ChildrensWeek = {
-		name="Children's Week",
-		description="Show an orphan what the hero's life is like! Visit Orphan Matron Nightingale in Stormwind, Orphan Matron Battlewail in Orgrimmar, Orphan Matron Mercy in Shattrath, or Orphan Matron Aria in Dalaran and make a child's dream come true."
+		name=L.ChildrensWeekName,
+		description=L.ChildrensWeekDescription
 	},
 	HarvestFestival = {
-		name="Harvest Festival",
-		description="The Harvest Festival is a time to commemorate those who have sacrificed their lives to help friends and allies. Feasts are held outside Orgrimmar and Ironforge in honor of these fallen heroes."
+		name=L.HarvestFestivalName,
+		description=L.HarvestFestivalDescription
 	},
 	HallowsEnd = {
-		name="Hallow's End",
-		description="Hallow's End celebrates the break of the Forsaken from the Scourge.\n\nFun and mischief reign as the Innkeepers of Azeroth give treats, and tricks, to whomever asks."
+		name=L.HallowsEndName,
+		description=L.HallowsEndDescription
 	},
 	LunarFestival = {
-		name="Lunar Festival",
-		description="Every year the druids of Moonglade hold a celebration of their city's great triumph over an ancient evil. During the Lunar Festival, citizens of Azeroth have the opportunity to honor their elders by celebrating their sage wisdom, sharing in magnificent feasts, and of course... shooting fireworks!"
+		name=L.LunarFestivalName,
+		description=L.LunarFestivalDescription
 	},
 	LoveisintheAir = {
-		name="Love is in the Air",
-		description="Something is in the air in the major cities of Azeroth. Many guards and townsfolk spend their days giving and receiving gifts to other amorous citizens."
+		name=L.LoveisintheAirName,
+		description=L.LoveisintheAirDescription
 	},
 	MidsummerFireFestival = {
-		name="Midsummer Fire Festival",
-		description="A time of merriment and celebration, dedicated to the hottest season of the year."
+		name=L.MidsummerFireFestivalName,
+		description=L.MidsummerFireFestivalDescription
+	},
+	FireworksSpectacular = {
+		name=L.FireworksSpectacularName,
+		description=L.FireworksSpectacularDescription
 	},
 	warsongGulch = {
-		name="Call to Arms: Warsong Gulch",
-		description="The battle for Warsong Gulch grows intense. Greater honor is given to those who pledge sword to their liege and battle in the Gulch."
+		name=L.WarsongGulchName,
+		description=L.WarsongGulchDescription
 	},
 	arathiBasin = {
-		name="Call to Arms: Arathi Basin",
-		description="The battle for Arathi Basin grows intense. Greater honor is given to those who pledge sword to their liege and battle in Arathi."
+		name=L.ArathiBasinName,
+		description=L.ArathiBasinDescription
 	},
 	alteracValley = {
-		name="Call to Arms: Alterac Valley",
-		description="The battle for Alterac Valley grows intense. Greater honor is given to those who pledge sword to their liege and battle in Alterac."
+		name=L.AlteracValleyName,
+		description=L.AlteracValleyDescription
 	}
 }
 
@@ -273,7 +279,7 @@ function StubbedEventGetTextures(eventType)
 
 	if eventType == 0 then
 		tinsert(original_textures, {
-			title="Blackfathom Deeps",
+			title=L.RaidBlackfathomDeepsTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -284,7 +290,7 @@ function StubbedEventGetTextures(eventType)
 
 	if eventType == 1 then
 		tinsert(original_textures, {
-			title="Deadmines",
+			title=L.DungeonDeadminesTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -292,7 +298,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-Deadmines"
 		})
 		tinsert(original_textures, {
-			title="Razorfen Kraul",
+			title=L.DungeonRazorfenKraulTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -300,7 +306,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-RazorfenKraul"
 		})
 		tinsert(original_textures, {
-			title="Scarlet Monastery",
+			title=L.DungeonScarletMonasteryTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -308,7 +314,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-ScarletMonastery"
 		})
 		tinsert(original_textures, {
-			title="Shadowfang Keep",
+			title=L.DungeonShadowfangKeepTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -316,7 +322,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-ShadowfangKeep"
 		})
 		tinsert(original_textures, {
-			title="Stormwind Stockades",
+			title=L.DungeonStormwindStockadesTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
@@ -324,7 +330,7 @@ function StubbedEventGetTextures(eventType)
 			iconTexture="Interface\\LFGFrame\\LFGIcon-StormwindStockades"
 		})
 		tinsert(original_textures, {
-			title="Wailing Caverns",
+			title=L.DungeonWailingCavernsTitle,
 			isLfr=false,
 			difficultyId=0,
 			mapId=0,
