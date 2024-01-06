@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\..\FrameXML\UI.xsd">
-	<Script file="Blizz_Calendar.lua"/>
-	<Include file="Blizz_CalendarTemplates.xml"/>
+	<Script file="ClassicCalendar.lua"/>
+	<Include file="ClassicCalendarTemplates.xml"/>
 
 	<!-- CalendarFrame -->
 	<!-- This is the main Calendar frame, parent of all related Calendar frames. -->

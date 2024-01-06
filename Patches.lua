@@ -97,7 +97,7 @@ CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
 local holidays = {
 	DarkmoonFaireElwynn = {
 		name=L.DarkmoonFaireElwynnName,
-		description=DarkmoonFaireElwynnDescription
+		description=L.DarkmoonFaireElwynnDescription
 	},
 	DarkmoonFaireMulgore = {
 		name=L.DarkmoonFaireMulgoreName,
@@ -168,7 +168,7 @@ local function deep_copy(t, seen)
 end
 
 local function tableHasValue(tab, val)
-    for index, value in ipairs(tab) do
+    for _, value in ipairs(tab) do
         if value == val then
             return true
         end
@@ -180,6 +180,17 @@ end
 -- Date Utilities
 
 local SECONDS_IN_DAY = 24 * 60 * 60
+
+local function fixLuaDate(dateD)
+	local result = {
+		year=dateD.year,
+		month=dateD.month,
+		monthDay=dateD.day,
+		weekDay=dateD.wday,
+		day=dateD.day,
+	}
+	return result
+end
 
 local function dateGreaterThan(date1, date2)
 	return time(date1) > time(date2)
@@ -216,7 +227,7 @@ local function isDateInRepeatingRange(eventDate, startEpoch, endEpoch, frequency
 		if dateTime > startEpoch and dateTime < endEpoch then
 			return true
 		end
-		
+
 		dateTime = dateTime - darkmoonFrequency
 	end
 
@@ -232,17 +243,6 @@ local WEEKDAYS = {
 	Friday = 6,
 	Saturday = 7
 }
-
-local function fixLuaDate(dateD)
-	local result = {
-		year=dateD.year,
-		month=dateD.month,
-		monthDay=dateD.day,
-		weekDay=dateD.wday,
-		day=dateD.day,
-	}
-	return result
-end
 
 local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
 	-- Change date to the chosen weekday of the same week
@@ -269,7 +269,7 @@ local function adjustMonthByOffset(date, offset)
 end
 
 function StubbedEventGetTextures(eventType)
-	
+
 	local original_textures = deep_copy(C_Calendar.EventGetTextures(eventType))
 
 	-- Delete everything from the original --
@@ -443,7 +443,7 @@ local function darkmoonOngoing(eventDate, location)
 		-- eventID=479,
 		title=holidays.DarkmoonFaireElwynn.name,
 		isCustomTitle=true,
-		startTime=startTime, 
+		startTime=startTime,
 		endTime=endTime,
 		calendarType="HOLIDAY",
 		sequenceType="ONGOING",
@@ -656,7 +656,7 @@ local function battlegroundOngoing(eventDate)
 	local event = {
 		title=holidays.warsongGulch.name,
 		isCustomTitle=true,
-		startTime=startTime, 
+		startTime=startTime,
 		endTime=endTime,
 		calendarType="HOLIDAY",
 		sequenceType="ONGOING",
@@ -807,22 +807,9 @@ end
 
 SLASH_CALENDAR1 = '/calendar'
 
-function SlashCmdList.CALENDAR(_msg, _editbox)
+function SlashCmdList.CALENDAR(_msg, _editBox)
 	Calendar_Toggle()
 end
-
-function dumpTable(o)
-	if type(o) == 'table' then
-	   local s = '{ '
-	   for k,v in pairs(o) do
-		  if type(k) ~= 'number' then k = '"'..k..'"' end
-		  s = s .. '['..k..'] = ' .. dumpTable(v) .. ','
-	   end
-	   return s .. '} '
-	else
-	   return tostring(o)
-	end
- end
 
 function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 	-- return C_Calendar.GetHolidayInfo(offsetMonths, monthDay, eventIndex)
