@@ -5,7 +5,7 @@ local L = SOD_CALENDAR_L
 L.MainFrame= "SoD Calendar"
 
 L.TranslationByPrefix= "Translated by "
-L.TranslationBy = nil 
+L.TranslationBy = nil
 
 -- Holidays
 L.DarkmoonFaireElwynnName="Darkmoon Faire"
