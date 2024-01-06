@@ -21,7 +21,7 @@ globals = {
 	"CALENDAR_FILTER_BATTLEGROUND",
 	"SlashCmdList",
 	"C_DateAndTime",
-	"SOD_CALENDAR_L",
+	"CLASSIC_CALENDAR_L",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"StubbedEventGetTextures",

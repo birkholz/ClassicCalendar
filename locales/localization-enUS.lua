@@ -1,6 +1,6 @@
-SOD_CALENDAR_L = {}
+CLASSIC_CALENDAR_L = {}
 
-local L = SOD_CALENDAR_L
+local L = CLASSIC_CALENDAR_L
 
 L.MainFrame= "SoD Calendar"
 
