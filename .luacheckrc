@@ -58,5 +58,6 @@ globals = {
 	"tinsert",
 	"GetCVar",
 	"Calendar_Toggle",
-	"GetGuildInfo"
+	"GetGuildInfo",
+	"GameTimeFrame"
 }
