@@ -80,7 +80,8 @@ local state = {
 	monthOffset=0,
 	presentDate={
 		year=currentCalendarTime.year,
-		month=currentCalendarTime.month
+		month=currentCalendarTime.month,
+		day=currentCalendarTime.day
 	},
 	currentEventIndex=0,
 	currentMonthOffset=0
@@ -139,7 +140,10 @@ local holidays = {
 	FireworksSpectacular = {
 		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"]
-	},
+	}
+}
+
+local battlegroundWeekends = {
 	warsongGulch = {
 		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
 		description=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["description"]
@@ -634,7 +638,7 @@ local function battlegroundStart(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title=holidays.warsongGulch.name,
+		title=battlegroundWeekends.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -670,7 +674,7 @@ local function battlegroundOngoing(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title=holidays.warsongGulch.name,
+		title=battlegroundWeekends.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -709,7 +713,7 @@ local function battlegroundEnd(eventDate)
 	endTime.minute = 0
 
 	local event = {
-		title=holidays.warsongGulch.name,
+		title=battlegroundWeekends.warsongGulch.name,
 		isCustomTitle=true,
 		startTime=startTime,
 		endTime=endTime,
@@ -834,9 +838,17 @@ function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 
 	local eventName = event.title
 	local eventDesc
-	for _, holiday in next, holidays do
+
+	for _, holiday in next, holidays, nil do
+		-- No way to differentiate the locations of darkmoon faire
 		if eventName == holiday.name then
 			eventDesc = holiday.description
+		end
+	end
+
+	for _, bg in next, battlegroundWeekends, nil do
+		if eventName == bg.name then
+			eventDesc = bg.description
 		end
 	end
 
@@ -865,7 +877,40 @@ function stubbedGetEventIndex()
 	}
 end
 
+function stubbedOpenEvent(monthOffset, day, eventIndex)
+	-- Normally, event side panels are opened by the OnEvent handler, however that doesn't work for injected events
+	-- So instead, we have hooked into the OpenEvent function to perform the same logic as the event handler
+	local absDate = getAbsDate(monthOffset, day)
+	state.presentDate = absDate
+
+	local original_event = C_Calendar.GetDayEvent(monthOffset, day, eventIndex)
+	if original_event ~= nil then
+		C_Calendar.OpenEvent(monthOffset, day, eventIndex)
+	else
+		local injectedEvent = stubbedGetDayEvent(monthOffset, day, eventIndex)
+		if injectedEvent.calendarType == "HOLIDAY" then
+			CalendarFrame_ShowEventFrame(CalendarViewHolidayFrame)
+		elseif injectedEvent.calendarType == "RAID_RESET" then
+			CalendarFrame_ShowEventFrame(CalendarViewRaidFrame);
+		end
+	end
+end
 
 -- Hide the default Time-of-Day frame because it occupies the same spot as the calendar button
--- If we can think of another way of displaying the ToD so it isn't lost, we should do so
+-- This is the same decision Blizzard made according to their comments
 GameTimeFrame:Hide()
+
+function stubbedGetRaidInfo(monthOffset, day, eventIndex)
+	-- Stubbing to return injected reset events
+	local originalInfo = C_Calendar.GetRaidInfo(monthOffset, day, eventIndex)
+	if originalInfo ~= nil then
+		return originalInfo
+	else
+		local injectedRaidEvent = stubbedGetDayEvent(monthOffset, day, eventIndex)
+		return {
+			name=injectedRaidEvent.title,
+			difficultyName="",
+			time=injectedRaidEvent.startTime
+		}
+	end
+end

@@ -27,7 +27,7 @@ globals = {
 	"CLASSIC_CALENDAR_L",
 
 	-- Stubbed functions made global to be called from the calendar code
-	"StubbedEventGetTextures",
+	"newEventGetTextures",
 	"stubbedGetNumDayEvents",
 	"stubbedGetDayEvent",
 	"stubbedSetMonth",
@@ -35,6 +35,8 @@ globals = {
 	"communityName",
 	"newGetHolidayInfo",
 	"stubbedGetEventIndex",
+	"stubbedOpenEvent",
+	"stubbedGetRaidInfo",
 
 	-- Various WoW globals
 	"Enum",
@@ -59,5 +61,9 @@ globals = {
 	"GetCVar",
 	"Calendar_Toggle",
 	"GetGuildInfo",
-	"GameTimeFrame"
+	"GameTimeFrame",
+	"GetLocale",
+	"CalendarFrame_ShowEventFrame",
+	"CalendarViewHolidayFrame",
+	"CalendarViewRaidFrame"
 }

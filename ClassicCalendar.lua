@@ -1759,7 +1759,7 @@ end
 function CalendarFrame_OpenEvent(dayButton, eventIndex)
 	local day = dayButton.day;
 	local monthOffset = dayButton.monthOffset;
-	C_Calendar.OpenEvent(monthOffset, day, eventIndex);
+	stubbedOpenEvent(monthOffset, day, eventIndex);
 end
 
 function CalendarFrame_CloseEvent()
@@ -2751,7 +2751,7 @@ end
 
 function CalendarViewRaidFrame_Update()
 	local indexInfo = stubbedGetEventIndex();
-	local raidInfo = indexInfo and C_Calendar.GetRaidInfo(indexInfo.offsetMonths, indexInfo.monthDay, indexInfo.eventIndex);
+	local raidInfo = indexInfo and stubbedGetRaidInfo(indexInfo.offsetMonths, indexInfo.monthDay, indexInfo.eventIndex);
 	local name = GetDungeonNameWithDifficulty(raidInfo.name, raidInfo.difficultyName);
 	if raidInfo and raidInfo.calendarType == "RAID_LOCKOUT" then
 		CalendarViewRaidFrame.Header:Setup(name);
