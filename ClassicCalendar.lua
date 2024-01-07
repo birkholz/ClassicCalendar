@@ -2670,8 +2670,6 @@ function CalendarDayEventButton_Click(button, openEvent)
 		return;
 	end
 
-	print(dumpTable(buutton), openEvent)
-
 	local dayButton = button:GetParent();
 	local day = dayButton.day;
 	local monthOffset = dayButton.monthOffset;

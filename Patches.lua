@@ -848,3 +848,8 @@ function stubbedGetEventIndex()
 		eventIndex=state.currentEventIndex
 	}
 end
+
+
+-- Hide the default Time-of-Day frame because it occupies the same spot as the calendar button
+-- If we can think of another way of displaying the ToD so it isn't lost, we should do so
+GameTimeFrame:Hide()
