@@ -1,4 +1,5 @@
 local L = CLASSIC_CALENDAR_L
+local localeString = tostring(GetLocale())
 
 CALENDAR_INVITESTATUS_INFO = {
 	["UNKNOWN"] = {
@@ -96,60 +97,60 @@ CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
 
 local holidays = {
 	DarkmoonFaireElwynn = {
-		name=L.DarkmoonFaireElwynnName,
-		description=L.DarkmoonFaireElwynnDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"]
 	},
 	DarkmoonFaireMulgore = {
-		name=L.DarkmoonFaireMulgoreName,
-		description=L.DarkmoonFaireMulgoreDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"]
 	},
 	WintersVeil = {
-		name=L.WintersVeilName,
-		description=L.WintersVeilDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"]
 	},
 	Noblegarden = {
-		name=L.NoblegardenName,
-		description=L.NoblegardenDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["description"]
 	},
 	ChildrensWeek = {
-		name=L.ChildrensWeekName,
-		description=L.ChildrensWeekDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"]
 	},
 	HarvestFestival = {
-		name=L.HarvestFestivalName,
-		description=L.HarvestFestivalDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["description"]
 	},
 	HallowsEnd = {
-		name=L.HallowsEndName,
-		description=L.HallowsEndDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["description"]
 	},
 	LunarFestival = {
-		name=L.LunarFestivalName,
-		description=L.LunarFestivalDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["description"]
 	},
 	LoveisintheAir = {
-		name=L.LoveisintheAirName,
-		description=L.LoveisintheAirDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"]
 	},
 	MidsummerFireFestival = {
-		name=L.MidsummerFireFestivalName,
-		description=L.MidsummerFireFestivalDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["description"]
 	},
 	FireworksSpectacular = {
-		name=L.FireworksSpectacularName,
-		description=L.FireworksSpectacularDescription
+		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"]
 	},
 	warsongGulch = {
-		name=L.WarsongGulchName,
-		description=L.WarsongGulchDescription
+		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
+		description=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["description"]
 	},
 	arathiBasin = {
-		name=L.ArathiBasinName,
-		description=L.ArathiBasinDescription
+		name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
+		description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"]
 	},
 	alteracValley = {
-		name=L.AlteracValleyName,
-		description=L.AlteracValleyDescription
+		name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
+		description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"]
 	}
 }
 
@@ -268,78 +269,93 @@ local function adjustMonthByOffset(date, offset)
 	end
 end
 
-function StubbedEventGetTextures(eventType)
+local dungeonNamesCache = {}
 
-	local original_textures = deep_copy(C_Calendar.EventGetTextures(eventType))
-
-	-- Delete everything from the original --
-	for k in pairs (original_textures) do
-		original_textures[k] = nil
+function newEventGetTextures(eventType)
+	-- Stubbing C_Calendar.EventGetTextures to actually return textures, and only SoD-available raids/dungeons
+	if next(dungeonNamesCache) == nil then
+		-- Caching the current localization's names for the dungeons
+		local original_dungeon_names = C_Calendar.EventGetTextures(1)
+		dungeonNamesCache = {
+			BlackfathomDeepsTitle  = original_dungeon_names[1]["title"],
+			DeadminesTitle = original_dungeon_names[3]["title"],
+			RazorfenKraulTitle = original_dungeon_names[11]["title"],
+			ScarletMonasteryTitle = original_dungeon_names[12]["title"],
+			ShadowfangKeepTitle = original_dungeon_names[14]["title"],
+			StormwindStockadesTitle = original_dungeon_names[15]["title"],
+			WailingCavernsTitle = original_dungeon_names[19]["title"]
+		}
 	end
 
 	if eventType == 0 then
-		tinsert(original_textures, {
-			title=L.RaidBlackfathomDeepsTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-BlackfathomDeeps"
-		})
+		-- Raids
+		return {
+			{
+				title=dungeonNamesCache.BlackfathomDeepsTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-BlackfathomDeeps"
+			}
+		}
 	end
 
 	if eventType == 1 then
-		tinsert(original_textures, {
-			title=L.DungeonDeadminesTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-Deadmines"
-		})
-		tinsert(original_textures, {
-			title=L.DungeonRazorfenKraulTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-RazorfenKraul"
-		})
-		tinsert(original_textures, {
-			title=L.DungeonScarletMonasteryTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-ScarletMonastery"
-		})
-		tinsert(original_textures, {
-			title=L.DungeonShadowfangKeepTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-ShadowfangKeep"
-		})
-		tinsert(original_textures, {
-			title=L.DungeonStormwindStockadesTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-StormwindStockades"
-		})
-		tinsert(original_textures, {
-			title=L.DungeonWailingCavernsTitle,
-			isLfr=false,
-			difficultyId=0,
-			mapId=0,
-			expansionLevel=0,
-			iconTexture="Interface\\LFGFrame\\LFGIcon-WailingCaverns"
-		})
+		-- Dungeons, alphabetically sorted
+		return {
+			{
+				title=dungeonNamesCache.DeadminesTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-Deadmines"
+			},
+			{
+				title=dungeonNamesCache.RazorfenKraulTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-RazorfenKraul"
+			},
+			{
+				title=dungeonNamesCache.ScarletMonasteryTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-ScarletMonastery"
+			},
+			{
+				title=dungeonNamesCache.ShadowfangKeepTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-ShadowfangKeep"
+			},
+			{
+				title=dungeonNamesCache.StormwindStockadesTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-StormwindStockades"
+			},
+			{
+				title=dungeonNamesCache.WailingCavernsTitle,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-WailingCaverns"
+			}
+		}
 	end
 
-	return original_textures
+	return {}
 end
 
 local function isDarkmoonStart(eventDate, location)

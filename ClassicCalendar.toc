@@ -1,6 +1,6 @@
 ## Interface: 11304
 ## Title: Classic Calendar
-locales\localization-enUS.lua
+locales\localization-world.lua
 
 Patches.lua
 Patches.xml
