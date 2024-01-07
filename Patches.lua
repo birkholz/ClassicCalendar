@@ -866,7 +866,8 @@ end
 
 function stubbedGetEventIndex()
 	local original = C_Calendar.GetEventIndex()
-	if original then
+	if (original and original.offsetMonths == state.presentDate.currentMonthOffset and original.monthDay == state.presentDate.day and original.eventIndex == state.currentEventIndex) then
+		-- If there is an original event and our state matches up
 		return original
 	end
 
