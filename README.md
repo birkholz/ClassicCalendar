@@ -23,7 +23,7 @@ A port of the official Blizzard_Calendar addon from WotLK classic to Season of D
 
 ## Accessing the Calendar
 
-* Clicking the "Time of Day" indicator by the minimap (the sun or moon icon)
+* Clicking the new Calendar button at the top right of the minimap, replacing the time-of-day indicator
 * Typing `/calendar` in chat
 
 ## Known Issues
