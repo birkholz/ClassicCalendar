@@ -3,7 +3,10 @@ max_line_length = false
 exclude_files = {
 	"**/Libs/**/*.lua",
 	".luacheckrc",
-    "ClassicCalendar.lua" -- Blizz official code
+
+	-- Blizz official code
+	"ClassicCalendar.lua", 
+	"GameTime_Wrath.lua"
 }
 ignore = {
 	"11./SLASH_.*", -- Slash command registration
