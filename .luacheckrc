@@ -25,6 +25,10 @@ globals = {
 	"SlashCmdList",
 	"C_DateAndTime",
 	"CLASSIC_CALENDAR_L",
+	"SetMinTime",
+	"SetMaxTime",
+	"CLASSIC_CALENDAR_HOLIDAYS",
+	"DeepCopyTable",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",

@@ -2,6 +2,7 @@
 ## Title: Classic Calendar
 locales\localization-world.lua
 
+HolidayData.lua
 Patches.lua
 Patches.xml
 ClassicCalendar.lua
