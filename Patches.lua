@@ -569,7 +569,6 @@ function stubbedOpenEvent(monthOffset, day, eventIndex)
 	if original_event ~= nil then
 		C_Calendar.OpenEvent(monthOffset, day, eventIndex)
 	else
-		print(format("Opening event at offset: %s, day: %s, index: %s", monthOffset, day, eventIndex))
 		local injectedEvent = stubbedGetDayEvent(monthOffset, day, eventIndex)
 		if injectedEvent.calendarType == "HOLIDAY" then
 			CalendarFrame_ShowEventFrame(CalendarViewHolidayFrame)
