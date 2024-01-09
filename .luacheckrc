@@ -28,8 +28,8 @@ globals = {
 	"SetMinTime",
 	"SetMaxTime",
 	"GetClassicHolidays",
-	"DeepCopyTable",
 	"CCConfig",
+	"GoToCCSettings",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",
@@ -76,5 +76,6 @@ globals = {
 	"C_AddOns",
 	"InterfaceOptionsFrame_OpenToCategory",
 	"InterfaceOptionsFramePanelContainer",
-	"InterfaceOptions_AddCategory"
+	"InterfaceOptions_AddCategory",
+	"CopyTable"
 }

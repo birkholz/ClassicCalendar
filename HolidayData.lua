@@ -6,20 +6,7 @@ local date = date
 local time = time
 local floor = floor
 local tinsert = tinsert
-
-function DeepCopyTable(t, seen)
-	local result = {}
-	seen = seen or {}
-	seen[t] = result
-	for key, value in pairs(t) do
-		if type(value) == "table" then
-			result[key] = seen[value] or DeepCopyTable(value, seen)
-		else
-			result[key] = value
-		end
-	end
-	return result
-end
+local CopyTable = CopyTable
 
 local function addDaysToDate(eventDate, dayCount)
 	local dateSeconds = time(eventDate)
@@ -28,14 +15,14 @@ local function addDaysToDate(eventDate, dayCount)
 end
 
 function SetMinTime(dateD)
-	local newDate = DeepCopyTable(dateD)
+	local newDate = CopyTable(dateD)
 	newDate.hour = 0
 	newDate.min = 1
 	return newDate
 end
 
 function SetMaxTime(dateD)
-	local newDate = DeepCopyTable(dateD)
+	local newDate = CopyTable(dateD)
 	newDate.hour = 23
 	newDate.min = 59
 	return newDate
@@ -145,29 +132,15 @@ local function GetLunarFestivalEnd(year)
 	return cny
 end
 
+local ZIndexes = {
+	lowest=1,
+	low=2,
+	medium=3,
+	high=4,
+	highest=5
+}
+
 local CLASSIC_CALENDAR_HOLIDAYS = {
-	DarkmoonFaireElwynn = {
-		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
-		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
-		endDate={ year=2023, month=12, day=24, hour=23, min=59 },
-		frequency=28,
-		CVar="calendarShowDarkmoon",
-		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnEnd"
-	},
-	DarkmoonFaireMulgore = {
-		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
-		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
-		endDate={ year=2023, month=12, day=10, hour=23, min=59 },
-		frequency=28,
-		CVar="calendarShowDarkmoon",
-		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreEnd"
-	},
 	WintersVeil = {
 		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
@@ -175,7 +148,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2025, month=1, day= 2, hour=9, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_WinterVeilStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WinterVeilOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_WinterVeilEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_WinterVeilEnd",
+		ZIndex=ZIndexes.high
 	},
 	Noblegarden = {
 		name=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
@@ -185,7 +159,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate=SetMaxTime(GetEasterDate(currentCalendarTime.year)),
 		startTexture="Interface/Calendar/Holidays/Calendar_NoblegardenStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_NoblegardenOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_NoblegardenEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_NoblegardenEnd",
+		ZIndex=ZIndexes.high
 	},
 	ChildrensWeek = {
 		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
@@ -195,7 +170,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		artConfig="ChildrensWeekArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekEnd",
+		ZIndex=ZIndexes.medium
 	},
 	HarvestFestival = {
 		name=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
@@ -204,7 +180,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2024, month=9, day=20, hour=3, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalEnd",
+		ZIndex=ZIndexes.high
 	},
 	HallowsEnd = {
 		name=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
@@ -213,7 +190,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2024, month=11, day=1, hour=3, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_HallowsEndStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_HallowsEndOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_HallowsEndEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_HallowsEndEnd",
+		ZIndex=ZIndexes.high
 	},
 	LunarFestival = {
 		name=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
@@ -223,7 +201,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate=GetLunarFestivalEnd(currentCalendarTime.year),
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd",
+		ZIndex=ZIndexes.high
 	},
 	LoveisintheAir = {
 		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
@@ -232,7 +211,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2024, month=2, day=16, hour=13, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirEnd",
+		ZIndex=ZIndexes.medium
 	},
 	MidsummerFireFestival = {
 		name=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
@@ -242,7 +222,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2024, month=6, day=28, hour=7, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_MidsummerStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_MidsummerOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_MidsummerEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_MidsummerEnd",
+		ZIndex=ZIndexes.high
 	},
 	FireworksSpectacular = {
 		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
@@ -253,7 +234,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		artConfig="FireworksSpectacularArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
-		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks"
+		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
+		ZIndex=ZIndexes.highest
 	},
 	Fishing = {
 		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
@@ -264,7 +246,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		CVar="calendarShowWeeklyHolidays",
 		startTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
-		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza"
+		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ZIndex=ZIndexes.low
 	},
 	warsongGulch = {
 		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
@@ -276,7 +259,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		artConfig="BattlegroundsArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		ZIndex=ZIndexes.lowest
 	},
 	arathiBasin = {
 		name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
@@ -288,7 +272,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		artConfig="BattlegroundsArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		ZIndex=ZIndexes.lowest
 	},
 	-- alteracValley = {
 	--	 name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
@@ -309,7 +294,32 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2024, month=2, day=8, hour=8, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart"
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	DarkmoonFaireElwynn = {
+		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
+		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
+		endDate={ year=2023, month=12, day=24, hour=23, min=59 },
+		frequency=28,
+		CVar="calendarShowDarkmoon",
+		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnEnd",
+		ZIndex=ZIndexes.medium
+	},
+	DarkmoonFaireMulgore = {
+		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
+		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
+		endDate={ year=2023, month=12, day=10, hour=23, min=59 },
+		frequency=28,
+		CVar="calendarShowDarkmoon",
+		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreEnd",
+		ZIndex=ZIndexes.medium
 	}
 }
 
@@ -372,7 +382,7 @@ function GetClassicHolidays()
 		if holiday.frequency ~= nil then
 			local days = 0
 			while days < 365 do
-				local eventCopy = DeepCopyTable(holiday)
+				local eventCopy = CopyTable(holiday)
 				startTime = startTime + (SECONDS_IN_DAY * holiday.frequency)
 				endTime = endTime + (SECONDS_IN_DAY * holiday.frequency)
 				eventCopy.startDate = date("*t", adjustDST(startTime))

@@ -345,15 +345,17 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and
 				(time(SetMinTime(holiday.startDate)) <= time(eventDate) and time(SetMaxTime(holiday.endDate)) >= time(eventDate)) then
 				local artDisabled = false
-				if holiday.artConfig and CCConfig[holiday.artConfig] == "DISABLED" then
+				if holiday.artConfig and CCConfig[holiday.artConfig] == false then
 					artDisabled = true
 				end
 
 				-- single-day event
 				if (holiday.startDate.year == holiday.endDate.year and holiday.startDate.month == holiday.endDate.month and holiday.startDate.day == holiday.endDate.day) then
 					local iconTexture = nil
+					local ZIndex = 1
 					if not artDisabled then
 						iconTexture = holiday.startTexture
+						ZIndex = holiday.ZIndex
 					end
 
 					local eventTable = { -- CalendarEvent
@@ -374,7 +376,8 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						isLocked=false,
 						sequenceType="",
 						sequenceIndex=1,
-						numSequenceDays=1
+						numSequenceDays=1,
+						ZIndex=ZIndex
 					}
 					tinsert(matchingEvents, eventTable)
 				else
@@ -382,6 +385,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 					local sequenceIndex = math.floor((time(SetMinTime(eventDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
 
 					local iconTexture, sequenceType
+					local ZIndex = holiday.ZIndex
 					-- Assign start/ongoing/end texture based on sequenceIndex compared to numSequenceDays
 					if sequenceIndex == 1 then
 						iconTexture = holiday.startTexture
@@ -396,11 +400,13 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 
 					if artDisabled then
 						iconTexture = nil
+						ZIndex=1
 					end
 
 					local dontDisplayBanner
 					if not iconTexture then
 						dontDisplayBanner = true
+						ZIndex=1
 					else
 						dontDisplayBanner = false
 					end
@@ -423,7 +429,8 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						difficultyName="",
 						dontDisplayBanner=dontDisplayBanner,
 						dontDisplayEnd=false,
-						isLocked=false
+						isLocked=false,
+						ZIndex=ZIndex
 					}
 					tinsert(matchingEvents, eventTable)
 				end
@@ -434,6 +441,9 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 			if dayHasReset(eventDate) then return createResetEvent(eventDate) end
 			assert(false, string.format("Injected event expected for date: %s", dumpTable(eventDate)))
 		else
+			table.sort(matchingEvents, function(a,b)
+				return a.ZIndex > b.ZIndex
+			end)
 			return matchingEvents[index - originalEventCount]
 		end
 	end
@@ -471,7 +481,7 @@ end
 
 -- Slash command /calendar to open the calendar
 
-SLASH_CALENDAR1 = '/calendar'
+SLASH_CALENDAR1, SLASH_CALENDAR2 = '/cal', '/calendar'
 
 function SlashCmdList.CALENDAR(_msg, _editBox)
 	Calendar_Toggle()
