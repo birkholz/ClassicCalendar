@@ -362,7 +362,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						dontDisplayBanner=false,
 						dontDisplayEnd=false,
 						isLocked=false,
-						sequenceType="START",
+						sequenceType="",
 						sequenceIndex=1,
 						numSequenceDays=1
 					}

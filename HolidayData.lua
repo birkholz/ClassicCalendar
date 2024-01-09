@@ -192,6 +192,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
 		startDate={ year=2024, month=4, day=29, hour=13, min=0 },
 		endDate={ year=2024, month=5, day=6, hour=13, min=0 },
+		artConfig="ChildrensWeekArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekEnd"
@@ -249,9 +250,21 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- Occurs the last day/night of Midsummer
 		startDate={ year=2024, month=6, day=27, hour=9, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=3, min=0 },
+		artconfig="FireworksSpectacularArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks"
+	},
+	Fishing = {
+		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
+		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
+		endDate={ year=2024, month=2, day=11, hour=16, min=0 },
+		frequency=7,
+		CVar="calendarShowWeeklyHolidays",
+		startTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza"
 	},
 	warsongGulch = {
 		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
@@ -260,21 +273,23 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2023, month=12, day=19, hour=8, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
-		-- startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
-		-- ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-		-- endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+		artConfig="BattlegroundsArt",
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	},
-	-- arathiBasin = {
-	--	 name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
-	--	 description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
-	--	 startDate={ year=2023, month=12, day=22, hour=0, min=1 },
-	--	 endDate={ year=2023, month=12, day=26. hour=8, min=0 },
-	--  frequency=28,
-	--  CVar="calendarShowBattlegrounds",
-	--  startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
-	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
-	-- },
+	arathiBasin = {
+		name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
+		description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
+		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
+		endDate={ year=2024, month=2, day=20, hour=8, min=0 },
+		frequency=28,
+		CVar="calendarShowBattlegrounds",
+		artConfig="BattlegroundsArt",
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+	},
 	-- alteracValley = {
 	--	 name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
 	--	 description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
@@ -282,6 +297,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--	 endDate={ year=2024, month=1, day=2, hour=8, min=0 },
 	--  frequency=28,
 	--  CVar="calendarShowBattlegrounds",
+	--  artConfig="BattlegroundsArt",
 	--  startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
