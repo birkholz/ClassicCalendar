@@ -223,7 +223,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		startTexture="Interface/Calendar/Holidays/Calendar_MidsummerStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_MidsummerOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_MidsummerEnd",
-		ZIndex=ZIndexes.high
+		ZIndex=ZIndexes.highest
 	},
 	FireworksSpectacular = {
 		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
@@ -235,7 +235,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
-		ZIndex=ZIndexes.highest
+		ZIndex=ZIndexes.high
 	},
 	Fishing = {
 		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],

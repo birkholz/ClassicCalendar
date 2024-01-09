@@ -266,7 +266,7 @@ function newEventGetTextures(eventType)
 	return {}
 end
 
-local _raidResets = {}
+local _raidResets
 
 local function getRaidResets()
 	_raidResets = _raidResets or {
@@ -307,10 +307,11 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local eventDate = getAbsDate(monthOffset, monthDay)
+	local eventTime = time(eventDate)
 
 	for _, holiday in next, GetClassicHolidays() do
 		if holiday.CVar == nil or GetCVar(holiday.CVar) == "1" then
-			if time(eventDate) > time(SetMinTime(holiday.startDate)) and time(eventDate) < time(SetMaxTime(holiday.endDate)) then
+			if eventTime > time(SetMinTime(holiday.startDate)) and eventTime < time(SetMaxTime(holiday.endDate)) then
 				originalEventCount = originalEventCount + 1
 			end
 		end
@@ -332,6 +333,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
 	local eventDate = getAbsDate(monthOffset, monthDay)
+	local eventTime = time(eventDate)
 
 	state.currentEventIndex = index
 	state.currentMonthOffset = monthOffset
@@ -341,7 +343,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	if originalEvent == nil then
 		for _, holiday in next, GetClassicHolidays() do
 			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and
-				(time(SetMinTime(holiday.startDate)) <= time(eventDate) and time(SetMaxTime(holiday.endDate)) >= time(eventDate)) then
+				(time(SetMinTime(holiday.startDate)) <= eventTime and time(SetMaxTime(holiday.endDate)) >= eventTime) then
 				local artDisabled = false
 				if holiday.artConfig and CCConfig[holiday.artConfig] == false then
 					artDisabled = true
@@ -567,11 +569,12 @@ function stubbedOpenEvent(monthOffset, day, eventIndex)
 	if original_event ~= nil then
 		C_Calendar.OpenEvent(monthOffset, day, eventIndex)
 	else
+		print(format("Opening event at offset: %s, day: %s, index: %s", monthOffset, day, eventIndex))
 		local injectedEvent = stubbedGetDayEvent(monthOffset, day, eventIndex)
 		if injectedEvent.calendarType == "HOLIDAY" then
 			CalendarFrame_ShowEventFrame(CalendarViewHolidayFrame)
 		elseif injectedEvent.calendarType == "RAID_RESET" then
-			CalendarFrame_ShowEventFrame(CalendarViewRaidFrame);
+			CalendarFrame_ShowEventFrame(CalendarViewRaidFrame)
 		end
 	end
 end
