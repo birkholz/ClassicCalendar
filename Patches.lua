@@ -114,7 +114,8 @@ local function fixLuaDate(dateD)
 		weekDay=dateD.wday,
 		day=dateD.day,
 		hour=dateD.hour,
-		min=dateD.min
+		min=dateD.min,
+		minute=dateD.min
 	}
 	return result
 end
@@ -138,46 +139,6 @@ local function dateIsOnFrequency(eventDate, epochDate, frequency)
 	end
 
 	return ((eventDateTime - epochDateTime) / (SECONDS_IN_DAY)) % frequency == 0
-end
-
-local function isDateInRepeatingRange(eventDate, startEpoch, endEpoch, frequency)
-	local dateTime = time(eventDate)
-	local startEpochTime = time(startEpoch)
-	local endEpochTime = time(endEpoch)
-	local darkmoonFrequency = frequency * SECONDS_IN_DAY
-
-	while dateTime > startEpochTime do
-		if dateTime > startEpochTime and dateTime < endEpochTime then
-			return true
-		end
-
-		dateTime = dateTime - darkmoonFrequency
-	end
-
-	return false
-end
-
-local WEEKDAYS = {
-	Sunday = 1,
-	Monday = 2,
-	Tuesday = 3,
-	Wednesday = 4,
-	Thursday = 5,
-	Friday = 6,
-	Saturday = 7
-}
-
-local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
-	-- Change date to the chosen weekday of the same week
-	local dateTime = time(dateD)
-	local dateWeekday = date("*t", dateTime)["wday"]
-
-	local delta = (dateWeekday - weekday) * SECONDS_IN_DAY
-	local result = dateTime - delta
-	if weekAdjustment ~= nil then
-		result = result + (weekAdjustment * (7 * SECONDS_IN_DAY))
-	end
-	return fixLuaDate(date("*t", result))
 end
 
 local function adjustMonthByOffset(date, offset)
@@ -351,11 +312,9 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local eventDate = getAbsDate(monthOffset, monthDay)
 
-	for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
+	for _, holiday in next, GetClassicHolidays() do
 		if holiday.CVar == nil or GetCVar(holiday.CVar) ~= 0 then
-			if holiday.frequency ~= nil and isDateInRepeatingRange(eventDate, SetMinTime(holiday.startDate), SetMaxTime(holiday.endDate), holiday.frequency) then
-				originalEventCount = originalEventCount + 1
-			elseif holiday.frequency == nil and time(eventDate) > time(SetMinTime(holiday.startDate)) and time(eventDate) < time(SetMaxTime(holiday.endDate)) then
+			if time(eventDate) > time(SetMinTime(holiday.startDate)) and time(eventDate) < time(SetMaxTime(holiday.endDate)) then
 				originalEventCount = originalEventCount + 1
 			end
 		end
@@ -380,11 +339,11 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	local matchingEvents = {}
 
 	if originalEvent == nil then
-		for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
-			if holiday.CVar == nil or GetCVar(holiday.CVar) ~= 0 then
-				-- single-day event
-				if (holiday.startDate.year == holiday.endDate.year and holiday.startDate.month == holiday.endDate.month and holiday.startDate.day == holiday.endDate.day) and
-					(holiday.startDate.year == eventDate.year and holiday.startDate.month == eventDate.month and holiday.startDate.day == eventDate.day) then
+		for _, holiday in next, GetClassicHolidays() do
+			if (holiday.CVar == nil or GetCVar(holiday.CVar) ~= 0) and
+				(time(SetMinTime(holiday.startDate)) <= time(eventDate) and time(SetMaxTime(holiday.endDate)) >= time(eventDate)) then
+					-- single-day event
+				if (holiday.startDate.year == holiday.endDate.year and holiday.startDate.month == holiday.endDate.month and holiday.startDate.day == holiday.endDate.day) then
 					local eventTable = { -- CalendarEvent
 						title=holiday.name,
 						isCustomTitle=true,
@@ -401,71 +360,58 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						dontDisplayBanner=false,
 						dontDisplayEnd=false,
 						isLocked=false,
+						sequenceType="START",
+						sequenceIndex=1,
+						numSequenceDays=1
 					}
 					tinsert(matchingEvents, eventTable)
 				else
-					-- Maybe holidays table should be pre-calculated holidays in date order?
-					-- date hour/minute cannot be changed, as they need to be correct for the returned table
-					local matchingStartDate, matchingEndDate = nil, nil
-					if holiday.frequency == nil then
-						if time(eventDate) > time(holiday.startDate) and time(eventDate) < time(holiday.endDate) then
-							matchingStartDate = holiday.startDate
-							matchingEndDate = holiday.endDate
-						end
+					local numSequenceDays = math.floor((time(SetMinTime(holiday.endDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
+					local sequenceIndex = math.floor((time(SetMinTime(eventDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
+
+					local iconTexture, sequenceType
+					-- Assign start/ongoing/end texture based on sequenceIndex compared to numSequenceDays
+					if sequenceIndex == 1 then
+						iconTexture = holiday.startTexture
+						sequenceType = "START"
+					elseif sequenceIndex == numSequenceDays then
+						iconTexture = holiday.endTexture
+						sequenceType = "END"
 					else
-						local startTime = time(holiday.startDate)
-						local endTime = time(holiday.endDate)
-						local eventTime = time(SetMinTime(eventDate)) + 60*60 -- 1 hour
-						while endTime < eventTime do
-							startTime = startTime + (SECONDS_IN_DAY * holiday.frequency)
-							endTime = endTime + (SECONDS_IN_DAY * holiday.frequency)
-							if eventTime < endTime and eventTime > startTime then
-								matchingStartDate = date("*t", startTime)
-								matchingEndDate = date("*t", endTime)
-							end
-						end
+						iconTexture = holiday.ongoingTexture
+						sequenceType = "ONGOING"
 					end
 
-					if matchingStartDate ~= nil and matchingEndDate ~= nil then
-						local numSequenceDays = math.floor((time(SetMinTime(holiday.endDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
-						-- Days past startDate + 1
-						local sequenceIndex = math.floor((time(SetMinTime(eventDate)) - time(SetMinTime(matchingStartDate))) / SECONDS_IN_DAY) + 1
-
-						local iconTexture, sequenceType
-						-- Assign start/ongoing/end texture based on sequenceIndex compared to numSequenceDays
-						if sequenceIndex == 1 then
-							iconTexture = holiday.startTexture
-							sequenceType = "START"
-						elseif sequenceIndex == numSequenceDays then
-							iconTexture = holiday.endTexture
-							sequenceType = "END"
-						else
-							iconTexture = holiday.ongoingTexture
-							sequenceType = "ONGOING"
-						end
-
-						local eventTable = { -- CalendarEvent
-							title=holiday.name,
-							isCustomTitle=true,
-							startTime=fixLuaDate(matchingStartDate),
-							endTime=fixLuaDate(matchingEndDate),
-							calendarType="HOLIDAY",
-							sequenceType=sequenceType,
-							eventType=CalendarEventType.Other,
-							iconTexture=iconTexture,
-							modStatus="",
-							inviteStatus=0,
-							invitedBy="",
-							inviteType=CalendarInviteType.Normal,
-							sequenceIndex=sequenceIndex,
-							numSequenceDays=numSequenceDays,
-							difficultyName="",
-							dontDisplayBanner=false,
-							dontDisplayEnd=false,
-							isLocked=false
-						}
-						tinsert(matchingEvents, eventTable)
+					local dontDisplayBanner
+					if not holiday.startTexture then
+						dontDisplayBanner = true
+					else
+						dontDisplayBanner = false
 					end
+
+					-- TODO: hide textures if holiday.showArtOption == false
+
+					local eventTable = { -- CalendarEvent
+						title=holiday.name,
+						isCustomTitle=true,
+						startTime=fixLuaDate(holiday.startDate),
+						endTime=fixLuaDate(holiday.endDate),
+						calendarType="HOLIDAY",
+						sequenceType=sequenceType,
+						eventType=CalendarEventType.Other,
+						iconTexture=iconTexture,
+						modStatus="",
+						inviteStatus=0,
+						invitedBy="",
+						inviteType=CalendarInviteType.Normal,
+						sequenceIndex=sequenceIndex,
+						numSequenceDays=numSequenceDays,
+						difficultyName="",
+						dontDisplayBanner=dontDisplayBanner,
+						dontDisplayEnd=false,
+						isLocked=false
+					}
+					tinsert(matchingEvents, eventTable)
 				end
 			end
 		end
@@ -525,7 +471,7 @@ function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 	local eventName = event.title
 	local eventDesc
 
-	for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
+	for _, holiday in next, GetClassicHolidays() do
 		-- No way to differentiate the locations of darkmoon faire
 		if eventName == holiday.name then
 			eventDesc = holiday.description

@@ -27,7 +27,7 @@ globals = {
 	"CLASSIC_CALENDAR_L",
 	"SetMinTime",
 	"SetMaxTime",
-	"CLASSIC_CALENDAR_HOLIDAYS",
+	"GetClassicHolidays",
 	"DeepCopyTable",
 
 	-- Stubbed functions made global to be called from the calendar code

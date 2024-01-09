@@ -23,18 +23,31 @@ local function addDaysToDate(eventDate, dayCount)
 	return date("*t", dateSeconds)
 end
 
-function SetMinTime(date)
-	local newDate = DeepCopyTable(date)
+function SetMinTime(dateD)
+	local newDate = DeepCopyTable(dateD)
 	newDate.hour = 0
 	newDate.min = 1
 	return newDate
 end
 
-function SetMaxTime(date)
-	local newDate = DeepCopyTable(date)
+function SetMaxTime(dateD)
+	local newDate = DeepCopyTable(dateD)
 	newDate.hour = 23
 	newDate.min = 59
 	return newDate
+end
+
+local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
+	-- Change date to the chosen weekday of the same week
+	local dateTime = time(dateD)
+	local dateWeekday = date("*t", dateTime)["wday"]
+
+	local delta = (dateWeekday - weekday) * SECONDS_IN_DAY
+	local result = dateTime - delta
+	if weekAdjustment ~= nil then
+		result = result + (weekAdjustment * (7 * SECONDS_IN_DAY))
+	end
+	return date("*t", result)
 end
 
 local function GetEasterDate(year)
@@ -72,11 +85,11 @@ local function GetEasterDate(year)
     return { year=year, month=month, day=day }
 end
 
-local function GetNewMoons(date)
+local function GetNewMoons(dateD)
     local LUNAR_MONTH = 29.5305888531  -- https://en.wikipedia.org/wiki/Lunar_month
-    local y = date.year
-    local m = date.month
-    local d = date.day
+    local y = dateD.year
+    local m = dateD.month
+    local d = dateD.day
     -- https://www.subsystems.us/uploads/9/8/9/4/98948044/moonphase.pdf
     if (m <= 2) then
         y = y - 1
@@ -94,12 +107,12 @@ local function GetNewMoons(date)
     return new_moons
 end
 
-local function InChineseNewYear(date)
+local function InChineseNewYear(dateD)
     --[[ The date is decided by the Chinese Lunar Calendar, which is based on the
     cycles of the moon and sun and is generally 21–51 days behind the Gregorian
     (internationally-used) calendar. The date of Chinese New Year changes every
     year, but it always falls between January 21st and February 20th. --]]
-    return math.floor(GetNewMoons(date)) > math.floor(GetNewMoons({ year=date.year, month=1, day=20 }))
+    return math.floor(GetNewMoons(dateD)) > math.floor(GetNewMoons({ year=dateD.year, month=1, day=20 }))
 end
 
 local function GetChineseNewYear(year)
@@ -128,7 +141,7 @@ local function GetLunarFestivalEnd(year)
 	return cny
 end
 
-CLASSIC_CALENDAR_HOLIDAYS = {
+local CLASSIC_CALENDAR_HOLIDAYS = {
 	DarkmoonFaireElwynn = {
 		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
@@ -210,8 +223,8 @@ CLASSIC_CALENDAR_HOLIDAYS = {
 	LoveisintheAir = {
 		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"],
-		startDate={ year=2024, month=2, day=5, hour=13, min=0 },
-		endDate={ year=2024, month=2, day=19, hour=13, min=0 },
+		startDate={ year=2024, month=2, day=11, hour=13, min=0 },
+		endDate={ year=2024, month=2, day=16, hour=13, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirEnd"
@@ -231,7 +244,7 @@ CLASSIC_CALENDAR_HOLIDAYS = {
 		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"],
 		-- Occurs the last day/night of Midsummer
 		startDate={ year=2024, month=6, day=27, hour=9, min=0 },
-		endDate={ year=2024, month=28, day=28, hour=3, min=0 },
+		endDate={ year=2024, month=6, day=28, hour=3, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks"
@@ -243,9 +256,9 @@ CLASSIC_CALENDAR_HOLIDAYS = {
 		endDate={ year=2023, month=12, day=19, hour=8, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
-		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+		-- startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		-- ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		-- endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	},
 	-- arathiBasin = {
 	-- 	name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
@@ -270,3 +283,84 @@ CLASSIC_CALENDAR_HOLIDAYS = {
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- }
 }
+
+local holidaySchedule = {}
+
+local WEEKDAYS = {
+	Sunday = 1,
+	Monday = 2,
+	Tuesday = 3,
+	Wednesday = 4,
+	Thursday = 5,
+	Friday = 6,
+	Saturday = 7
+}
+
+local function getDSTDates(year)
+	-- Start of DST is 2nd Sunday of March
+	local firstDayMarch = {year=year, month=3, day=1}
+	local weekAdjustment = 1
+	if date("*t", time(firstDayMarch)).wday ~= WEEKDAYS.Sunday then
+		weekAdjustment = weekAdjustment + 1
+	end
+	local secondSundayMarch = changeWeekdayOfDate(firstDayMarch, WEEKDAYS.Sunday, weekAdjustment)
+	secondSundayMarch.hour = 2
+
+	-- End of DST is 1st Sunday of November
+	local firstDayNov = {year=year, month=11, day=1}
+	weekAdjustment = 0
+	if date("*t", time(firstDayNov)).wday ~= WEEKDAYS.Sunday then
+		weekAdjustment = weekAdjustment + 1
+	end
+	local firstSundayNov = changeWeekdayOfDate(firstDayNov, WEEKDAYS.Sunday, weekAdjustment)
+	firstSundayNov.hour = 2
+
+
+	return secondSundayMarch, firstSundayNov
+end
+
+local function adjustDST(dateTime)
+	local dateD = date("*t", dateTime)
+	local dstStart, dstEnd = getDSTDates(dateD.year)
+	if dateTime > time(dstStart) and dateTime < time(dstEnd) then
+		dateTime = dateTime - (60*60)
+	end
+	return dateTime
+end
+
+function GetClassicHolidays()
+	if next(holidaySchedule) ~= nil then
+		return holidaySchedule
+	end
+
+	for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
+		local startTime = time(holiday.startDate)
+		local endTime = time(holiday.endDate)
+
+		holiday.startDate = date("*t", startTime)
+		holiday.endDate = date("*t", endTime)
+		tinsert(holidaySchedule, holiday)
+		if holiday.frequency ~= nil then
+			local days = 0
+			while days < 365 do
+				local eventCopy = DeepCopyTable(holiday)
+				startTime = startTime + (SECONDS_IN_DAY * holiday.frequency)
+				endTime = endTime + (SECONDS_IN_DAY * holiday.frequency)
+				eventCopy.startDate = date("*t", adjustDST(startTime))
+				eventCopy.endDate = date("*t", adjustDST(endTime))
+				tinsert(holidaySchedule, eventCopy)
+				days = days + holiday.frequency
+			end
+		end
+	end
+
+	table.sort(holidaySchedule, function(a,b)
+		if (a.startDate.year ~= b.startDate.year) then
+			return a.startDate.year < b.startDate.year
+		end
+
+		return a.startDate.yday < b.startDate.yday
+	end)
+
+	return holidaySchedule
+end
