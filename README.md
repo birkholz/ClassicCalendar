@@ -20,14 +20,16 @@ A port of the official Blizzard_Calendar addon from WotLK classic to Season of D
 * In-game mail notifications when an event is cancelled (we have no control over this)
 * The ability to copy/paste events from one day to another
 * The ability to mass-invite everyone from an event to your party/raid
+* A flashing calendar icon to notify you of pending invites
 
 ## Accessing the Calendar
 
-* Clicking the new Calendar button at the top right of the minimap, replacing the time-of-day indicator
-* Typing `/calendar` in chat
+* Clicking the Calendar button at the top right of the minimap, replacing the time-of-day indicator
+* Typing `/cal`/`/calendar` in chat, or `/caloptions`/`/calendaroptions` to open the addon options
 
 ## Known Issues
 
+* Holiday dates & times may be wrong
 * No ability to disable the in-game mail notifications. This is outside of the addon's control and how the game handles events being deleted.
 * Pressing escape closes the entire calendar instead of 1 panel at a time. Unfortunately the original implementation uses privileged execution, and causes the "Addon has been blocked from an action only available to the Blizzard UI" error. We have not found an alternative way of implementing this.
 * Guild Announcements are unavailable, as are Community events. Both are features that only function in later versions of WoW and aren't really portable because of underlying systems being nonexistent.
