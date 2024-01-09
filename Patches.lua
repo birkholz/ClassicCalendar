@@ -310,10 +310,15 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	local eventTime = time(eventDate)
 
 	for _, holiday in next, GetClassicHolidays() do
-		if holiday.CVar == nil or GetCVar(holiday.CVar) == "1" then
-			if eventTime > time(SetMinTime(holiday.startDate)) and eventTime < time(SetMaxTime(holiday.endDate)) then
-				originalEventCount = originalEventCount + 1
-			end
+		local holidayMinStartTime = time(SetMinTime(holiday.startDate))
+		local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
+
+		if eventTime < holidayMinStartTime then
+			break
+		end
+
+		if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and eventTime >= holidayMinStartTime and eventTime <= holidayMaxEndTime then
+			originalEventCount = originalEventCount + 1
 		end
 	end
 
@@ -342,8 +347,14 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 
 	if originalEvent == nil then
 		for _, holiday in next, GetClassicHolidays() do
-			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and
-				(time(SetMinTime(holiday.startDate)) <= eventTime and time(SetMaxTime(holiday.endDate)) >= eventTime) then
+			local holidayMinStartTime = time(SetMinTime(holiday.startDate))
+			local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
+
+			if eventTime < holidayMinStartTime then
+				break
+			end
+
+			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and eventTime >= holidayMinStartTime and eventTime <= holidayMaxEndTime then
 				local artDisabled = false
 				if holiday.artConfig and CCConfig[holiday.artConfig] == false then
 					artDisabled = true
@@ -381,8 +392,8 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 					}
 					tinsert(matchingEvents, eventTable)
 				else
-					local numSequenceDays = math.floor((time(SetMinTime(holiday.endDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
-					local sequenceIndex = math.floor((time(SetMinTime(eventDate)) - time(SetMinTime(holiday.startDate))) / SECONDS_IN_DAY) + 1
+					local numSequenceDays = math.floor((time(SetMinTime(holiday.endDate)) - holidayMinStartTime) / SECONDS_IN_DAY) + 1
+					local sequenceIndex = math.floor((time(SetMinTime(eventDate)) - holidayMinStartTime) / SECONDS_IN_DAY) + 1
 
 					local iconTexture, sequenceType
 					local ZIndex = holiday.ZIndex
