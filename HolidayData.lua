@@ -141,17 +141,27 @@ local ZIndexes = {
 }
 
 local CLASSIC_CALENDAR_HOLIDAYS = {
-	WintersVeil = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
-		startDate={ year=2024, month=12, day=16, hour=9, min=0 },
+		startDate={ year=2023, month=12, day=15, hour=9, min=0 },
+		endDate={ year=2024, month=1, day= 2, hour=9, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_WinterVeilStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WinterVeilOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WinterVeilEnd",
+		ZIndex=ZIndexes.high
+	},
+	{
+		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
+		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
+		startDate={ year=2024, month=12, day=15, hour=9, min=0 },
 		endDate={ year=2025, month=1, day= 2, hour=9, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_WinterVeilStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WinterVeilOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_WinterVeilEnd",
 		ZIndex=ZIndexes.high
 	},
-	Noblegarden = {
+	 {
 		name=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["description"],
 		-- Coincides with Easter Sunday
@@ -162,7 +172,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_NoblegardenEnd",
 		ZIndex=ZIndexes.high
 	},
-	ChildrensWeek = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
 		startDate={ year=2024, month=4, day=29, hour=13, min=0 },
@@ -173,7 +183,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekEnd",
 		ZIndex=ZIndexes.medium
 	},
-	HarvestFestival = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["description"],
 		startDate={ year=2024, month=9, day=13, hour=3, min=0 },
@@ -183,7 +193,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalEnd",
 		ZIndex=ZIndexes.high
 	},
-	HallowsEnd = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["description"],
 		startDate={ year=2024, month=10, day=18, hour=4, min=0 },
@@ -193,7 +203,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_HallowsEndEnd",
 		ZIndex=ZIndexes.high
 	},
-	LunarFestival = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
 		-- Coincides with Chinese New Year
@@ -204,7 +214,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd",
 		ZIndex=ZIndexes.high
 	},
-	LoveisintheAir = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=13, min=0 },
@@ -214,7 +224,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirEnd",
 		ZIndex=ZIndexes.medium
 	},
-	MidsummerFireFestival = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["description"],
 		-- Coincides with Summer Solstice. For which hemisphere? Who knows
@@ -225,7 +235,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_MidsummerEnd",
 		ZIndex=ZIndexes.highest
 	},
-	FireworksSpectacular = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"],
 		-- Occurs the last day/night of Midsummer
@@ -235,9 +245,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
-		ZIndex=ZIndexes.high
+		ZIndex=ZIndexes.low
 	},
-	Fishing = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
@@ -249,7 +259,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
 		ZIndex=ZIndexes.low
 	},
-	warsongGulch = {
+	{
 		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
 		description=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=0, min=1 },
@@ -260,9 +270,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
-		ZIndex=ZIndexes.lowest
+		ZIndex=ZIndexes.medium
 	},
-	arathiBasin = {
+	{
 		name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
 		description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
 		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
@@ -273,9 +283,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
-		ZIndex=ZIndexes.lowest
+		ZIndex=ZIndexes.medium
 	},
-	-- alteracValley = {
+	-- {
 	--	 name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
 	--	 description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
 	--	 startDate={ year=2023, month=12, day=29, hour=0, min=1 },
@@ -287,7 +297,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- },
-	phase2Launch = {
+	{
 		name="Phase 2 Launch",
 		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
 		startDate={ year=2024, month=2, day=8, hour=8, min=0 },
@@ -297,7 +307,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ZIndex=ZIndexes.highest
 	},
-	DarkmoonFaireElwynn = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
 		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
@@ -309,7 +319,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnEnd",
 		ZIndex=ZIndexes.medium
 	},
-	DarkmoonFaireMulgore = {
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
 		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
