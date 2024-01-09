@@ -1,9 +1,11 @@
 ## Interface: 11304
 ## Title: Classic Calendar
+## Version: 0.1alpha
 locales\localization-world.lua
 
 HolidayData.lua
 Patches.lua
 Patches.xml
 ClassicCalendar.lua
+ClassicCalendar_Options.lua
 ClassicCalendar.xml

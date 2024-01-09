@@ -69,5 +69,10 @@ globals = {
 	"GetLocale",
 	"CalendarFrame_ShowEventFrame",
 	"CalendarViewHolidayFrame",
-	"CalendarViewRaidFrame"
+	"CalendarViewRaidFrame",
+	"CreateFrame",
+	"C_AddOns",
+	"InterfaceOptionsFrame_OpenToCategory",
+	"InterfaceOptionsFramePanelContainer",
+	"InterfaceOptions_AddCategory"
 }
