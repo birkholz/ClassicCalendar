@@ -29,6 +29,7 @@ globals = {
 	"SetMaxTime",
 	"GetClassicHolidays",
 	"DeepCopyTable",
+	"CCConfig",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",

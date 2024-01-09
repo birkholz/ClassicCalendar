@@ -1,6 +1,7 @@
 ## Interface: 11304
 ## Title: Classic Calendar
 ## Version: 0.1alpha
+## SavedVariables: CConfig
 locales\localization-world.lua
 
 HolidayData.lua

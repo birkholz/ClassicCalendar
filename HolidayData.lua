@@ -250,7 +250,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- Occurs the last day/night of Midsummer
 		startDate={ year=2024, month=6, day=27, hour=9, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=3, min=0 },
-		artconfig="FireworksSpectacularArt",
+		artConfig="FireworksSpectacularArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks"

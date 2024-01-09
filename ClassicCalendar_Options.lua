@@ -2,8 +2,10 @@ local AddonName, AddonTable = ...
 local L = CLASSIC_CALENDAR_L
 local AddonTitle = C_AddOns.GetAddOnMetadata(AddonName, "Title")
 
+CCConfig = {}
+
 local CCOptions = CreateFrame("Frame")
-local CCConfig, localeStringOptions
+local localeStringOptions
 CCOptions:RegisterEvent("ADDON_LOADED")
 CCOptions:RegisterEvent("VARIABLES_LOADED")
 
@@ -63,9 +65,9 @@ local chkIOUsePVPArts = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseC
 chkIOUsePVPArts:SetPoint("TOPLEFT", hrLine1_p1, "BOTTOMLEFT", 0, -16)
 
 chkIOUsePVPArts:SetScript("OnUpdate", function(frame)
-	if CCConfig.PVPArt == "ENABLED" then
+	if CCConfig.BattlegroundsArt == "ENABLED" then
 		chkIOUsePVPArts:SetChecked(true)
-	elseif CCConfig.PVPArt == "DISABLED" then
+	elseif CCConfig.BattlegroundsArt == "DISABLED" then
 		chkIOUsePVPArts:SetChecked(false)
 	end
 end)
@@ -73,9 +75,9 @@ end)
 chkIOUsePVPArts:SetScript("OnClick", function(frame)
 	local tick = frame:GetChecked()
 	if tick == false then
-		CCConfig.PVPArt = 'DISABLED'
+		CCConfig.BattlegroundsArt = 'DISABLED'
 	elseif tick == true then
-		CCConfig.PVPArt = 'ENABLED'
+		CCConfig.BattlegroundsArt = 'ENABLED'
 	end
 end)
 
@@ -89,9 +91,9 @@ local chkIOShowChildrensWeek = CreateFrame("CheckButton", nil, CCIOFrame, "Optio
 chkIOShowChildrensWeek:SetPoint("TOPLEFT", chkIOUsePVPArts, "BOTTOMLEFT", 0, -8) -- Second arguement is the previous local variable name
 
 chkIOShowChildrensWeek:SetScript("OnUpdate", function(frame)
-	if CCConfig.ChildrensWeek == "ENABLED" then
+	if CCConfig.ChildrensWeekArt == "ENABLED" then
 		chkIOShowChildrensWeek:SetChecked(true)
-	elseif CCConfig.ChildrensWeek == "DISABLED" then
+	elseif CCConfig.ChildrensWeekArt == "DISABLED" then
 		chkIOShowChildrensWeek:SetChecked(false)
 	end
 end)
@@ -100,9 +102,9 @@ chkIOShowChildrensWeek:SetScript("OnClick", function(frame)
 	local tick = frame:GetChecked()
 
 	if tick == false then
-		CCConfig.ChildrensWeek = 'DISABLED'
+		CCConfig.ChildrensWeekArt = 'DISABLED'
 	elseif tick == true then
-		CCConfig.ChildrensWeek = 'ENABLED'
+		CCConfig.ChildrensWeekArt = 'ENABLED'
 	end
 end)
 
@@ -116,9 +118,9 @@ local chkIOShowFireworksSpectacular = CreateFrame("CheckButton", nil, CCIOFrame,
 chkIOShowFireworksSpectacular:SetPoint("TOPLEFT", chkIOShowChildrensWeek, "BOTTOMLEFT", 0, -8) -- Second arguement is the previous local variable name
 
 chkIOShowFireworksSpectacular:SetScript("OnUpdate", function(frame)
-	if CCConfig.FireworksSpectacular == "ENABLED" then
+	if CCConfig.FireworksSpectacularArt == "ENABLED" then
 		chkIOShowFireworksSpectacular:SetChecked(true)
-	elseif CCConfig.FireworksSpectacular == "DISABLED" then
+	elseif CCConfig.FireworksSpectacularArt == "DISABLED" then
 		chkIOShowFireworksSpectacular:SetChecked(false)
 	end
 end)
@@ -127,9 +129,9 @@ chkIOShowFireworksSpectacular:SetScript("OnClick", function(frame)
 	local tick = frame:GetChecked()
 
 	if tick == false then
-		CCConfig.FireworksSpectacular = 'DISABLED'
+		CCConfig.FireworksSpectacularArt = 'DISABLED'
 	elseif tick == true then
-		CCConfig.FireworksSpectacular = 'ENABLED'
+		CCConfig.FireworksSpectacularArt = 'ENABLED'
 	end
 end)
 
@@ -215,11 +217,11 @@ end
 local function CCOptionsHandler(self, event, arg1)
 	-- If SavedVariable is not set, default settings
 	if event == "ADDON_LOADED" then
-		if CCConfig == nil or CCConfig == "" then
+		if next(CCConfig) == nil then
 			CCConfig = {
-				["PVPArt"] = "DISABLED",
-				["ChildrensWeek"] = "DISABLED",
-				["FireworksSpectacular"] = "DISABLED",
+				["BattlegroundsArt"] = "DISABLED",
+				["ChildrensWeekArt"] = "DISABLED",
+				["FireworksSpectacularArt"] = "DISABLED",
 				--["Dropdown"] = "Value1",
 			}
 		end
@@ -232,3 +234,4 @@ local function CCOptionsHandler(self, event, arg1)
 end
 
 CCOptions:SetScript("OnEvent", CCOptionsHandler)
+

@@ -344,8 +344,18 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 		for _, holiday in next, GetClassicHolidays() do
 			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and
 				(time(SetMinTime(holiday.startDate)) <= time(eventDate) and time(SetMaxTime(holiday.endDate)) >= time(eventDate)) then
-					-- single-day event
+				local artDisabled = false
+				if holiday.artConfig and CCConfig[holiday.artConfig] == "DISABLED" then
+					artDisabled = true
+				end
+
+				-- single-day event
 				if (holiday.startDate.year == holiday.endDate.year and holiday.startDate.month == holiday.endDate.month and holiday.startDate.day == holiday.endDate.day) then
+					local iconTexture = nil
+					if not artDisabled then
+						iconTexture = holiday.startTexture
+					end
+
 					local eventTable = { -- CalendarEvent
 						title=holiday.name,
 						isCustomTitle=true,
@@ -353,7 +363,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						endTime=fixLuaDate(holiday.endDate),
 						calendarType="HOLIDAY",
 						eventType=CalendarEventType.Other,
-						iconTexture=holiday.startTexture, -- single-day events only have one texture
+						iconTexture=iconTexture, -- single-day events only have one texture
 						modStatus="",
 						inviteStatus=0,
 						invitedBy="",
@@ -384,8 +394,12 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						sequenceType = "ONGOING"
 					end
 
+					if artDisabled then
+						iconTexture = nil
+					end
+
 					local dontDisplayBanner
-					if not holiday.startTexture then
+					if not iconTexture then
 						dontDisplayBanner = true
 					else
 						dontDisplayBanner = false
