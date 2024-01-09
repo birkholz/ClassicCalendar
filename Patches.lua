@@ -315,7 +315,7 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	local eventDate = getAbsDate(monthOffset, monthDay)
 
 	for _, holiday in next, GetClassicHolidays() do
-		if holiday.CVar == nil or GetCVar(holiday.CVar) ~= 0 then
+		if holiday.CVar == nil or GetCVar(holiday.CVar) == "1" then
 			if time(eventDate) > time(SetMinTime(holiday.startDate)) and time(eventDate) < time(SetMaxTime(holiday.endDate)) then
 				originalEventCount = originalEventCount + 1
 			end
@@ -342,7 +342,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 
 	if originalEvent == nil then
 		for _, holiday in next, GetClassicHolidays() do
-			if (holiday.CVar == nil or GetCVar(holiday.CVar) ~= 0) and
+			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and
 				(time(SetMinTime(holiday.startDate)) <= time(eventDate) and time(SetMaxTime(holiday.endDate)) >= time(eventDate)) then
 					-- single-day event
 				if (holiday.startDate.year == holiday.endDate.year and holiday.startDate.month == holiday.endDate.month and holiday.startDate.day == holiday.endDate.day) then
@@ -390,8 +390,6 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 					else
 						dontDisplayBanner = false
 					end
-
-					-- TODO: hide textures if holiday.showArtOption == false
 
 					local eventTable = { -- CalendarEvent
 						title=holiday.name,
