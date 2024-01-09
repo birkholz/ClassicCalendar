@@ -41,7 +41,6 @@ Currently, the addon only supports Season of Discovery servers, as they have an 
 These are things we'd like to add if possible.
 
 * Support for Classic Era servers. This requires redoing all the work of figuring out schedules for holidays, BG weekends, etc and maintaining both versions of the data. It's certainly possible, just not our current priority.
-* Further addon settings to customize the calendar, such as enabling/disabling art for events, or enabling/disabling notifications for pending invites.
 
 ## Contributing
 

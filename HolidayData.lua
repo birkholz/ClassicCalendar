@@ -2,19 +2,23 @@ local L = CLASSIC_CALENDAR_L
 local localeString = tostring(GetLocale())
 local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
 local SECONDS_IN_DAY = 24 * 60 * 60
+local date = date
+local time = time
+local floor = floor
+local tinsert = tinsert
 
 function DeepCopyTable(t, seen)
-    local result = {}
-    seen = seen or {}
-    seen[t] = result
-    for key, value in pairs(t) do
-        if type(value) == "table" then
-            result[key] = seen[value] or DeepCopyTable(value, seen)
-        else
-            result[key] = value
-        end
-    end
-    return result
+	local result = {}
+	seen = seen or {}
+	seen[t] = result
+	for key, value in pairs(t) do
+		if type(value) == "table" then
+			result[key] = seen[value] or DeepCopyTable(value, seen)
+		else
+			result[key] = value
+		end
+	end
+	return result
 end
 
 local function addDaysToDate(eventDate, dayCount)
@@ -51,76 +55,76 @@ local function changeWeekdayOfDate(dateD, weekday, weekAdjustment)
 end
 
 local function GetEasterDate(year)
-    local leap_year
-    if year % 4 == 0 then
-        if year % 100 == 0 then
-            if year % 400 == 0 then
-                leap_year = true
-            else
-                leap_year = false
-            end
-        else
-            leap_year = true
-        end
-    else
-        leap_year = false
-    end
-    local a = year % 19
-    local b = math.floor(year / 100)
-    local c = year % 100
-    local d = math.floor(b / 4)
-    local e = b % 4
-    local f = math.floor((b + 8) / 25)
-    local g = math.floor((b - f + 1) / 3)
-    local h = (19 * a + b - d - g + 15) % 30
-    local i = math.floor(c / 4)
-    local k = c % 4
-    local n = (32 + 2 * e + 2 * i - h - k) %7
-    local m = math.floor((a + 11 * h + 22 * n) / 451)
-    local month = math.floor((h + n - 7 * m + 114) / 31)
-    local day = (h + n - 7 * m + 114) % 31 + 1
-    if month == 2 then    --adjust dates in February
-        day = leap_year and day - 2 or day - 3
-    end
-    return { year=year, month=month, day=day }
+	local leap_year
+	if year % 4 == 0 then
+		if year % 100 == 0 then
+			if year % 400 == 0 then
+				leap_year = true
+			else
+				leap_year = false
+			end
+		else
+			leap_year = true
+		end
+	else
+		leap_year = false
+	end
+	local a = year % 19
+	local b = floor(year / 100)
+	local c = year % 100
+	local d = floor(b / 4)
+	local e = b % 4
+	local f = floor((b + 8) / 25)
+	local g = floor((b - f + 1) / 3)
+	local h = (19 * a + b - d - g + 15) % 30
+	local i = floor(c / 4)
+	local k = c % 4
+	local n = (32 + 2 * e + 2 * i - h - k) %7
+	local m = floor((a + 11 * h + 22 * n) / 451)
+	local month = floor((h + n - 7 * m + 114) / 31)
+	local day = (h + n - 7 * m + 114) % 31 + 1
+	if month == 2 then	--adjust dates in February
+		day = leap_year and day - 2 or day - 3
+	end
+	return { year=year, month=month, day=day }
 end
 
 local function GetNewMoons(dateD)
-    local LUNAR_MONTH = 29.5305888531  -- https://en.wikipedia.org/wiki/Lunar_month
-    local y = dateD.year
-    local m = dateD.month
-    local d = dateD.day
-    -- https://www.subsystems.us/uploads/9/8/9/4/98948044/moonphase.pdf
-    if (m <= 2) then
-        y = y - 1
-        m = m + 12
+	local LUNAR_MONTH = 29.5305888531  -- https://en.wikipedia.org/wiki/Lunar_month
+	local y = dateD.year
+	local m = dateD.month
+	local d = dateD.day
+	-- https://www.subsystems.us/uploads/9/8/9/4/98948044/moonphase.pdf
+	if (m <= 2) then
+		y = y - 1
+		m = m + 12
 	end
-    local a = math.floor(y / 100)
-    local b = math.floor(a / 4)
-    local c = 2 - a + b
-    local e = math.floor(365.25 * (y + 4716))
-    local f = math.floor(30.6001 * (m + 1))
-    local julian_day = c + d + e + f - 1524.5
-    local days_since_last_new_moon = julian_day - 2451549.5
-    local new_moons = days_since_last_new_moon / LUNAR_MONTH
-    -- local days_into_cycle = (new_moons % 1) * LUNAR_MONTH
-    return new_moons
+	local a = floor(y / 100)
+	local b = floor(a / 4)
+	local c = 2 - a + b
+	local e = floor(365.25 * (y + 4716))
+	local f = floor(30.6001 * (m + 1))
+	local julian_day = c + d + e + f - 1524.5
+	local days_since_last_new_moon = julian_day - 2451549.5
+	local new_moons = days_since_last_new_moon / LUNAR_MONTH
+	-- local days_into_cycle = (new_moons % 1) * LUNAR_MONTH
+	return new_moons
 end
 
 local function InChineseNewYear(dateD)
-    --[[ The date is decided by the Chinese Lunar Calendar, which is based on the
-    cycles of the moon and sun and is generally 21–51 days behind the Gregorian
-    (internationally-used) calendar. The date of Chinese New Year changes every
-    year, but it always falls between January 21st and February 20th. --]]
-    return math.floor(GetNewMoons(dateD)) > math.floor(GetNewMoons({ year=dateD.year, month=1, day=20 }))
+	--[[ The date is decided by the Chinese Lunar Calendar, which is based on the
+	cycles of the moon and sun and is generally 21–51 days behind the Gregorian
+	(internationally-used) calendar. The date of Chinese New Year changes every
+	year, but it always falls between January 21st and February 20th. --]]
+	return floor(GetNewMoons(dateD)) > floor(GetNewMoons({ year=dateD.year, month=1, day=20 }))
 end
 
 local function GetChineseNewYear(year)
-    -- Does not quite line up with https://www.travelchinaguide.com/essential/holidays/new-year/dates.htm
-    for i=0, 30 do
-        local start = { year=year, month=1, day=21 }
-        start = addDaysToDate(start, i)
-        if(InChineseNewYear(start)) then
+	-- Does not quite line up with https://www.travelchinaguide.com/essential/holidays/new-year/dates.htm
+	for i=0, 30 do
+		local start = { year=year, month=1, day=21 }
+		start = addDaysToDate(start, i)
+		if(InChineseNewYear(start)) then
 			return start
 		end
 	end
@@ -261,10 +265,10 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	},
 	-- arathiBasin = {
-	-- 	name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
-	-- 	description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
-	-- 	startDate={ year=2023, month=12, day=22, hour=0, min=1 },
-	-- 	endDate={ year=2023, month=12, day=26. hour=8, min=0 },
+	--	 name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
+	--	 description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
+	--	 startDate={ year=2023, month=12, day=22, hour=0, min=1 },
+	--	 endDate={ year=2023, month=12, day=26. hour=8, min=0 },
 	--  frequency=28,
 	--  CVar="calendarShowBattlegrounds",
 	--  startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
@@ -272,10 +276,10 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- },
 	-- alteracValley = {
-	-- 	name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
-	-- 	description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
-	-- 	startDate={ year=2023, month=12, day=29, hour=0, min=1 },
-	-- 	endDate={ year=2024, month=1, day=2, hour=8, min=0 },
+	--	 name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
+	--	 description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
+	--	 startDate={ year=2023, month=12, day=29, hour=0, min=1 },
+	--	 endDate={ year=2024, month=1, day=2, hour=8, min=0 },
 	--  frequency=28,
 	--  CVar="calendarShowBattlegrounds",
 	--  startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",

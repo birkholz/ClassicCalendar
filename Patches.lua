@@ -1,5 +1,7 @@
 local L = CLASSIC_CALENDAR_L
 local localeString = tostring(GetLocale())
+local date = date
+local time = time
 
 CALENDAR_INVITESTATUS_INFO = {
 	["UNKNOWN"] = {
@@ -141,25 +143,25 @@ local function dateIsOnFrequency(eventDate, epochDate, frequency)
 	return ((eventDateTime - epochDateTime) / (SECONDS_IN_DAY)) % frequency == 0
 end
 
-local function adjustMonthByOffset(date, offset)
-	date.month = date.month + offset
-	if date.month > 12 then
-		date.year = date.year + 1
-		date.month = 1
-	elseif date.month == 0 then
-		date.year = date.year - 1
-		date.month = 12
+local function adjustMonthByOffset(dateD, offset)
+	dateD.month = dateD.month + offset
+	if dateD.month > 12 then
+		dateD.year = dateD.year + 1
+		dateD.month = 1
+	elseif dateD.month == 0 then
+		dateD.year = dateD.year - 1
+		dateD.month = 12
 	end
 end
 
 local function tableHasValue(tab, val)
-    for _, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
+	for _, value in ipairs(tab) do
+		if value == val then
+			return true
+		end
+	end
 
-    return false
+	return false
 end
 
 local dungeonNamesCache = {}
@@ -451,7 +453,7 @@ end
 
 function communityName()
 	-- Gets Guild Name from Player since built in functionality is broken
-    local communityName, _ = GetGuildInfo("player")
+	local communityName, _ = GetGuildInfo("player")
 	return communityName
 end
 

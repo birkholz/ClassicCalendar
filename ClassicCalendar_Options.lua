@@ -12,13 +12,13 @@ local localeString = tostring(GetLocale())
 -- Checks localizations for Options and returns "enUS" if none exist
 
 local function checkLocale()
-    for _, v in next, L.Options[localeString] do
-        if v == "" then
-            localeStringOptions = "enUS"
-            break
-        end
-        localeStringOptions = localeString
-    end
+	for _, v in next, L.Options[localeString] do
+		if v == "" then
+			localeStringOptions = "enUS"
+			break
+		end
+		localeStringOptions = localeString
+	end
 end
 
 -- Runs function above
@@ -63,20 +63,20 @@ local chkIOUsePVPArts = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseC
 chkIOUsePVPArts:SetPoint("TOPLEFT", hrLine1_p1, "BOTTOMLEFT", 0, -16)
 
 chkIOUsePVPArts:SetScript("OnUpdate", function(frame)
-    if CCConfig.PVPArt == "ENABLED" then
-        chkIOUsePVPArts:SetChecked(true)
-    elseif CCConfig.PVPArt == "DISABLED" then
-        chkIOUsePVPArts:SetChecked(false)
-    end
+	if CCConfig.PVPArt == "ENABLED" then
+		chkIOUsePVPArts:SetChecked(true)
+	elseif CCConfig.PVPArt == "DISABLED" then
+		chkIOUsePVPArts:SetChecked(false)
+	end
 end)
 
 chkIOUsePVPArts:SetScript("OnClick", function(frame)
-    local tick = frame:GetChecked()
-    if tick == false then
-        CCConfig.PVPArt = 'DISABLED'
-    elseif tick == true then
-        CCConfig.PVPArt = 'ENABLED'
-    end
+	local tick = frame:GetChecked()
+	if tick == false then
+		CCConfig.PVPArt = 'DISABLED'
+	elseif tick == true then
+		CCConfig.PVPArt = 'ENABLED'
+	end
 end)
 
 local chkIOUsePVPArtsText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
@@ -89,21 +89,21 @@ local chkIOShowChildrensWeek = CreateFrame("CheckButton", nil, CCIOFrame, "Optio
 chkIOShowChildrensWeek:SetPoint("TOPLEFT", chkIOUsePVPArts, "BOTTOMLEFT", 0, -8) -- Second arguement is the previous local variable name
 
 chkIOShowChildrensWeek:SetScript("OnUpdate", function(frame)
-    if CCConfig.ChildrensWeek == "ENABLED" then
-        chkIOShowChildrensWeek:SetChecked(true)
-    elseif CCConfig.ChildrensWeek == "DISABLED" then
-        chkIOShowChildrensWeek:SetChecked(false)
-    end
+	if CCConfig.ChildrensWeek == "ENABLED" then
+		chkIOShowChildrensWeek:SetChecked(true)
+	elseif CCConfig.ChildrensWeek == "DISABLED" then
+		chkIOShowChildrensWeek:SetChecked(false)
+	end
 end)
 
 chkIOShowChildrensWeek:SetScript("OnClick", function(frame)
-    local tick = frame:GetChecked()
+	local tick = frame:GetChecked()
 
-    if tick == false then
-        CCConfig.ChildrensWeek = 'DISABLED'
-    elseif tick == true then
-        CCConfig.ChildrensWeek = 'ENABLED'
-    end
+	if tick == false then
+		CCConfig.ChildrensWeek = 'DISABLED'
+	elseif tick == true then
+		CCConfig.ChildrensWeek = 'ENABLED'
+	end
 end)
 
 local chkIOShowChildrensWeekText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
@@ -116,21 +116,21 @@ local chkIOShowFireworksSpectacular = CreateFrame("CheckButton", nil, CCIOFrame,
 chkIOShowFireworksSpectacular:SetPoint("TOPLEFT", chkIOShowChildrensWeek, "BOTTOMLEFT", 0, -8) -- Second arguement is the previous local variable name
 
 chkIOShowFireworksSpectacular:SetScript("OnUpdate", function(frame)
-    if CCConfig.FireworksSpectacular == "ENABLED" then
-        chkIOShowFireworksSpectacular:SetChecked(true)
-    elseif CCConfig.FireworksSpectacular == "DISABLED" then
-        chkIOShowFireworksSpectacular:SetChecked(false)
-    end
+	if CCConfig.FireworksSpectacular == "ENABLED" then
+		chkIOShowFireworksSpectacular:SetChecked(true)
+	elseif CCConfig.FireworksSpectacular == "DISABLED" then
+		chkIOShowFireworksSpectacular:SetChecked(false)
+	end
 end)
 
 chkIOShowFireworksSpectacular:SetScript("OnClick", function(frame)
-    local tick = frame:GetChecked()
+	local tick = frame:GetChecked()
 
-    if tick == false then
-        CCConfig.FireworksSpectacular = 'DISABLED'
-    elseif tick == true then
-        CCConfig.FireworksSpectacular = 'ENABLED'
-    end
+	if tick == false then
+		CCConfig.FireworksSpectacular = 'DISABLED'
+	elseif tick == true then
+		CCConfig.FireworksSpectacular = 'ENABLED'
+	end
 end)
 
 local chkIOShowFireworksSpectacularText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
@@ -169,66 +169,66 @@ lblIODropdownText:SetText("Dropdown:")
 local ddDropdown = CreateFrame("FRAME", "CCFontSize", CCIOFrame, "UIDropDownMenuTemplate")
 ddDropdown:SetPoint("LEFT", lblIODropdownText, "RIGHT", 0, 1)
 if GetLocale() == "frFR" then
-    UIDropDownMenu_SetWidth(ddDropdown, 128)
+	UIDropDownMenu_SetWidth(ddDropdown, 128)
 else
-    UIDropDownMenu_SetWidth(ddDropdown, 96)
+	UIDropDownMenu_SetWidth(ddDropdown, 96)
 end
 UIDropDownMenu_SetText(ddDropdown, "Select One")
 
 -- Create and bind the initialization function to the dropdown menu
 UIDropDownMenu_Initialize(ddDropdown, function(self, level, menuList)
-    local info = UIDropDownMenu_CreateInfo()
-    info.func = self.SetValue
-    info.text, info.arg1 = "Value1", "Value1"
-    UIDropDownMenu_AddButton(info)
-    info.text, info.arg1 = "Value2", "Value2"
-    UIDropDownMenu_AddButton(info)
-    info.text, info.arg1 = "Value3", "Value3"
-    UIDropDownMenu_AddButton(info)
-    info.text, info.arg1 = "Value4", "Value4"
-    UIDropDownMenu_AddButton(info)
-    info.text, info.arg1 = "Value5", "Value5"
-    UIDropDownMenu_AddButton(info)
+	local info = UIDropDownMenu_CreateInfo()
+	info.func = self.SetValue
+	info.text, info.arg1 = "Value1", "Value1"
+	UIDropDownMenu_AddButton(info)
+	info.text, info.arg1 = "Value2", "Value2"
+	UIDropDownMenu_AddButton(info)
+	info.text, info.arg1 = "Value3", "Value3"
+	UIDropDownMenu_AddButton(info)
+	info.text, info.arg1 = "Value4", "Value4"
+	UIDropDownMenu_AddButton(info)
+	info.text, info.arg1 = "Value5", "Value5"
+	UIDropDownMenu_AddButton(info)
 end)
 
 -- Implement the function to change the dropdown value
 function ddDropdown:SetValue(newValue)
-    CCConfig.Dropdown = newValue
-    DEFAULT_CHAT_FRAME:AddMessage("|cFF0088FF[" .. "ClassicCalendar" .. "]|r " .. "Dropdown changed to" .. " " .. newValue .. ".")
-    -- Update the text; if we merely wanted it to display newValue, we would not need to do this
-    UIDropDownMenu_SetText(ddDropdown, CCConfig.Dropdown)
-    -- Because this is called from a sub-menu, only that menu level is closed by default.
-    -- Close the entire menu with this next call
-    CloseDropDownMenus()
+	CCConfig.Dropdown = newValue
+	DEFAULT_CHAT_FRAME:AddMessage("|cFF0088FF[" .. "ClassicCalendar" .. "]|r " .. "Dropdown changed to" .. " " .. newValue .. ".")
+	-- Update the text; if we merely wanted it to display newValue, we would not need to do this
+	UIDropDownMenu_SetText(ddDropdown, CCConfig.Dropdown)
+	-- Because this is called from a sub-menu, only that menu level is closed by default.
+	-- Close the entire menu with this next call
+	CloseDropDownMenus()
 end
 ]]--
 
 -- Config Sash Command Handler
 
 local function ccconfiguration(msg, editbox)
-    if msg == "" or msg == nil then
-        InterfaceOptionsFrame_OpenToCategory(AddonTitle)
-        InterfaceOptionsFrame_OpenToCategory(AddonTitle) -- Second call works around the issue detailed at Stanzilla/WoWUIBugs/issues/89
-    end
+	if msg == "" or msg == nil then
+		InterfaceOptionsFrame_OpenToCategory(AddonTitle)
+		InterfaceOptionsFrame_OpenToCategory(AddonTitle) -- Second call works around the issue detailed at Stanzilla/WoWUIBugs/issues/89
+	end
 end
 
 local function CCOptionsHandler(self, event, arg1)
-    -- If SavedVariable is not set, default settings
-    if event == "ADDON_LOADED" then
-        if CCConfig == nil or CCConfig == "" then
-            CCConfig = {
-                ["PVPArt"] = "DISABLED",
-                ["ChildrensWeek"] = "DISABLED",
-                ["FireworksSpectacular"] = "DISABLED",
-                --["Dropdown"] = "Value1",
-            }
-        end
-    end
+	-- If SavedVariable is not set, default settings
+	if event == "ADDON_LOADED" then
+		if CCConfig == nil or CCConfig == "" then
+			CCConfig = {
+				["PVPArt"] = "DISABLED",
+				["ChildrensWeek"] = "DISABLED",
+				["FireworksSpectacular"] = "DISABLED",
+				--["Dropdown"] = "Value1",
+			}
+		end
+	end
 
-    if event == "VARIABLES_LOADED" then
-        SlashCmdList["CCCONFIG"] = ccconfiguration;
-        SLASH_CCCONFIG1, SLASH_CCCONFIG2 = "/caloptions", "/calendaroptions"
-    end
+	if event == "VARIABLES_LOADED" then
+		SlashCmdList["CCCONFIG"] = ccconfiguration;
+		SLASH_CCCONFIG1, SLASH_CCCONFIG2 = "/caloptions", "/calendaroptions"
+	end
 end
 
 CCOptions:SetScript("OnEvent", CCOptionsHandler)
