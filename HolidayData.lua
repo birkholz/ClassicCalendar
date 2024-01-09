@@ -289,7 +289,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	-- },
 	phase2Launch = {
 		name="Phase 2 Launch",
-		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeragon raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
+		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
 		startDate={ year=2024, month=2, day=8, hour=8, min=0 },
 		endDate={ year=2024, month=2, day=8, hour=8, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",

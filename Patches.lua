@@ -166,32 +166,45 @@ end
 
 local dungeonNamesCache = {}
 
-function newEventGetTextures(eventType)
-	-- Stubbing C_Calendar.EventGetTextures to actually return textures, and only SoD-available raids/dungeons
+local function cacheDungeonNames()
 	if next(dungeonNamesCache) == nil then
 		-- Caching the current localization's names for the dungeons
 		local original_dungeon_names = C_Calendar.EventGetTextures(1)
 		dungeonNamesCache = {
-			BlackfathomDeepsTitle  = original_dungeon_names[1]["title"],
-			DeadminesTitle = original_dungeon_names[3]["title"],
-			RazorfenKraulTitle = original_dungeon_names[11]["title"],
-			ScarletMonasteryTitle = original_dungeon_names[12]["title"],
-			ShadowfangKeepTitle = original_dungeon_names[14]["title"],
-			StormwindStockadesTitle = original_dungeon_names[15]["title"],
-			WailingCavernsTitle = original_dungeon_names[19]["title"]
+			BlackfathomDeeps  = original_dungeon_names[1]["title"],
+			Deadmines = original_dungeon_names[3]["title"],
+			Gnomeregan = original_dungeon_names[7]["title"],
+			RazorfenKraul = original_dungeon_names[11]["title"],
+			ScarletMonastery = original_dungeon_names[12]["title"],
+			ShadowfangKeep = original_dungeon_names[14]["title"],
+			StormwindStockades = original_dungeon_names[15]["title"],
+			WailingCaverns = original_dungeon_names[19]["title"]
 		}
 	end
+end
 
+cacheDungeonNames()
+
+function newEventGetTextures(eventType)
+	-- Stubbing C_Calendar.EventGetTextures to actually return textures, and only SoD-available raids/dungeons
 	if eventType == 0 then
 		-- Raids
 		return {
 			{
-				title=dungeonNamesCache.BlackfathomDeepsTitle,
+				title=dungeonNamesCache.BlackfathomDeeps,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
 				expansionLevel=0,
 				iconTexture="Interface/LFGFrame/LFGIcon-BlackfathomDeeps"
+			},
+			{
+				title=dungeonNamesCache.Gnomeregan,
+				isLfr=false,
+				difficultyId=0,
+				mapId=0,
+				expansionLevel=0,
+				iconTexture="Interface/LFGFrame/LFGIcon-Gnomeregan"
 			}
 		}
 	end
@@ -200,7 +213,7 @@ function newEventGetTextures(eventType)
 		-- Dungeons, alphabetically sorted
 		return {
 			{
-				title=dungeonNamesCache.DeadminesTitle,
+				title=dungeonNamesCache.Deadmines,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -208,7 +221,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-Deadmines"
 			},
 			{
-				title=dungeonNamesCache.RazorfenKraulTitle,
+				title=dungeonNamesCache.RazorfenKraul,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -216,7 +229,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-RazorfenKraul"
 			},
 			{
-				title=dungeonNamesCache.ScarletMonasteryTitle,
+				title=dungeonNamesCache.ScarletMonastery,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -224,7 +237,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-ScarletMonastery"
 			},
 			{
-				title=dungeonNamesCache.ShadowfangKeepTitle,
+				title=dungeonNamesCache.ShadowfangKeep,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -232,7 +245,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-ShadowfangKeep"
 			},
 			{
-				title=dungeonNamesCache.StormwindStockadesTitle,
+				title=dungeonNamesCache.StormwindStockades,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -240,7 +253,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-StormwindStockades"
 			},
 			{
-				title=dungeonNamesCache.WailingCavernsTitle,
+				title=dungeonNamesCache.WailingCaverns,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -253,50 +266,26 @@ function newEventGetTextures(eventType)
 	return {}
 end
 
-local function createResetEvent(eventDate)
-	local fakeResetEvent = {
-		eventType=CalendarEventType.Other,
-		sequenceType="",
-		isCustomTitle=true,
-		startTime={
-			year=eventDate.year,
-			month=eventDate.month,
-			monthDay=eventDate.day,
-			hour=8,
-			min=0
+local raidResets = {
+	{
+		name=dungeonNamesCache.BlackfathomDeeps,
+		firstReset = {
+			year=2023,
+			month=12,
+			day=3
 		},
-		difficultyName="",
-		invitedBy="",
-		inviteStatus=0,
-		dontDisplayEnd=false,
-		isLocked=false,
-		title="Blackfathom Deeps",
-		calendarType="RAID_RESET",
-		inviteType=CalendarInviteType.Normal,
-		sequenceIndex=1,
-		dontDisplayBanner=false,
-		modStatus=""
-	}
-
-	return fakeResetEvent
-end
-
-local function dayHasReset(eventDate)
-	if GetCVar("calendarShowResets") == "0" then
-		return false
-	end
-
-	local firstReset = {
-		year=2023,
-		month=12,
-		day=3
-	}
-	if dateLessThan(eventDate, firstReset) then
-		return false
-	end
-
-	return dateIsOnFrequency(eventDate, firstReset, 3)
-end
+		frequency=3
+	},
+	-- {
+	-- 	name=dungeonNamesCache.Gnomeregan,
+	-- 	firstReset = {
+	-- 		year=2024,
+	-- 		month=2,
+	-- 		day=10
+	-- 	},
+	-- 	frequency=3
+	-- }
+}
 
 local function getAbsDate(monthOffset, monthDay)
 	local eventDate = {
@@ -322,8 +311,12 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 		end
 	end
 
-	if dayHasReset(eventDate) then
-		originalEventCount = originalEventCount + 1
+	if GetCVar("calendarShowResets") ~= "0" then
+		for _, raid in next, raidResets do
+			if dateGreaterThan(eventDate, raid.firstReset) and dateIsOnFrequency(eventDate, raid.firstReset, raid.frequency) then
+				originalEventCount = originalEventCount + 1
+			end
+		end
 	end
 
 	return originalEventCount
@@ -437,8 +430,39 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 			end
 		end
 
+		if GetCVar("calendarShowResets") ~= "0" then
+			for _, raid in next, raidResets do
+				if dateGreaterThan(eventDate, raid.firstReset) and dateIsOnFrequency(eventDate, raid.firstReset, raid.frequency) then
+					local eventTable = {
+						eventType=CalendarEventType.Other,
+						sequenceType="",
+						isCustomTitle=true,
+						startTime={
+							year=eventDate.year,
+							month=eventDate.month,
+							monthDay=eventDate.day,
+							hour=8,
+							min=0
+						},
+						difficultyName="",
+						invitedBy="",
+						inviteStatus=0,
+						dontDisplayEnd=false,
+						isLocked=false,
+						title=raid.name,
+						calendarType="RAID_RESET",
+						inviteType=CalendarInviteType.Normal,
+						sequenceIndex=1,
+						dontDisplayBanner=false,
+						modStatus="",
+						ZIndex=1
+					}
+					tinsert(matchingEvents, eventTable)
+				end
+			end
+		end
+
 		if next(matchingEvents) == nil or matchingEvents[index - originalEventCount] == nil then
-			if dayHasReset(eventDate) then return createResetEvent(eventDate) end
 			assert(false, string.format("Injected event expected for date: %s", dumpTable(eventDate)))
 		else
 			table.sort(matchingEvents, function(a,b)
