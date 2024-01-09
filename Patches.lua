@@ -292,30 +292,24 @@ local function getRaidResets()
 	return _raidResets
 end
 
-local function getAbsDate(monthOffset, monthDay)
-	local eventDate = {
-		year=state.presentDate.year,
-		month=state.presentDate.month,
-		day=monthDay
-	}
-	adjustMonthByOffset(eventDate, monthOffset)
-
-	return eventDate
-end
-
 function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
-	local eventDate = getAbsDate(monthOffset, monthDay)
+	local monthInfo = C_Calendar.GetMonthInfo(monthOffset)
+	local eventDate = {
+		year = monthInfo.year,
+		month = monthInfo.month,
+		day = monthDay
+	}
 	local eventTime = time(eventDate)
 
 	for _, holiday in next, GetClassicHolidays() do
 		local holidayMinStartTime = time(SetMinTime(holiday.startDate))
-		local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
-
 		if eventTime < holidayMinStartTime then
 			break
 		end
+
+		local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
 
 		if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and eventTime >= holidayMinStartTime and eventTime <= holidayMaxEndTime then
 			originalEventCount = originalEventCount + 1
@@ -337,22 +331,23 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 	-- Stubbing C_Calendar.GetDayEvent to return events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
 	local originalEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
-	local eventDate = getAbsDate(monthOffset, monthDay)
+	local monthInfo = C_Calendar.GetMonthInfo(monthOffset)
+	local eventDate = {
+		year = monthInfo.year,
+		month = monthInfo.month,
+		day = monthDay
+	}
 	local eventTime = time(eventDate)
-
-	state.currentEventIndex = index
-	state.currentMonthOffset = monthOffset
-
 	local matchingEvents = {}
 
 	if originalEvent == nil then
 		for _, holiday in next, GetClassicHolidays() do
 			local holidayMinStartTime = time(SetMinTime(holiday.startDate))
-			local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
-
 			if eventTime < holidayMinStartTime then
 				break
 			end
+
+			local holidayMaxEndTime = time(SetMaxTime(holiday.endDate))
 
 			if (holiday.CVar == nil or GetCVar(holiday.CVar) == "1") and eventTime >= holidayMinStartTime and eventTime <= holidayMaxEndTime then
 				local artDisabled = false
@@ -499,7 +494,7 @@ end
 function stubbedSetMonth(offset)
 	-- C_Calendar.SetMonth updates the game's internal monthOffset that is applied to GetDayEvent and GetNumDayEvents calls,
 	-- we have to stub it to do the same for our stubbed methods
-	state.monthOffset = state.monthOffset + offset
+	state.currentMonthOffset = state.currentMonthOffset + offset
 	C_Calendar.SetMonth(offset)
 
 	adjustMonthByOffset(state.presentDate, offset)
@@ -509,7 +504,6 @@ function stubbedSetAbsMonth(month, year)
 	-- Reset state
 	state.presentDate.year = year
 	state.presentDate.month = month
-	state.monthOffset = 0
 	state.currentEventIndex = 0
 	state.currentMonthOffset = 0
 	C_Calendar.SetAbsMonth(month, year)
@@ -556,6 +550,13 @@ function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 	end
 end
 
+
+function UpdateCalendarState(year, month, day)
+	state.presentDate.year = year
+	state.presentDate.month = month
+	state.presentDate.day = day
+end
+
 function stubbedGetEventIndex()
 	local original = C_Calendar.GetEventIndex()
 	if (original and original.offsetMonths == state.presentDate.currentMonthOffset and original.monthDay == state.presentDate.day and original.eventIndex == state.currentEventIndex) then
@@ -573,10 +574,10 @@ end
 function stubbedOpenEvent(monthOffset, day, eventIndex)
 	-- Normally, event side panels are opened by the OnEvent handler, however that doesn't work for injected events
 	-- So instead, we have hooked into the OpenEvent function to perform the same logic as the event handler
-	local absDate = getAbsDate(monthOffset, day)
-	state.presentDate = absDate
-
 	local original_event = C_Calendar.GetDayEvent(monthOffset, day, eventIndex)
+	state.currentEventIndex = eventIndex
+	state.currentMonthOffset = monthOffset
+
 	if original_event ~= nil then
 		C_Calendar.OpenEvent(monthOffset, day, eventIndex)
 	else

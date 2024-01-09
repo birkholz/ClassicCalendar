@@ -2581,6 +2581,8 @@ function CalendarDayButton_Click(button)
 		CalendarFrame.selectedDay = day;
 		CalendarFrame.selectedMonth = month;
 		CalendarFrame.selectedYear = year;
+		-- Update Classic Calendar's internal state
+		UpdateCalendarState(year, month, day);
 		CalendarFrame_SetSelectedDay(button);
 	end
 end

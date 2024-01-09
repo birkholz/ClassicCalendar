@@ -30,6 +30,7 @@ globals = {
 	"GetClassicHolidays",
 	"CCConfig",
 	"GoToCCSettings",
+	"UpdateCalendarState",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",
