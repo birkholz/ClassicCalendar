@@ -4,7 +4,7 @@ local L = CLASSIC_CALENDAR_L
 
 L.Options = {
 	["enUS"] = {
-		["PVPArtText"] 					 = "Show calendar art for PVP weekends",
+		["PVPArtText"] 					 = "Show calendar art for battleground weekends",
 		["ChildrensWeekText"] 			 = "Show calendar art for Childrens Week",
 		["FireworksSpectacularText"] 	 = "Show calendar art for Fireworks Spectacular",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Battleground Call to Arms",
