@@ -167,11 +167,12 @@ end
 local _dungeonNamesCache = {}
 
 local function GetDungeonNames()
+	-- If this function is called too early, the API returns an empty table
 	if next(_dungeonNamesCache) == nil then
 		-- Caching the current localization's names for the dungeons
 		local original_dungeon_names = C_Calendar.EventGetTextures(1)
 		local names = {
-			BlackfathomDeeps  = original_dungeon_names[1]["title"],
+			BlackfathomDeeps = original_dungeon_names[1]["title"],
 			Deadmines = original_dungeon_names[3]["title"],
 			Gnomeregan = original_dungeon_names[7]["title"],
 			RazorfenKraul = original_dungeon_names[11]["title"],
@@ -193,11 +194,15 @@ end
 
 function newEventGetTextures(eventType)
 	-- Stubbing C_Calendar.EventGetTextures to actually return textures, and only SoD-available raids/dungeons
+	local status, dungeonNames = pcall(GetDungeonNames)
+	if not status then
+		dungeonNames = {}
+	end
 	if eventType == 0 then
 		-- Raids
 		return {
 			{
-				title=GetDungeonNames().BlackfathomDeeps,
+				title=dungeonNames.BlackfathomDeeps,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -205,7 +210,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-BlackfathomDeeps"
 			},
 			{
-				title=GetDungeonNames().Gnomeregan,
+				title=dungeonNames.Gnomeregan,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -219,7 +224,7 @@ function newEventGetTextures(eventType)
 		-- Dungeons, alphabetically sorted
 		return {
 			{
-				title=GetDungeonNames().Deadmines,
+				title=dungeonNames.Deadmines,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -227,7 +232,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-Deadmines"
 			},
 			{
-				title=GetDungeonNames().RazorfenKraul,
+				title=dungeonNames.RazorfenKraul,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -235,7 +240,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-RazorfenKraul"
 			},
 			{
-				title=GetDungeonNames().ScarletMonastery,
+				title=dungeonNames.ScarletMonastery,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -243,7 +248,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-ScarletMonastery"
 			},
 			{
-				title=GetDungeonNames().ShadowfangKeep,
+				title=dungeonNames.ShadowfangKeep,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -251,7 +256,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-ShadowfangKeep"
 			},
 			{
-				title=GetDungeonNames().StormwindStockades,
+				title=dungeonNames.StormwindStockades,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -259,7 +264,7 @@ function newEventGetTextures(eventType)
 				iconTexture="Interface/LFGFrame/LFGIcon-StormwindStockades"
 			},
 			{
-				title=GetDungeonNames().WailingCaverns,
+				title=dungeonNames.WailingCaverns,
 				isLfr=false,
 				difficultyId=0,
 				mapId=0,
@@ -275,9 +280,13 @@ end
 local _raidResets
 
 local function getRaidResets()
+	local status, dungeonNames = pcall(GetDungeonNames)
+	if not status then
+		dungeonNames = {}
+	end
 	_raidResets = _raidResets or {
 		{
-			name=GetDungeonNames().BlackfathomDeeps,
+			name=dungeonNames.BlackfathomDeeps,
 			firstReset = {
 				year=2023,
 				month=12,
@@ -286,7 +295,7 @@ local function getRaidResets()
 			frequency=3
 		},
 		-- {
-		-- 	name=GetDungeonNames().Gnomeregan,
+		-- 	name=dungeonNames.Gnomeregan,
 		-- 	firstReset = {
 		-- 		year=2024,
 		-- 		month=2,
