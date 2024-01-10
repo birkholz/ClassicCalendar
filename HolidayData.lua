@@ -142,6 +142,7 @@ local ZIndexes = {
 
 local CLASSIC_CALENDAR_HOLIDAYS = {
 	{
+		-- Historical
 		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=9, min=0 },
@@ -152,6 +153,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
+		-- Confirmed, static dates
 		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
 		startDate={ year=2024, month=12, day=15, hour=9, min=0 },
@@ -162,9 +164,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	 {
+		-- Confirmed, coincides with Easter Sunday, lasts 1 day
 		name=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["description"],
-		-- Coincides with Easter Sunday
 		startDate=SetMinTime(GetEasterDate(currentCalendarTime.year)),
 		endDate=SetMaxTime(GetEasterDate(currentCalendarTime.year)),
 		startTexture="Interface/Calendar/Holidays/Calendar_NoblegardenStart",
@@ -173,6 +175,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
+		-- Unconfirmed, no basis in reality for dates known
 		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
 		startDate={ year=2024, month=4, day=29, hour=13, min=0 },
@@ -184,6 +187,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.medium
 	},
 	{
+		-- Uncofirmed. No basis in reality for dates known
 		name=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["description"],
 		startDate={ year=2024, month=9, day=13, hour=3, min=0 },
@@ -194,6 +198,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
+		-- Confirmed, static dates
 		name=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["description"],
 		startDate={ year=2024, month=10, day=18, hour=4, min=0 },
@@ -204,9 +209,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
+		-- Confirmed, coincides with Chinese New Year, lasts a week
 		name=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
-		-- Coincides with Chinese New Year
 		startDate=GetLunarFestivalStart(currentCalendarTime.year),
 		endDate=GetLunarFestivalEnd(currentCalendarTime.year),
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
@@ -215,6 +220,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
+		-- Confirmed, coincides with Valentine's Day, static dates
 		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=13, min=0 },
@@ -225,9 +231,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.medium
 	},
 	{
+		-- Confirmed, coincides with Summer Solstice for North America, starts the following day and lasts a week
 		name=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["description"],
-		-- Coincides with Summer Solstice. For which hemisphere? Who knows
 		startDate={ year=2024, month=6, day=21, hour=7, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=7, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_MidsummerStart",
@@ -236,9 +242,9 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.highest
 	},
 	{
+		-- Confirmed, always the last day/night of Midsummer Fire Festival
 		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"],
-		-- Occurs the last day/night of Midsummer
 		startDate={ year=2024, month=6, day=27, hour=9, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=3, min=0 },
 		artConfig="FireworksSpectacularArt",
@@ -248,6 +254,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.low
 	},
 	{
+		-- Confirmed, always every Sunday 2-4pm
 		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
