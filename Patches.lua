@@ -89,7 +89,7 @@ local state = {
 	currentMonthOffset=0
 }
 
-CALENDAR_FILTER_BATTLEGROUND = "Battleground Call to Arms";
+CALENDAR_FILTER_BATTLEGROUND = L.Options[localeString]["CALENDAR_FILTER_BATTLEGROUND"];
 
 -- Date Utilities
 
