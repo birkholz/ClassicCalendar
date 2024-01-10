@@ -170,7 +170,7 @@ local function GetDungeonNames()
 	if next(_dungeonNamesCache) == nil then
 		-- Caching the current localization's names for the dungeons
 		local original_dungeon_names = C_Calendar.EventGetTextures(1)
-		_dungeonNamesCache = {
+		local names = {
 			BlackfathomDeeps  = original_dungeon_names[1]["title"],
 			Deadmines = original_dungeon_names[3]["title"],
 			Gnomeregan = original_dungeon_names[7]["title"],
@@ -180,6 +180,12 @@ local function GetDungeonNames()
 			StormwindStockades = original_dungeon_names[15]["title"],
 			WailingCaverns = original_dungeon_names[19]["title"]
 		}
+
+		for k, v in next, names do
+			if _dungeonNamesCache[k] == nil then
+				_dungeonNamesCache[k] = v
+			end
+		end
 	end
 
 	return _dungeonNamesCache

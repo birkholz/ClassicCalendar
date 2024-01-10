@@ -178,8 +178,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- Unconfirmed, no basis in reality for dates known
 		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
-		startDate={ year=2024, month=4, day=29, hour=13, min=0 },
-		endDate={ year=2024, month=5, day=6, hour=13, min=0 },
+		startDate={ year=2024, month=5, day=1, hour=13, min=0 },
+		endDate={ year=2024, month=5, day=8, hour=13, min=0 },
 		artConfig="ChildrensWeekArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_ChildrensWeekOngoing",
@@ -254,7 +254,27 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.low
 	},
 	{
-		-- Confirmed, always every Sunday 2-4pm
+		name="SoD Launch",
+		description="Season of Discovery officialy launched!",
+		startDate={ year=2023, month=11, day=30, hour=8, min=0 },
+		endDate={ year=2023, month=11, day=30, hour=8, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Phase 2 Launch",
+		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
+		startDate={ year=2024, month=2, day=8, hour=8, min=0 },
+		endDate={ year=2024, month=2, day=8, hour=8, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	-- Recurring events
+	{
 		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
@@ -304,16 +324,6 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- },
-	{
-		name="Phase 2 Launch",
-		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
-		startDate={ year=2024, month=2, day=8, hour=8, min=0 },
-		endDate={ year=2024, month=2, day=8, hour=8, min=0 },
-		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ZIndex=ZIndexes.highest
-	},
 	{
 		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
 		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],

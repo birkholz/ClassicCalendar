@@ -24,16 +24,16 @@ jobs:
         with:
           args: "--no-color -q"
 
-      # - name: Create Package
-      #   uses: QartemisT/packager@master
-      #   if: ${{ github.event_name != 'pull_request' }}
-      #   with:
-      #     args: -n "DBM-{project-version}{classic}"
-      #   env:
-      #     CF_API_KEY: ${{ secrets.CF_API_KEY }}
-      #     GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-      #     WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
-      #     WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
+      - name: Create Package
+        uses: BigWigsMods/packager@master
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          args: -g classic -n "ClassicCalendar-{project-version}:{project-version}"
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
 
       - name: Send Status to Discord
         uses: sarisia/actions-status-discord@v1
