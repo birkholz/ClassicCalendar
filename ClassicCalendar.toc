@@ -1,6 +1,6 @@
 ## Interface: 11500
 ## Title: Classic Calendar
-## Version: 0.1alpha
+## Version: 0.1.0alpha
 ## SavedVariables: CCConfig
 locales\localization-world.lua
 
