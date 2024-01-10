@@ -465,13 +465,13 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 						eventType=CalendarEventType.Other,
 						sequenceType="",
 						isCustomTitle=true,
-						startTime={
+						startTime=fixLuaDate(date("*t", time({
 							year=eventDate.year,
 							month=eventDate.month,
-							monthDay=eventDate.day,
+							day=eventDate.day,
 							hour=8,
 							min=0
-						},
+						}))),
 						difficultyName="",
 						invitedBy="",
 						inviteStatus=0,
