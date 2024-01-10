@@ -2,8 +2,11 @@
 ## Title: Classic Calendar
 ## Version: 0.1.0alpha
 ## SavedVariables: CCConfig
-locales\localization-world.lua
+## X-Wago-ID: nKW1ZrNE
+## X-WoWI-ID: 26678
+## X-Curse-Project-ID: 960282
 
+locales\localization-world.lua
 ClassicCalendar_Options.lua
 HolidayData.lua
 Patches.lua
