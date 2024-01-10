@@ -1,3 +1,4 @@
 package-as: ClassicCalendar
 
-ignore: preview.png
+ignore:
+    - preview.png
