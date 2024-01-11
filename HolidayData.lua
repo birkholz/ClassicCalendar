@@ -143,8 +143,8 @@ local ZIndexes = {
 local CLASSIC_CALENDAR_HOLIDAYS = {
 	{
 		-- Historical
-		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=9, min=0 },
 		endDate={ year=2024, month=1, day= 2, hour=9, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_WinterVeilStart",
@@ -154,8 +154,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, static dates
-		name=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["WintersVeil"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["WintersVeil"]["description"],
 		startDate={ year=2024, month=12, day=15, hour=9, min=0 },
 		endDate={ year=2025, month=1, day= 2, hour=9, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_WinterVeilStart",
@@ -165,8 +165,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	 {
 		-- Confirmed, coincides with Easter Sunday, lasts 1 day
-		name=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["Noblegarden"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["Noblegarden"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["Noblegarden"]["description"],
 		startDate=SetMinTime(GetEasterDate(currentCalendarTime.year)),
 		endDate=SetMaxTime(GetEasterDate(currentCalendarTime.year)),
 		startTexture="Interface/Calendar/Holidays/Calendar_NoblegardenStart",
@@ -176,8 +176,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Unconfirmed, no basis in reality for dates known
-		name=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["ChildrensWeek"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["ChildrensWeek"]["description"],
 		startDate={ year=2024, month=5, day=1, hour=13, min=0 },
 		endDate={ year=2024, month=5, day=8, hour=13, min=0 },
 		artConfig="ChildrensWeekArt",
@@ -188,8 +188,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Uncofirmed. No basis in reality for dates known
-		name=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["HarvestFestival"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["HarvestFestival"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["HarvestFestival"]["description"],
 		startDate={ year=2024, month=9, day=13, hour=3, min=0 },
 		endDate={ year=2024, month=9, day=20, hour=3, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_HarvestFestivalStart",
@@ -199,8 +199,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, static dates
-		name=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["HallowsEnd"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["HallowsEnd"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["HallowsEnd"]["description"],
 		startDate={ year=2024, month=10, day=18, hour=4, min=0 },
 		endDate={ year=2024, month=11, day=1, hour=3, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_HallowsEndStart",
@@ -210,8 +210,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, coincides with Chinese New Year, lasts a week
-		name=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
 		startDate=GetLunarFestivalStart(currentCalendarTime.year),
 		endDate=GetLunarFestivalEnd(currentCalendarTime.year),
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
@@ -221,8 +221,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, coincides with Valentine's Day, static dates
-		name=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["LoveisintheAir"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["LoveisintheAir"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=13, min=0 },
 		endDate={ year=2024, month=2, day=16, hour=13, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LoveInTheAirStart",
@@ -232,8 +232,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, coincides with Summer Solstice for North America, starts the following day and lasts a week
-		name=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["MidsummerFireFestival"]["description"],
 		startDate={ year=2024, month=6, day=21, hour=7, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=7, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_MidsummerStart",
@@ -243,8 +243,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	{
 		-- Confirmed, always the last day/night of Midsummer Fire Festival
-		name=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["FireworksSpectacular"]["description"],
 		startDate={ year=2024, month=6, day=27, hour=9, min=0 },
 		endDate={ year=2024, month=6, day=28, hour=3, min=0 },
 		artConfig="FireworksSpectacularArt",
@@ -275,8 +275,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	},
 	-- Recurring events
 	{
-		name=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
 		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
 		endDate={ year=2024, month=2, day=11, hour=16, min=0 },
 		frequency=7,
@@ -287,8 +287,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.low
 	},
 	{
-		name=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
-		description=L.Localization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=0, min=1 },
 		endDate={ year=2023, month=12, day=19, hour=8, min=0 },
 		frequency=28,
@@ -300,8 +300,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.medium
 	},
 	{
-		name=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
-		description=L.Localization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
 		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
 		endDate={ year=2024, month=2, day=20, hour=8, min=0 },
 		frequency=28,
@@ -313,8 +313,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.medium
 	},
 	-- {
-	--	 name=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
-	--	 description=L.Localization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
+	--	 name=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
+	--	 description=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
 	--	 startDate={ year=2023, month=12, day=29, hour=0, min=1 },
 	--	 endDate={ year=2024, month=1, day=2, hour=8, min=0 },
 	--  frequency=28,
@@ -325,8 +325,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- },
 	{
-		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
 		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
 		endDate={ year=2023, month=12, day=24, hour=23, min=59 },
 		frequency=28,
@@ -337,8 +337,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.medium
 	},
 	{
-		name=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
-		description=L.Localization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
 		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
 		endDate={ year=2023, month=12, day=10, hour=23, min=59 },
 		frequency=28,
