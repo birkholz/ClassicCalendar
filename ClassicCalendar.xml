@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\..\FrameXML\UI.xsd">
-	<Script file="ClassicCalendar.lua"/>
-	<Include file="ClassicCalendarTemplates.xml"/>
+	<Script file="Blizzard_Calendar.lua"/>
+	<Include file="Blizzard_CalendarTemplates.xml"/>
 
 	<!-- CalendarFrame -->
 	<!-- This is the main Calendar frame, parent of all related Calendar frames. -->
@@ -363,9 +363,8 @@
 				</Scripts>
 			</Frame>
 			<Button name="CalendarCloseButton" inherits="UIPanelCloseButton">
-				<Size x="32" y="34"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="5" y="-13"/>
+					<Anchor point="TOPRIGHT" x="1" y="-17"/>
 				</Anchors>
 			</Button>
 
@@ -459,7 +458,7 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate"/>
 			<Frame parentKey="ScrollingFont" inherits="ScrollingFontTemplate" frameStrata="HIGH">
 				<Size x="270" y="278"/>
 				<Anchors>
@@ -468,7 +467,7 @@
 				<KeyValues>
 					<KeyValue key="fontName" value="GameFontHighlightLeft" type="string"/>
 				</KeyValues>
-			</Frame>
+					</Frame>
 			<Button name="CalendarViewHolidayCloseButton" inherits="CalendarEventCloseButtonTemplate"/>
 			<Frame name="$parentModalOverlay" inherits="CalendarModalEventOverlayTemplate" hidden="true"/>
 		</Frames>
@@ -487,7 +486,7 @@
 		</Anchors>
 		<Frames>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate"/>
 			<Frame parentKey="ScrollingFont" inherits="ScrollingFontTemplate" frameStrata="HIGH">
 				<Size x="270" y="108"/>
 				<Anchors>
@@ -496,7 +495,7 @@
 				<KeyValues>
 					<KeyValue key="fontName" value="GameFontHighlightLeft" type="string"/>
 				</KeyValues>
-			</Frame>
+					</Frame>
 			<Button name="CalendarViewRaidCloseButton" inherits="CalendarEventCloseButtonTemplate"/>
 			<Frame name="$parentModalOverlay" inherits="CalendarModalEventOverlayTemplate" hidden="true"/>
 		</Frames>
@@ -572,7 +571,7 @@
 				</Scripts>
 			</Button>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate"/>
 			<Frame name="CalendarViewEventDescriptionContainer" inherits="TooltipBackdropTemplate">
 				<Size x="287" y="65"/>
 				<Anchors>
@@ -585,20 +584,17 @@
 				<Frames>
 					<Frame parentKey="ScrollingFont" inherits="ScrollingFontTemplate" frameStrata="HIGH">
 						<Size x="270" y="108"/>
-						<Anchors>
+								<Anchors>
 							<Anchor point="TOPLEFT" x="15" y="-30"/>
-						</Anchors>
+								</Anchors>
 						<KeyValues>
 							<KeyValue key="fontName" value="GameFontNormalSmallLeft" type="string"/>
 						</KeyValues>
 					</Frame>
-					<EventFrame parentKey="ScrollBar" inherits="WowClassicScrollBar" frameStrata="HIGH">
-						<KeyValues>
-							<KeyValue key="hideBackground" value="true" type="boolean"/>
-						</KeyValues>
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar" frameStrata="HIGH">
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-							<Anchor point="BOTTOMRIGHT" x="0" y="3"/>
+							<Anchor point="TOPRIGHT" x="-8" y="-3"/>
+							<Anchor point="BOTTOMRIGHT" x="-8" y="3"/>
 						</Anchors>
 					</EventFrame>
 				</Frames>
@@ -611,11 +607,11 @@
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-170"/>
 				</Anchors>
-				<!--Animations>
+				<Animations>
 					<AnimationGroup looping="BOUNCE">
 						<Animation name="CalendarViewEventFlashTimer" duration="0.7" smoothing="OUT"/>
 					</AnimationGroup>
-				</Animations-->
+				</Animations>
 				<Layers>
 					<Layer level="BORDER">
 						<Texture name="CalendarViewEventDivider" file="Interface\DialogFrame\UI-DialogBox-Divider">
@@ -736,7 +732,7 @@
 			</Layer>
 			<Layer level="BACKGROUND">
 				<FontString name="CalendarCreateEventCommunityName" inherits="GameFontNormalSmall" justifyH="LEFT" hidden="true">
-					<Size x="220" y="12"/>
+				<Size x="220" y="12"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="CalendarCreateEventIcon" relativePoint="TOPRIGHT" x="5" y="0"/>
 					</Anchors>
@@ -772,7 +768,7 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate"/>
 			<EditBox name="CalendarCreateEventTitleEdit" letters="31" inherits="InputBoxTemplate" autoFocus="false">
 				<Size x="120" y="20"/>
 				<Anchors>
@@ -888,26 +884,26 @@
 							</OnLoad>
 							<OnTabPressed>
 								if ( not AutoCompleteEditBox_OnTabPressed(self) ) then
-								CalendarOnEditBoxTab(self);
+									CalendarOnEditBoxTab(self);
 								end
 							</OnTabPressed>
 							<OnEnterPressed function="CalendarCreateEventInviteEdit_OnEnterPressed"/>
 							<OnEscapePressed>
 								if ( not AutoCompleteEditBox_OnEscapePressed(self) ) then
-								EditBox_ClearFocus(self);
+									EditBox_ClearFocus(self);
 								end
 							</OnEscapePressed>
 							<OnEditFocusLost function="CalendarCreateEventInviteEdit_OnEditFocusLost"/>
 							<OnEditFocusGained function="EditBox_HighlightText"/>
 							<OnTextChanged>
 								if ( userInput ) then
-								local isGuildEvent = C_Calendar.EventGetCalendarType() == "GUILD_EVENT";
-								if ( isGuildEvent ) then
-								AutoCompleteEditBox_SetAutoCompleteSource(self, GetAutoCompleteResults, AUTOCOMPLETE_LIST.CALENDARGUILDEVENT.include, AUTOCOMPLETE_LIST.CALENDARGUILDEVENT.exclude);
-								else
-								AutoCompleteEditBox_SetAutoCompleteSource(self, GetAutoCompleteResults, AUTOCOMPLETE_LIST.CALENDAREVENT.include, AUTOCOMPLETE_LIST.CALENDAREVENT.exclude);
-								end
-								AutoCompleteEditBox_OnTextChanged(self, userInput);
+									local isGuildEvent = C_Calendar.EventGetCalendarType() == "GUILD_EVENT";
+									if ( isGuildEvent ) then
+										AutoCompleteEditBox_SetAutoCompleteSource(self, GetAutoCompleteResults, AUTOCOMPLETE_LIST.CALENDARGUILDEVENT.include, AUTOCOMPLETE_LIST.CALENDARGUILDEVENT.exclude);
+									else
+										AutoCompleteEditBox_SetAutoCompleteSource(self, GetAutoCompleteResults, AUTOCOMPLETE_LIST.CALENDAREVENT.include, AUTOCOMPLETE_LIST.CALENDAREVENT.exclude);
+									end
+									AutoCompleteEditBox_OnTextChanged(self, userInput);
 								end
 							</OnTextChanged>
 						</Scripts>
@@ -947,13 +943,13 @@
 							<Anchor point="BOTTOMRIGHT" x="-3" y="4"/>
 						</Anchors>
 					</Frame>
-					<EventFrame parentKey="ScrollBar" inherits="WowClassicScrollBar" frameStrata="HIGH">
+					<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar" frameStrata="HIGH">
 						<KeyValues>
-							<KeyValue key="hideBackground" value="true" type="boolean"/>
+							<KeyValue key="minThumbExtent" value="17" type="number"/>
 						</KeyValues>
 						<Anchors>
-							<Anchor point="TOPRIGHT" parentKey="$parent.ScrollingEditBox" relativePoint="TOPRIGHT" x="-2" y="-1"/>
-							<Anchor point="BOTTOMRIGHT" parentKey="$parent.ScrollingEditBox" relativePoint="BOTTOMRIGHT"/>
+							<Anchor point="TOPRIGHT" relativeKey="$parent.ScrollingEditBox" relativePoint="TOPRIGHT" x="-5" y="0"/>
+							<Anchor point="BOTTOMRIGHT" relativeKey="$parent.ScrollingEditBox" relativePoint="BOTTOMRIGHT" x="-5" y="-1"/>
 						</Anchors>
 					</EventFrame>
 				</Frames>
@@ -1118,7 +1114,7 @@
 					<Anchor point="TOP" x="0" y="-30"/>
 				</Anchors>
 			</Frame>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate">
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate">
 				<KeyValues>
 					<KeyValue key="textString" value="CALENDAR_MASS_INVITE" type="global"/>
 				</KeyValues>
@@ -1133,7 +1129,7 @@
 					<OnEscapePressed function="EditBox_ClearFocus"/>
 					<OnEditFocusGained>
 						if ( not CalendarMassInviteFrame.selectedClubId ) then
-						self:ClearFocus();
+							self:ClearFocus();
 						end
 					</OnEditFocusGained>
 				</Scripts>
@@ -1148,7 +1144,7 @@
 					<OnEscapePressed function="EditBox_ClearFocus"/>
 					<OnEditFocusGained>
 						if ( not CalendarMassInviteFrame.selectedClubId ) then
-						self:ClearFocus();
+							self:ClearFocus();
 						end
 					</OnEditFocusGained>
 				</Scripts>
@@ -1203,7 +1199,7 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate">
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate">
 				<KeyValues>
 					<KeyValue key="textString" value="CALENDAR_EVENT_PICKER_TITLE" type="global"/>
 				</KeyValues>
@@ -1214,10 +1210,10 @@
 					<Anchor point="TOPLEFT" x="20" y="-26"/>
 				</Anchors>
 			</Frame>
-			<EventFrame parentKey="ScrollBar" inherits="WowClassicScrollBar">
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" x="4" y="14"/>
-					<Anchor point="BOTTOMLEFT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT" x="4"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" x="9" y="9"/>
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT" x="9" y="5"/>
 				</Anchors>
 			</EventFrame>
 			<Button name="CalendarEventPickerCloseButton" inherits="CalendarEventButtonTemplate" text="CLOSE">
@@ -1268,17 +1264,17 @@
 		</Layers>
 		<Frames>
 			<Frame parentKey="Border" inherits="DialogBorderDarkTemplate"/>
-			<Frame parentKey="Header" inherits="BC_DialogHeaderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate"/>
 			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList">
 				<Size x="239" y="224"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="20" y="-26"/>
 				</Anchors>
 			</Frame>
-			<EventFrame parentKey="ScrollBar" inherits="WowClassicScrollBar">
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" y="14"/>
-					<Anchor point="BOTTOMLEFT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.ScrollBox" relativePoint="TOPRIGHT" x="5" y="9"/>
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent.ScrollBox" relativePoint="BOTTOMRIGHT" x="5" y="5"/>
 				</Anchors>
 			</EventFrame>
 			<Button name="CalendarTexturePickerCancelButton" inherits="CalendarEventButtonTemplate" text="CANCEL">

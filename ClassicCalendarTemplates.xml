@@ -209,17 +209,8 @@
 	<!-- Calendar Misc Templates -->
 	<Button name="CalendarCloseButtonTemplate" inherits="UIPanelCloseButton" virtual="true">
 		<Anchors>
-			<Anchor point="TOPRIGHT" x="-3" y="-3"/>
+			<Anchor point="TOPRIGHT" x="-7" y="-7"/>
 		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\DialogFrame\UI-DialogBox-Corner">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-4" y="-4"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
 		<Scripts>
 			<OnLoad>
 				self:SetFrameLevel(self:GetParent():GetFrameLevel() + 6);
@@ -270,13 +261,10 @@
 		</KeyValues>
 		<Frames>
 			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList"/>
-			<EventFrame parentKey="ScrollBar" inherits="WowTrimScrollBar">
-				<KeyValues>
-					<KeyValue key="hideBackground" value="true" type="boolean"/>
-				</KeyValues>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-3" y="-3"/>
-					<Anchor point="BOTTOMRIGHT" x="0" y="3"/>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
 				</Anchors>
 			</EventFrame>
 
@@ -379,12 +367,6 @@
 	<!-- Calendar View Event Templates -->
 	<Button name="CalendarViewEventRSVPButtonTemplate" inherits="CalendarEventButtonTemplate" virtual="true">
 		<Size x="128" y="22"/>
-		<Animations>
-			<AnimationGroup name="CalendarViewEventFlashTimer" looping="REPEAT" parentKey="GlowAnim">
-				<Alpha childKey="flashTexture" fromAlpha="0" toAlpha="1" duration="0.9" order="1"/>
-				<Alpha childKey="flashTexture" fromAlpha="1" toAlpha="0" duration="0.9" order="2"/>
-			</AnimationGroup>
-		</Animations>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture name="$parentFlashTexture" parentKey="flashTexture" alphaMode="ADD" file="Interface\Buttons\UI-Panel-Button-Glow">
@@ -400,9 +382,9 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<!--Scripts>
+		<Scripts>
 			<OnUpdate function="CalendarViewEventRSVPButton_OnUpdate"/>
-		</Scripts-->
+		</Scripts>
 	</Button>
 	<Button name="CalendarViewEventInviteListButtonTemplate" inherits="CalendarEventInviteListButtonTemplate" virtual="true">
 		<Scripts>
@@ -590,5 +572,5 @@
 			</OnLeave>
 		</Scripts>
 		<NormalTexture file="Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes"/>
-	</Button>
+    </Button>
 </Ui>
