@@ -9,6 +9,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "Show calendar art for Fireworks Spectacular",
 		["HideCalButtonText"]			 = "Hide the calendar button",
 		["HideCalButtonDesc"]			 = "You'll still be able to access the calendar with /cal or /calendar",
+		["GeneralHeaderText"]			 = "General",
+		["ArtHeaderText"]				 = "Art",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Battleground Call to Arms",
 	},
 	["frFR"] = {
@@ -17,6 +19,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Appel aux armes de champ de bataille",
 
 	},
@@ -26,6 +30,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Llamamiento a las armas de campo de batalla",
 	},
 	["esES"] = {
@@ -34,6 +40,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Llamamiento a las armas de campo de batalla",
 	},
 	["ptBR"] = {
@@ -42,6 +50,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Chamado às Armas em Campo de Batalha",
 	},
 	["deDE"] = {
@@ -50,6 +60,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Schlachtfeldtag",
 	},
 	["ruRU"] = {
@@ -58,6 +70,8 @@ L.Options = {
 		["FireworksSpectacularText"]	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "PvP-потасовки",
 	},
 	["koKR"] = {
@@ -66,6 +80,8 @@ L.Options = {
 		["FireworksSpectacularText"] 	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "전장으로 전장",
 	},
 	["zhTW"] = {
@@ -74,6 +90,8 @@ L.Options = {
 		["FireworksSpectacularText"]	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "戰場戰鬥的號角",
 	},
 	["zhCN"] = {
@@ -82,6 +100,8 @@ L.Options = {
 		["FireworksSpectacularText"]	 = "",
 		["HideCalButtonText"]			 = "",
 		["HideCalButtonDesc"]			 = "",
+		["GeneralHeaderText"]			 = "",
+		["ArtHeaderText"]				 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "战场的召唤",
 	},
 }

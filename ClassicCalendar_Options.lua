@@ -64,6 +64,29 @@ CCIOFrame.name = AddonTitle
 
 local InterfaceOptionsFramePanelContainerWidth = InterfaceOptionsFramePanelContainer:GetWidth()
 
+local function createHorizontalRule(text, anchorFrame)
+	local hrLine_p1 = CCIOFrame:CreateLine()
+	hrLine_p1:SetColorTexture(0.5, 0.5, 0.5)
+	hrLine_p1:SetThickness(1)
+	hrLine_p1:SetStartPoint("TOPLEFT", anchorFrame, 0, -32)
+	hrLine_p1:SetEndPoint("TOPLEFT", anchorFrame, (InterfaceOptionsFramePanelContainerWidth/2)-36, -32)
+
+	local hrLineText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+	hrLineText:SetFont("Fonts\\FRIZQT__.TTF", 14)
+	hrLineText:SetPoint("CENTER", hrLine_p1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/2), 0)
+	hrLineText:SetText("|cFFEFC502"..text.."|r")
+	local textWidth = hrLineText:GetWidth()
+	hrLine_p1:SetEndPoint("TOPLEFT", anchorFrame, (InterfaceOptionsFramePanelContainerWidth/2)-((textWidth/2) + 8), -32)
+
+	local hrLine_p2 = CCIOFrame:CreateLine()
+	hrLine_p2:SetColorTexture(0.5, 0.5, 0.5)
+	hrLine_p2:SetThickness(1)
+	hrLine_p2:SetStartPoint("TOPLEFT", hrLine_p1, (InterfaceOptionsFramePanelContainerWidth/2)+((textWidth/2) + 8), 0)
+	hrLine_p2:SetEndPoint("TOPLEFT", hrLine_p1, InterfaceOptionsFramePanelContainerWidth, 0)
+
+	return hrLine_p1
+end
+
 -- Header
 
 local lblTitle = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
@@ -72,27 +95,12 @@ lblTitle:SetPoint("TOPLEFT", CCIOFrame, "TOPLEFT", 12, -12)
 lblTitle:SetText("|cFFEFC502" .. AddonTitle .. " (v" .. C_AddOns.GetAddOnMetadata(AddonName, "Version") .. ")|r")
 
 -- HR line for General options
-local hrLine1_p1 = CCIOFrame:CreateLine()
-hrLine1_p1:SetColorTexture(0.5, 0.5, 0.5)
-hrLine1_p1:SetThickness(1)
-hrLine1_p1:SetStartPoint("TOPLEFT", lblTitle, 0, -32)
-hrLine1_p1:SetEndPoint("TOPLEFT", lblTitle, (InterfaceOptionsFramePanelContainerWidth/2)-36, -32)
-
-local hrLineText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-hrLineText:SetFont("Fonts\\FRIZQT__.TTF", 14)
-hrLineText:SetPoint("CENTER", hrLine1_p1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/2), 0)
-hrLineText:SetText("|cFFEFC502General|r")
-
-local hrLine1_p2 = CCIOFrame:CreateLine()
-hrLine1_p2:SetColorTexture(0.5, 0.5, 0.5)
-hrLine1_p2:SetThickness(1)
-hrLine1_p2:SetStartPoint("TOPLEFT", hrLine1_p1, (InterfaceOptionsFramePanelContainerWidth/2)+36, 0)
-hrLine1_p2:SetEndPoint("TOPLEFT", hrLine1_p1, InterfaceOptionsFramePanelContainerWidth, 0)
+local horizRule1 = createHorizontalRule(L.Options[localeStringOptions]["GeneralHeaderText"], lblTitle)
 
 -- Hide the Calendar Button
 
 local chkIOHideCalButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
-chkIOHideCalButton:SetPoint("TOPLEFT", hrLine1_p1, "BOTTOMLEFT", 0, -16)
+chkIOHideCalButton:SetPoint("TOPLEFT", horizRule1, "BOTTOMLEFT", 0, -16)
 
 chkIOHideCalButton:SetScript("OnUpdate", function(frame)
 	chkIOHideCalButton:SetChecked(CCConfig.HideCalendarButton)
@@ -117,27 +125,12 @@ chkIOHideCalButtonDesc:SetPoint("LEFT", chkIOHideCalButton, "LEFT", 0, -24)
 chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeStringOptions]["HideCalButtonDesc"].."|r")
 
 -- HR line for Art options
-local hrLine1_p3 = CCIOFrame:CreateLine()
-hrLine1_p3:SetColorTexture(0.5, 0.5, 0.5)
-hrLine1_p3:SetThickness(1)
-hrLine1_p3:SetStartPoint("TOPLEFT", chkIOHideCalButtonDesc, 0, -32)
-hrLine1_p3:SetEndPoint("TOPLEFT", chkIOHideCalButtonDesc, (InterfaceOptionsFramePanelContainerWidth/2)-20, -32)
-
-local hrLineText2 = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-hrLineText2:SetFont("Fonts\\FRIZQT__.TTF", 14)
-hrLineText2:SetPoint("CENTER", hrLine1_p3, "LEFT", (InterfaceOptionsFramePanelContainerWidth/2), 0)
-hrLineText2:SetText("|cFFEFC502Art|r")
-
-local hrLine1_p4 = CCIOFrame:CreateLine()
-hrLine1_p4:SetColorTexture(0.5, 0.5, 0.5)
-hrLine1_p4:SetThickness(1)
-hrLine1_p4:SetStartPoint("TOPLEFT", hrLine1_p3, (InterfaceOptionsFramePanelContainerWidth/2)+20, 0)
-hrLine1_p4:SetEndPoint("TOPLEFT", hrLine1_p3, InterfaceOptionsFramePanelContainerWidth, 0)
+local horizRule2 = createHorizontalRule(L.Options[localeStringOptions]["ArtHeaderText"], chkIOHideCalButtonDesc)
 
 -- PVP weekends
 
 local chkIOUsePVPArts = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
-chkIOUsePVPArts:SetPoint("TOPLEFT", hrLine1_p3, "BOTTOMLEFT", 0, -16)
+chkIOUsePVPArts:SetPoint("TOPLEFT", horizRule2, "BOTTOMLEFT", 0, -16)
 
 chkIOUsePVPArts:SetScript("OnUpdate", function(frame)
 	chkIOUsePVPArts:SetChecked(CCConfig.BattlegroundsArt)
