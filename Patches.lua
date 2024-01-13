@@ -89,6 +89,14 @@ local state = {
 	currentMonthOffset=0
 }
 
+local region = GetCVar("portal")
+local resetHour
+if region == "EU" then
+	resetHour = 5
+else
+	resetHour = 8
+end
+
 CALENDAR_FILTER_BATTLEGROUND = L.Options[localeString]["CALENDAR_FILTER_BATTLEGROUND"];
 
 -- Date Utilities
@@ -428,7 +436,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 							year=eventDate.year,
 							month=eventDate.month,
 							day=eventDate.day,
-							hour=8,
+							hour=resetHour,
 							min=0
 						}))),
 						difficultyName="",

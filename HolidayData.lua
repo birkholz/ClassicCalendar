@@ -8,6 +8,14 @@ local floor = floor
 local tinsert = tinsert
 local CopyTable = CopyTable
 
+local region = GetCVar("portal")
+local resetHour
+if region == "EU" then
+	resetHour = 5
+else
+	resetHour = 8
+end
+
 local function addDaysToDate(eventDate, dayCount)
 	local dateSeconds = time(eventDate)
 	dateSeconds = dateSeconds + dayCount * SECONDS_IN_DAY
@@ -256,8 +264,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	{
 		name="SoD Launch",
 		description="Season of Discovery officialy launched!",
-		startDate={ year=2023, month=11, day=30, hour=8, min=0 },
-		endDate={ year=2023, month=11, day=30, hour=8, min=0 },
+		startDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
+		endDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
@@ -266,8 +274,8 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	{
 		name="Phase 2 Launch",
 		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
-		startDate={ year=2024, month=2, day=8, hour=8, min=0 },
-		endDate={ year=2024, month=2, day=8, hour=8, min=0 },
+		startDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
+		endDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
@@ -290,7 +298,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		name=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=0, min=1 },
-		endDate={ year=2023, month=12, day=19, hour=8, min=0 },
+		endDate={ year=2023, month=12, day=19, hour=resetHour, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
 		artConfig="BattlegroundsArt",
@@ -303,7 +311,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		name=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
 		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
-		endDate={ year=2024, month=2, day=20, hour=8, min=0 },
+		endDate={ year=2024, month=2, day=20, hour=resetHour, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
 		artConfig="BattlegroundsArt",
@@ -316,7 +324,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--	 name=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
 	--	 description=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
 	--	 startDate={ year=2023, month=12, day=29, hour=0, min=1 },
-	--	 endDate={ year=2024, month=1, day=2, hour=8, min=0 },
+	--	 endDate={ year=2024, month=1, day=2, hour=resetHour, min=0 },
 	--  frequency=28,
 	--  CVar="calendarShowBattlegrounds",
 	--  artConfig="BattlegroundsArt",
