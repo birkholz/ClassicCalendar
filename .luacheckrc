@@ -32,6 +32,7 @@ globals = {
 	"GoToCCSettings",
 	"UpdateCalendarState",
 	"CalendarButtonFrame",
+	"GetClassicRaidResets",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",
@@ -79,5 +80,6 @@ globals = {
 	"InterfaceOptionsFrame_OpenToCategory",
 	"InterfaceOptionsFramePanelContainer",
 	"InterfaceOptions_AddCategory",
-	"CopyTable"
+	"CopyTable",
+	"C_Seasons"
 }

@@ -439,16 +439,6 @@ L.HolidayLocalization = {
 		},
 	},
 	["enUS"] = {
-		["Dungeons"] = {
-			["BlackfathomDeeps"] = "Blackfathom Deeps",
-			["Deadmines"] = "Deadmines",
-			["Gnomeregan"] = "Gnomeregan",
-			["RazorfenKraul"] = "Razorfen Kraul",
-			["ScarletMonastery"] = "Scarlet Monastery",
-			["ShadowfangKeep"] = "Shadowfang Keep",
-			["Stockades"] = "Stormwind Stockades",
-			["WailingCaverns"] = "Wailing Caverns",
-		},
 		["CalendarPVP"] = {
 			["ArathiBasin"] = {
 				["name"] = "Call to Arms: Arathi Basin",
@@ -782,813 +772,785 @@ L.HolidayLocalization = {
 
 L.DungeonLocalization = {
 	["ptBR"] = {
-		["Raids"] = {
-			["NúcleoDerretido"] = {
-				["name"] = "Núcleo Derretido",
-			},
-			["PicodaRochaNegraSuperior"] = {
-				["name"] = "Pico da Rocha Negra Superior",
-			},
-			["CovilAsaNegra"] = {
-				["name"] = "Covil Asa Negra",
-			},
-			["Zul'Gurub"] = {
-				["name"] = "Zul'Gurub",
-			},
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
+		[136336] = {
+			"Gnomeregan", -- [1]
 		},
-		["Dungeons"] = {
-			["AbismoRochaNegra"] = {
-				["name"] = "Abismo Rocha Negra",
-			},
-			["CárceredeVentobravo"] = {
-				["name"] = "Cárcere de Ventobravo",
-			},
-			["GládioCruel–Leste"] = {
-				["name"] = "Gládio Cruel – Leste",
-			},
-			["PicodaRochaNegraInferior"] = {
-				["name"] = "Pico da Rocha Negra Inferior",
-			},
-			["UrzaldosMortos"] = {
-				["name"] = "Urzal dos Mortos",
-			},
-			["MinasMortas"] = {
-				["name"] = "Minas Mortas",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
-			["MonastérioEscarlate"] = {
-				["name"] = "Monastério Escarlate",
-			},
-			["UrzaldosTuscos"] = {
-				["name"] = "Urzal dos Tuscos",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["GládioCruel–Oeste"] = {
-				["name"] = "Gládio Cruel – Oeste",
-			},
-			["BastilhadaPresaNegra"] = {
-				["name"] = "Bastilha da Presa Negra",
-			},
-			["CavernaUlulante"] = {
-				["name"] = "Caverna Ululante",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
-			["Zul'Farrak"] = {
-				["name"] = "Zul'Farrak",
-			},
-			["TemploSubmerso"] = {
-				["name"] = "Templo Submerso",
-			},
-			["GládioCruel–Norte"] = {
-				["name"] = "Gládio Cruel – Norte",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["Scolomântia"] = {
-				["name"] = "Scolomântia",
-			},
-			["ProfundezasNegras"] = {
-				["name"] = "Profundezas Negras",
-			},
+		[136352] = {
+			"Urzal dos Mortos", -- [1]
+		},
+		[136325] = {
+			"Profundezas Negras", -- [1]
+		},
+		[136360] = {
+			"Templo Submerso", -- [1]
+		},
+		[136364] = {
+			"Caverna Ululante", -- [1]
+		},
+		[136368] = {
+			"Zul'Farrak", -- [1]
+		},
+		[136345] = {
+			"Maraudon – Cristais Laranja", -- [1]
+			"Maraudon – Cristais Roxos", -- [2]
+			"Maraudon – Águas Imaculadas", -- [3]
+		},
+		[136353] = {
+			"Urzal dos Tuscos", -- [1]
+		},
+		[136326] = {
+			"Abismo Rocha Negra - Cidade Superior", -- [1]
+			"Abismo Rocha Negra – Prisão", -- [2]
+		},
+		[136350] = {
+			"Cavernas Ígneas", -- [1]
+		},
+		[136354] = {
+			"Monastério Escarlate - Armaria", -- [1]
+			"Monastério Escarlate - Biblioteca", -- [2]
+			"Monastério Escarlate - Catedral", -- [3]
+			"Monastério Escarlate - Cemitério", -- [4]
+		},
+		[136327] = {
+			"Pico da Rocha Negra Inferior", -- [1]
+		},
+		[136357] = {
+			"Bastilha da Presa Negra", -- [1]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136333] = {
+			"Gládio Cruel – Leste", -- [1]
+			"Gládio Cruel – Norte", -- [2]
+			"Gládio Cruel – Oeste", -- [3]
+		},
+		[136355] = {
+			"Scolomântia", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Entrada de Serviço", -- [1]
+			"Stratholme - Portão Principal", -- [2]
+		},
+		[136332] = {
+			"Minas Mortas", -- [1]
+		},
+		[136358] = {
+			"Cárcere de Ventobravo", -- [1]
 		},
 	},
 	["ruRU"] = {
-		["Raids"] = {
-			["ВерхняячастьпикаЧернойгоры"] = {
-				["name"] = "Верхняя часть пика Черной горы",
-			},
-			["ОгненныеНедра"] = {
-				["name"] = "Огненные Недра",
-			},
-			["Ониксия"] = {
-				["name"] = "Ониксия",
-			},
-			["ЛоговоКрылаТьмы"] = {
-				["name"] = "Логово Крыла Тьмы",
-			},
-			["Зул'Гуруб"] = {
-				["name"] = "Зул'Гуруб",
-			},
+		[136336] = {
+			"Гномреган", -- [1]
 		},
-		["Dungeons"] = {
-			["ПещерыСтенаний"] = {
-				["name"] = "Пещеры Стенаний",
-			},
-			["НепрогляднаяПучина"] = {
-				["name"] = "Непроглядная Пучина",
-			},
-			["Зул'Фаррак"] = {
-				["name"] = "Зул'Фаррак",
-			},
-			["Ульдаман"] = {
-				["name"] = "Ульдаман",
-			},
-			["НижняячастьпикаЧернойгоры"] = {
-				["name"] = "Нижняя часть пика Черной горы",
-			},
-			["Некроситет"] = {
-				["name"] = "Некроситет",
-			},
-			["ГлубиныЧернойгоры"] = {
-				["name"] = "Глубины Черной горы",
-			},
-			["Забытыйгород:запад"] = {
-				["name"] = "Забытый город: запад",
-			},
-			["КурганыИглошкурых"] = {
-				["name"] = "Курганы Иглошкурых",
-			},
-			["Стратхольм"] = {
-				["name"] = "Стратхольм",
-			},
-			["КрепостьТемногоКлыка"] = {
-				["name"] = "Крепость Темного Клыка",
-			},
-			["Мертвыекопи"] = {
-				["name"] = "Мертвые копи",
-			},
-			["Затонувшийхрам"] = {
-				["name"] = "Затонувший храм",
-			},
-			["Гномреган"] = {
-				["name"] = "Гномреган",
-			},
-			["ТюрьмаШтормграда"] = {
-				["name"] = "Тюрьма Штормграда",
-			},
-			["ЛабиринтыИглошкурых"] = {
-				["name"] = "Лабиринты Иглошкурых",
-			},
-			["Мародон"] = {
-				["name"] = "Мародон",
-			},
-			["Забытыйгород:север"] = {
-				["name"] = "Забытый город: север",
-			},
-			["МонастырьАлогоордена"] = {
-				["name"] = "Монастырь Алого ордена",
-			},
-			["Забытыйгород:восток"] = {
-				["name"] = "Забытый город: восток",
-			},
+		[136352] = {
+			"Курганы Иглошкурых", -- [1]
+		},
+		[136325] = {
+			"Непроглядная Пучина", -- [1]
+		},
+		[136360] = {
+			"Затонувший храм", -- [1]
+		},
+		[136364] = {
+			"Пещеры Стенаний", -- [1]
+		},
+		[136368] = {
+			"Зул'Фаррак", -- [1]
+		},
+		[136345] = {
+			"Мародон - Лиловые кристаллы", -- [1]
+			"Мародон - Оранжевые кристаллы", -- [2]
+			"Мародон - Чистые воды", -- [3]
+		},
+		[136353] = {
+			"Лабиринты Иглошкурых", -- [1]
+		},
+		[136326] = {
+			"Глубины Черной горы - Верхний город", -- [1]
+			"Глубины Черной горы - Тюрьма", -- [2]
+		},
+		[136350] = {
+			"Огненная Пропасть", -- [1]
+		},
+		[136354] = {
+			"Монастырь Алого ордена: библиотека", -- [1]
+			"Монастырь Алого ордена: кладбище", -- [2]
+			"Монастырь Алого ордена: оружейная", -- [3]
+			"Монастырь Алого ордена: собор", -- [4]
+		},
+		[136327] = {
+			"Нижняя часть пика Черной горы", -- [1]
+		},
+		[136358] = {
+			"Тюрьма Штормграда", -- [1]
+		},
+		[136363] = {
+			"Ульдаман", -- [1]
+		},
+		[136357] = {
+			"Крепость Темного Клыка", -- [1]
+		},
+		[136355] = {
+			"Некроситет", -- [1]
+		},
+		[136359] = {
+			"Стратхольм - Главные врата", -- [1]
+			"Стратхольм - Черный ход", -- [2]
+		},
+		[136332] = {
+			"Мертвые копи", -- [1]
+		},
+		[136333] = {
+			"Забытый город: восток", -- [1]
+			"Забытый город: запад", -- [2]
+			"Забытый город: север", -- [3]
 		},
 	},
 	["frFR"] = {
-		["Dungeons"] = {
-			["Zul’Farrak"] = {
-				["name"] = "Zul’Farrak",
-			},
-			["Mortemines"] = {
-				["name"] = "Mortemines",
-			},
-			["ProfondeursdeBrassenoire"] = {
-				["name"] = "Profondeurs de Brassenoire",
-			},
-			["BasdupicRochenoire"] = {
-				["name"] = "Bas du pic Rochenoire",
-			},
-			["Templeenglouti"] = {
-				["name"] = "Temple englouti",
-			},
-			["KraaldeTranchebauge"] = {
-				["name"] = "Kraal de Tranchebauge",
-			},
-			["MonastèreÉcarlate"] = {
-				["name"] = "Monastère Écarlate",
-			},
-			["Haches-Tripes-Ouest"] = {
-				["name"] = "Haches-Tripes - Ouest",
-			},
-			["ProfondeursdeRochenoire"] = {
-				["name"] = "Profondeurs de Rochenoire",
-			},
-			["PrisondeHurlevent"] = {
-				["name"] = "Prison de Hurlevent",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["Haches-Tripes-Nord"] = {
-				["name"] = "Haches-Tripes - Nord",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["CavernesdesLamentations"] = {
-				["name"] = "Cavernes des Lamentations",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
-			["Haches-Tripes-Est"] = {
-				["name"] = "Haches-Tripes - Est",
-			},
-			["Donjond’Ombrecroc"] = {
-				["name"] = "Donjon d’Ombrecroc",
-			},
-			["Scholomance"] = {
-				["name"] = "Scholomance",
-			},
-			["SouillesdeTranchebauge"] = {
-				["name"] = "Souilles de Tranchebauge",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
+		[136336] = {
+			"Gnomeregan", -- [1]
 		},
-		["Raids"] = {
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
-			["Zul’Gurub"] = {
-				["name"] = "Zul’Gurub",
-			},
-			["Repairedel’Ailenoire"] = {
-				["name"] = "Repaire de l’Aile noire",
-			},
-			["SommetdupicRochenoire"] = {
-				["name"] = "Sommet du pic Rochenoire",
-			},
-			["CœurduMagma"] = {
-				["name"] = "Cœur du Magma",
-			},
+		[136352] = {
+			"Souilles de Tranchebauge", -- [1]
+		},
+		[136325] = {
+			"Profondeurs de Brassenoire", -- [1]
+		},
+		[136360] = {
+			"Temple englouti", -- [1]
+		},
+		[136364] = {
+			"Cavernes des Lamentations", -- [1]
+		},
+		[136368] = {
+			"Zul’Farrak", -- [1]
+		},
+		[136345] = {
+			"Maraudon - Cristaux oranges", -- [1]
+			"Maraudon - Cristaux violets", -- [2]
+			"Maraudon - Les eaux pures", -- [3]
+		},
+		[136353] = {
+			"Kraal de Tranchebauge", -- [1]
+		},
+		[136326] = {
+			"Profondeurs de Rochenoire - Prison", -- [1]
+			"Profondeurs de Rochenoire - Ville haute", -- [2]
+		},
+		[136350] = {
+			"Gouffre de Ragefeu", -- [1]
+		},
+		[136354] = {
+			"Monastère Écarlate - armurerie", -- [1]
+			"Monastère Écarlate - bibliothèque", -- [2]
+			"Monastère Écarlate - cathédrale", -- [3]
+			"Monastère Écarlate - cimetière", -- [4]
+		},
+		[136327] = {
+			"Bas du pic Rochenoire", -- [1]
+		},
+		[136358] = {
+			"Prison de Hurlevent", -- [1]
+		},
+		[136332] = {
+			"Mortemines", -- [1]
+		},
+		[136333] = {
+			"Haches-Tripes - Est", -- [1]
+			"Haches-Tripes - Nord", -- [2]
+			"Haches-Tripes - Ouest", -- [3]
+		},
+		[136355] = {
+			"Scholomance", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Entrée de service", -- [1]
+			"Stratholme - Grande porte", -- [2]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136357] = {
+			"Donjon d’Ombrecroc", -- [1]
 		},
 	},
 	["koKR"] = {
-		["Dungeons"] = {
-			["가라앉은사원(아탈학카르신전)"] = {
-				["name"] = "가라앉은 사원(아탈학카르 신전)",
-			},
-			["스트라솔름"] = {
-				["name"] = "스트라솔름",
-			},
-			["놈리건"] = {
-				["name"] = "놈리건",
-			},
-			["붉은십자군수도원"] = {
-				["name"] = "붉은십자군 수도원",
-			},
-			["검은바위나락"] = {
-				["name"] = "검은바위 나락",
-			},
-			["그림자송곳니성채"] = {
-				["name"] = "그림자송곳니 성채",
-			},
-			["줄파락"] = {
-				["name"] = "줄파락",
-			},
-			["스톰윈드지하감옥"] = {
-				["name"] = "스톰윈드 지하감옥",
-			},
-			["혈투의전장-북쪽"] = {
-				["name"] = "혈투의 전장 - 북쪽",
-			},
-			["스칼로맨스"] = {
-				["name"] = "스칼로맨스",
-			},
-			["혈투의전장-동쪽"] = {
-				["name"] = "혈투의 전장 - 동쪽",
-			},
-			["혈투의전장-서쪽"] = {
-				["name"] = "혈투의 전장 - 서쪽",
-			},
-			["가시덩굴구릉"] = {
-				["name"] = "가시덩굴 구릉",
-			},
-			["통곡의동굴"] = {
-				["name"] = "통곡의 동굴",
-			},
-			["검은심연의나락"] = {
-				["name"] = "검은심연의 나락",
-			},
-			["가시덩굴우리"] = {
-				["name"] = "가시덩굴 우리",
-			},
-			["마라우돈"] = {
-				["name"] = "마라우돈",
-			},
-			["죽음의폐광"] = {
-				["name"] = "죽음의 폐광",
-			},
-			["검은바위첨탑하층"] = {
-				["name"] = "검은바위 첨탑 하층",
-			},
-			["울다만"] = {
-				["name"] = "울다만",
-			},
+		[136336] = {
+			"놈리건", -- [1]
 		},
-		["Raids"] = {
-			["검은날개둥지"] = {
-				["name"] = "검은날개 둥지",
-			},
-			["검은바위첨탑상층"] = {
-				["name"] = "검은바위 첨탑 상층",
-			},
-			["줄구룹"] = {
-				["name"] = "줄구룹",
-			},
-			["화산심장부"] = {
-				["name"] = "화산 심장부",
-			},
-			["오닉시아"] = {
-				["name"] = "오닉시아",
-			},
+		[136352] = {
+			"가시덩굴 구릉", -- [1]
+		},
+		[136325] = {
+			"검은심연의 나락", -- [1]
+		},
+		[136360] = {
+			"가라앉은 사원", -- [1]
+		},
+		[136364] = {
+			"통곡의 동굴", -- [1]
+		},
+		[136368] = {
+			"줄파락", -- [1]
+		},
+		[136345] = {
+			"마라우돈 - 보라색 수정", -- [1]
+			"마라우돈 - 원시의 연못", -- [2]
+			"마라우돈 - 주황색 수정", -- [3]
+		},
+		[136353] = {
+			"가시덩굴 우리", -- [1]
+		},
+		[136326] = {
+			"검은바위 나락 - 감옥", -- [1]
+			"검은바위 나락 - 상부 도시", -- [2]
+		},
+		[136350] = {
+			"성난불길 협곡", -- [1]
+		},
+		[136354] = {
+			"붉은십자군 수도원 - 대성당", -- [1]
+			"붉은십자군 수도원 - 도서관", -- [2]
+			"붉은십자군 수도원 - 묘지", -- [3]
+			"붉은십자군 수도원 - 무기고", -- [4]
+		},
+		[136327] = {
+			"검은바위 첨탑 하층", -- [1]
+		},
+		[136358] = {
+			"스톰윈드 지하감옥", -- [1]
+		},
+		[136332] = {
+			"죽음의 폐광", -- [1]
+		},
+		[136357] = {
+			"그림자송곳니 성채", -- [1]
+		},
+		[136355] = {
+			"스칼로맨스", -- [1]
+		},
+		[136359] = {
+			"스트라솔름 - 공무용 입구", -- [1]
+			"스트라솔름 - 정문", -- [2]
+		},
+		[136363] = {
+			"울다만", -- [1]
+		},
+		[136333] = {
+			"혈투의 전장 - 동쪽", -- [1]
+			"혈투의 전장 - 북쪽", -- [2]
+			"혈투의 전장 - 서쪽", -- [3]
 		},
 	},
 	["esMX"] = {
-		["Dungeons"] = {
-			["LaMatanza:Este"] = {
-				["name"] = "La Matanza: Este",
-			},
-			["CumbredeRocaNegrainferior"] = {
-				["name"] = "Cumbre de Roca Negra inferior",
-			},
-			["ZahúrdaRajacieno"] = {
-				["name"] = "Zahúrda Rajacieno",
-			},
-			["MinasdelaMuerte"] = {
-				["name"] = "Minas de la Muerte",
-			},
-			["Scholomance"] = {
-				["name"] = "Scholomance",
-			},
-			["MazmorrasdeVentormenta"] = {
-				["name"] = "Mazmorras de Ventormenta",
-			},
-			["CuevasdelosLamentos"] = {
-				["name"] = "Cuevas de los Lamentos",
-			},
-			["ProfundidadesdeRocaNegra"] = {
-				["name"] = "Profundidades de Roca Negra",
-			},
-			["MonasterioEscarlata"] = {
-				["name"] = "Monasterio Escarlata",
-			},
-			["HoradoRajacieno"] = {
-				["name"] = "Horado Rajacieno",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["CastillodeColmilloOscuro"] = {
-				["name"] = "Castillo de Colmillo Oscuro",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
-			["Zul'Farrak"] = {
-				["name"] = "Zul'Farrak",
-			},
-			["LaMatanza:Oeste"] = {
-				["name"] = "La Matanza: Oeste",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["CavernasdeBrazanegra"] = {
-				["name"] = "Cavernas de Brazanegra",
-			},
-			["LaMatanza:Norte"] = {
-				["name"] = "La Matanza: Norte",
-			},
-			["TemploSumergido"] = {
-				["name"] = "Templo Sumergido",
-			},
+		[136336] = {
+			"Gnomeregan", -- [1]
 		},
-		["Raids"] = {
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
-			["GuaridadeAlanegra"] = {
-				["name"] = "Guarida de Alanegra",
-			},
-			["NúcleodeMagma"] = {
-				["name"] = "Núcleo de Magma",
-			},
-			["Zul'Gurub"] = {
-				["name"] = "Zul'Gurub",
-			},
-			["CumbredeRocaNegrasuperior"] = {
-				["name"] = "Cumbre de Roca Negra superior",
-			},
+		[136352] = {
+			"Zahúrda Rajacieno", -- [1]
+		},
+		[136325] = {
+			"Cavernas de Brazanegra", -- [1]
+		},
+		[136360] = {
+			"Templo Sumergido", -- [1]
+		},
+		[136364] = {
+			"Cuevas de los Lamentos", -- [1]
+		},
+		[136368] = {
+			"Zul'Farrak", -- [1]
+		},
+		[136345] = {
+			"Maraudon - Aguas prístinas", -- [1]
+			"Maraudon - Cristales Naranja", -- [2]
+			"Maraudon - Cristales Púrpura", -- [3]
+		},
+		[136353] = {
+			"Horado Rajacieno", -- [1]
+		},
+		[136326] = {
+			"Profundidades de Roca Negra - Alto Arrabal", -- [1]
+			"Profundidades de Roca Negra - Prisión", -- [2]
+		},
+		[136350] = {
+			"Sima Ígnea", -- [1]
+		},
+		[136354] = {
+			"Monasterio Escarlata - Arsenal", -- [1]
+			"Monasterio Escarlata - Biblioteca", -- [2]
+			"Monasterio Escarlata - Catedral", -- [3]
+			"Monasterio Escarlata - Cementerio", -- [4]
+		},
+		[136327] = {
+			"Cumbre de Roca Negra inferior", -- [1]
+		},
+		[136358] = {
+			"Mazmorras de Ventormenta", -- [1]
+		},
+		[136332] = {
+			"Minas de la Muerte", -- [1]
+		},
+		[136333] = {
+			"La Masacre: Este", -- [1]
+			"La Masacre: Norte", -- [2]
+			"La Masacre: Oeste", -- [3]
+		},
+		[136355] = {
+			"Scholomance", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Entrada del servicio", -- [1]
+			"Stratholme - Puerta principal", -- [2]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136357] = {
+			"Castillo de Colmillo Oscuro", -- [1]
 		},
 	},
 	["enUS"] = {
-		["Raids"] = {
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
-			["Zul'Gurub"] = {
-				["name"] = "Zul'Gurub",
-			},
-			["UpperBlackrockSpire"] = {
-				["name"] = "Upper Blackrock Spire",
-			},
-			["MoltenCore"] = {
-				["name"] = "Molten Core",
-			},
-			["BlackwingLair"] = {
-				["name"] = "Blackwing Lair",
-			},
+		[136336] = {
+			"Gnomeregan", -- [1]
 		},
-		["Dungeons"] = {
-			["LowerBlackrockSpire"] = {
-				["name"] = "Lower Blackrock Spire",
-			},
-			["DireMaul-West"] = {
-				["name"] = "Dire Maul - West",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
-			["Zul'Farak"] = {
-				["name"] = "Zul'Farak",
-			},
-			["StormwindStockades"] = {
-				["name"] = "Stormwind Stockades",
-			},
-			["Scholomance"] = {
-				["name"] = "Scholomance",
-			},
-			["Deadmines"] = {
-				["name"] = "Deadmines",
-			},
-			["BlackfathomDeeps"] = {
-				["name"] = "Blackfathom Deeps",
-			},
-			["ShadowfangKeep"] = {
-				["name"] = "Shadowfang Keep",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["DireMaul-East"] = {
-				["name"] = "Dire Maul - East",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["ScarletMonastery"] = {
-				["name"] = "Scarlet Monastery",
-			},
-			["RazorfenKraul"] = {
-				["name"] = "Razorfen Kraul",
-			},
-			["BlackrockDepths"] = {
-				["name"] = "Blackrock Depths",
-			},
-			["RazorfenDowns"] = {
-				["name"] = "Razorfen Downs",
-			},
-			["DireMaul-North"] = {
-				["name"] = "Dire Maul - North",
-			},
-			["WailingCaverns"] = {
-				["name"] = "Wailing Caverns",
-			},
-			["SunkenTemple"] = {
-				["name"] = "Sunken Temple",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
+		[136352] = {
+			"Razorfen Downs", -- [1]
 		},
-	},
-	["esES"] = {
-		["Raids"] = {
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
-			["NúcleodeMagma"] = {
-				["name"] = "Núcleo de Magma",
-			},
-			["GuaridaAlanegra"] = {
-				["name"] = "Guarida Alanegra",
-			},
-			["Zul'Gurub"] = {
-				["name"] = "Zul'Gurub",
-			},
-			["CumbredeRocaNegraSuperior"] = {
-				["name"] = "Cumbre de Roca Negra Superior",
-			},
+		[136325] = {
+			"Blackfathom Deeps", -- [1]
 		},
-		["Dungeons"] = {
-			["CastillodeColmilloOscuro"] = {
-				["name"] = "Castillo de Colmillo Oscuro",
-			},
-			["LaMasacre-Este"] = {
-				["name"] = "La Masacre - Este",
-			},
-			["MinasdelaMuerte"] = {
-				["name"] = "Minas de la Muerte",
-			},
-			["Scholomance"] = {
-				["name"] = "Scholomance",
-			},
-			["MazmorrasdeVentormenta"] = {
-				["name"] = "Mazmorras de Ventormenta",
-			},
-			["CuevasdelosLamentos"] = {
-				["name"] = "Cuevas de los Lamentos",
-			},
-			["ProfundidadesdeRocaNegra"] = {
-				["name"] = "Profundidades de Roca Negra",
-			},
-			["MonasterioEscarlata"] = {
-				["name"] = "Monasterio Escarlata",
-			},
-			["LaMasacre-Oeste"] = {
-				["name"] = "La Masacre - Oeste",
-			},
-			["HoradoRajacieno"] = {
-				["name"] = "Horado Rajacieno",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
-			["ZahúrdaRajacieno"] = {
-				["name"] = "Zahúrda Rajacieno",
-			},
-			["Zul'Farrak"] = {
-				["name"] = "Zul'Farrak",
-			},
-			["CumbredeRocaNegraInferior"] = {
-				["name"] = "Cumbre de Roca Negra Inferior",
-			},
-			["TemploSumergido"] = {
-				["name"] = "Templo Sumergido",
-			},
-			["CavernasdeBrazanegra"] = {
-				["name"] = "Cavernas de Brazanegra",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["LaMasacre-Norte"] = {
-				["name"] = "La Masacre - Norte",
-			},
+		[136360] = {
+			"Sunken Temple", -- [1]
 		},
-	},
-	["deDE"] = {
-		["Dungeons"] = {
-			["DasScharlachroteKloster"] = {
-				["name"] = "Das Scharlachrote Kloster",
-			},
-			["TiefschwarzeGrotte"] = {
-				["name"] = "Tiefschwarze Grotte",
-			},
-			["Schwarzfelstiefen"] = {
-				["name"] = "Schwarzfelstiefen",
-			},
-			["KralderKlingenhauer"] = {
-				["name"] = "Kral der Klingenhauer",
-			},
-			["HöhlendesWehklagens"] = {
-				["name"] = "Höhlen des Wehklagens",
-			},
-			["BurgSchattenfang"] = {
-				["name"] = "Burg Schattenfang",
-			},
-			["Maraudon"] = {
-				["name"] = "Maraudon",
-			},
-			["Düsterbruch-West"] = {
-				["name"] = "Düsterbruch - West",
-			},
-			["Scholomance"] = {
-				["name"] = "Scholomance",
-			},
-			["Düsterbruch-Ost"] = {
-				["name"] = "Düsterbruch - Ost",
-			},
-			["Stratholme"] = {
-				["name"] = "Stratholme",
-			},
-			["Düsterbruch-Nord"] = {
-				["name"] = "Düsterbruch - Nord",
-			},
-			["Gnomeregan"] = {
-				["name"] = "Gnomeregan",
-			},
-			["VersunkenerTempel"] = {
-				["name"] = "Versunkener Tempel",
-			},
-			["Zul'Farrak"] = {
-				["name"] = "Zul'Farrak",
-			},
-			["Todesminen"] = {
-				["name"] = "Todesminen",
-			},
-			["Uldaman"] = {
-				["name"] = "Uldaman",
-			},
-			["HügelderKlingenhauer"] = {
-				["name"] = "Hügel der Klingenhauer",
-			},
-			["UntereSchwarzfelsspitze"] = {
-				["name"] = "Untere Schwarzfelsspitze",
-			},
-			["VerliesvonStormwind"] = {
-				["name"] = "Verlies von Stormwind",
-			},
+		[136333] = {
+			"Dire Maul - East", -- [1]
+			"Dire Maul - North", -- [2]
+			"Dire Maul - West", -- [3]
 		},
-		["Raids"] = {
-			["Onyxia"] = {
-				["name"] = "Onyxia",
-			},
-			["Zul'Gurub"] = {
-				["name"] = "Zul'Gurub",
-			},
-			["Pechschwingenhort"] = {
-				["name"] = "Pechschwingenhort",
-			},
-			["ObereSchwarzfelsspitze"] = {
-				["name"] = "Obere Schwarzfelsspitze",
-			},
-			["GeschmolzenerKern"] = {
-				["name"] = "Geschmolzener Kern",
-			},
+		[136368] = {
+			"Zul'Farrak", -- [1]
 		},
-	},
-	["zhTW"] = {
-		["Raids"] = {
-			["黑翼之巢"] = {
-				["name"] = "黑翼之巢",
-			},
-			["黑石塔上層"] = {
-				["name"] = "黑石塔上層",
-			},
-			["熔火之心"] = {
-				["name"] = "熔火之心",
-			},
-			["祖爾格拉布"] = {
-				["name"] = "祖爾格拉布",
-			},
-			["奧妮克希亞"] = {
-				["name"] = "奧妮克希亞",
-			},
+		[136345] = {
+			"Maraudon - Orange Crystals", -- [1]
+			"Maraudon - Pristine Waters", -- [2]
+			"Maraudon - Purple Crystals", -- [3]
 		},
-		["Dungeons"] = {
-			["暴風城監獄"] = {
-				["name"] = "暴風城監獄",
-			},
-			["厄運之槌-北方"] = {
-				["name"] = "厄運之槌 - 北方",
-			},
-			["厄運之槌-西方"] = {
-				["name"] = "厄運之槌 - 西方",
-			},
-			["奧達曼"] = {
-				["name"] = "奧達曼",
-			},
-			["剃刀高地"] = {
-				["name"] = "剃刀高地",
-			},
-			["祖爾法拉克"] = {
-				["name"] = "祖爾法拉克",
-			},
-			["血色修道院"] = {
-				["name"] = "血色修道院",
-			},
-			["黑澗深淵"] = {
-				["name"] = "黑澗深淵",
-			},
-			["斯坦索姆"] = {
-				["name"] = "斯坦索姆",
-			},
-			["黑石深淵"] = {
-				["name"] = "黑石深淵",
-			},
-			["死亡礦坑"] = {
-				["name"] = "死亡礦坑",
-			},
-			["厄運之槌-東方"] = {
-				["name"] = "厄運之槌 - 東方",
-			},
-			["剃刀沼澤"] = {
-				["name"] = "剃刀沼澤",
-			},
-			["沉沒的神廟"] = {
-				["name"] = "沉沒的神廟",
-			},
-			["黑石塔下層"] = {
-				["name"] = "黑石塔下層",
-			},
-			["通靈學院"] = {
-				["name"] = "通靈學院",
-			},
-			["哀嚎洞穴"] = {
-				["name"] = "哀嚎洞穴",
-			},
-			["影牙城堡"] = {
-				["name"] = "影牙城堡",
-			},
-			["諾姆瑞根"] = {
-				["name"] = "諾姆瑞根",
-			},
-			["瑪拉頓"] = {
-				["name"] = "瑪拉頓",
-			},
+		[136353] = {
+			"Razorfen Kraul", -- [1]
+		},
+		[136357] = {
+			"Shadowfang Keep", -- [1]
+		},
+		[136350] = {
+			"Ragefire Chasm", -- [1]
+		},
+		[136354] = {
+			"Scarlet Monastery - Armory", -- [1]
+			"Scarlet Monastery - Cathedral", -- [2]
+			"Scarlet Monastery - Graveyard", -- [3]
+			"Scarlet Monastery - Library", -- [4]
+		},
+		[136358] = {
+			"Stormwind Stockade", -- [1]
+		},
+		[136364] = {
+			"Wailing Caverns", -- [1]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136327] = {
+			"Lower Blackrock Spire", -- [1]
+		},
+		[136355] = {
+			"Scholomance", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Main Gate", -- [1]
+			"Stratholme - Service Entrance", -- [2]
+		},
+		[136332] = {
+			"Deadmines", -- [1]
+		},
+		[136326] = {
+			"Blackrock Depths - Prison", -- [1]
+			"Blackrock Depths - Upper City", -- [2]
 		},
 	},
 	["zhCN"] = {
-		["Dungeons"] = {
-			["哀嚎洞穴"] = {
-				["name"] = "哀嚎洞穴",
-			},
-			["厄运之槌-东"] = {
-				["name"] = "厄运之槌 - 东",
-			},
-			["影牙城堡"] = {
-				["name"] = "影牙城堡",
-			},
-			["暴风城监狱"] = {
-				["name"] = "暴风城监狱",
-			},
-			["通灵学院"] = {
-				["name"] = "通灵学院",
-			},
-			["血色修道院"] = {
-				["name"] = "血色修道院",
-			},
-			["斯坦索姆"] = {
-				["name"] = "斯坦索姆",
-			},
-			["黑暗深渊"] = {
-				["name"] = "黑暗深渊",
-			},
-			["厄运之槌-西"] = {
-				["name"] = "厄运之槌 - 西",
-			},
-			["玛拉顿"] = {
-				["name"] = "玛拉顿",
-			},
-			["奥达曼"] = {
-				["name"] = "奥达曼",
-			},
-			["剃刀沼泽"] = {
-				["name"] = "剃刀沼泽",
-			},
-			["祖尔法兰克"] = {
-				["name"] = "祖尔法兰克",
-			},
-			["剃刀高地"] = {
-				["name"] = "剃刀高地",
-			},
-			["厄运之槌-北"] = {
-				["name"] = "厄运之槌 - 北",
-			},
-			["诺莫瑞根"] = {
-				["name"] = "诺莫瑞根",
-			},
-			["死亡矿井"] = {
-				["name"] = "死亡矿井",
-			},
-			["沉没的神庙"] = {
-				["name"] = "沉没的神庙",
-			},
-			["黑石塔下层"] = {
-				["name"] = "黑石塔下层",
-			},
-			["黑石深渊"] = {
-				["name"] = "黑石深渊",
-			},
+		[136336] = {
+			"诺莫瑞根", -- [1]
 		},
-		["Raids"] = {
-			["黑石塔上层"] = {
-				["name"] = "黑石塔上层",
-			},
-			["奥妮克希亚"] = {
-				["name"] = "奥妮克希亚",
-			},
-			["熔火之心"] = {
-				["name"] = "熔火之心",
-			},
-			["祖尔格拉布"] = {
-				["name"] = "祖尔格拉布",
-			},
-			["黑翼之巢"] = {
-				["name"] = "黑翼之巢",
-			},
+		[136352] = {
+			"剃刀高地", -- [1]
 		},
+		[136325] = {
+			"黑暗深渊", -- [1]
+		},
+		[136360] = {
+			"沉没的神庙", -- [1]
+		},
+		[136364] = {
+			"哀嚎洞穴", -- [1]
+		},
+		[136368] = {
+			"祖尔法拉克", -- [1]
+		},
+		[136345] = {
+			"玛拉顿－橙色水晶入口", -- [1]
+			"玛拉顿－水池入口", -- [2]
+			"玛拉顿－紫色水晶入口", -- [3]
+		},
+		[136353] = {
+			"剃刀沼泽", -- [1]
+		},
+		[136357] = {
+			"影牙城堡", -- [1]
+		},
+		[136350] = {
+			"怒焰裂谷", -- [1]
+		},
+		[136354] = {
+			"血色修道院 - 军械库", -- [1]
+			"血色修道院 - 图书馆", -- [2]
+			"血色修道院 - 墓地", -- [3]
+			"血色修道院 - 教堂", -- [4]
+		},
+		[136358] = {
+			"暴风城监狱", -- [1]
+		},
+		[136326] = {
+			"黑石深渊－上层区", -- [1]
+			"黑石深渊－监狱区", -- [2]
+		},
+		[136327] = {
+			"黑石塔下层", -- [1]
+		},
+		[136333] = {
+			"厄运之槌 - 东", -- [1]
+			"厄运之槌 - 北", -- [2]
+			"厄运之槌 - 西", -- [3]
+		},
+		[136355] = {
+			"通灵学院", -- [1]
+		},
+		[136359] = {
+			"斯坦索姆－后门", -- [1]
+			"斯坦索姆－正门", -- [2]
+		},
+		[136363] = {
+			"奥达曼", -- [1]
+		},
+		[136332] = {
+			"死亡矿井", -- [1]
+		},
+	},
+	["zhTW"] = {
+		[136336] = {
+			"諾姆瑞根", -- [1]
+		},
+		[136352] = {
+			"剃刀高地", -- [1]
+		},
+		[136325] = {
+			"黑暗深淵", -- [1]
+		},
+		[136360] = {
+			"沉沒的神廟", -- [1]
+		},
+		[136364] = {
+			"哀嚎洞穴", -- [1]
+		},
+		[136368] = {
+			"祖爾法拉克", -- [1]
+		},
+		[136345] = {
+			"瑪拉頓 – 原始水域", -- [1]
+			"瑪拉頓 – 橘水晶區", -- [2]
+			"瑪拉頓 – 紫水晶區", -- [3]
+		},
+		[136353] = {
+			"剃刀沼澤", -- [1]
+		},
+		[136357] = {
+			"影牙城堡", -- [1]
+		},
+		[136350] = {
+			"怒焰裂谷", -- [1]
+		},
+		[136354] = {
+			"血色修道院 - 圖書館", -- [1]
+			"血色修道院 - 墓園", -- [2]
+			"血色修道院 - 教堂", -- [3]
+			"血色修道院 - 軍械庫", -- [4]
+		},
+		[136358] = {
+			"暴風城監獄", -- [1]
+		},
+		[136332] = {
+			"死亡礦坑", -- [1]
+		},
+		[136327] = {
+			"黑石塔下層", -- [1]
+		},
+		[136333] = {
+			"厄運之槌 - 北方", -- [1]
+			"厄運之槌 - 東方", -- [2]
+			"厄運之槌 - 西方", -- [3]
+		},
+		[136355] = {
+			"通靈學院", -- [1]
+		},
+		[136359] = {
+			"斯坦索姆 - 主大門", -- [1]
+			"斯坦索姆 - 僕從入口", -- [2]
+		},
+		[136363] = {
+			"奧達曼", -- [1]
+		},
+		[136326] = {
+			"黑石深淵 - 上城區", -- [1]
+			"黑石深淵 - 監牢", -- [2]
+		},
+	},
+	["esES"] = {
+		[136336] = {
+			"Gnomeregan", -- [1]
+		},
+		[136352] = {
+			"Zahúrda Rajacieno", -- [1]
+		},
+		[136325] = {
+			"Cavernas de Brazanegra", -- [1]
+		},
+		[136360] = {
+			"Templo Sumergido", -- [1]
+		},
+		[136364] = {
+			"Cuevas de los Lamentos", -- [1]
+		},
+		[136368] = {
+			"Zul'Farrak", -- [1]
+		},
+		[136345] = {
+			"Maraudon - Aguas prístinas", -- [1]
+			"Maraudon - Cristales Naranja", -- [2]
+			"Maraudon - Cristales Púrpura", -- [3]
+		},
+		[136353] = {
+			"Horado Rajacieno", -- [1]
+		},
+		[136326] = {
+			"Profundidades de Roca Negra - Alto Arrabal", -- [1]
+			"Profundidades de Roca Negra - Prisión", -- [2]
+		},
+		[136350] = {
+			"Sima Ígnea", -- [1]
+		},
+		[136354] = {
+			"Monasterio Escarlata: Armería", -- [1]
+			"Monasterio Escarlata: Biblioteca", -- [2]
+			"Monasterio Escarlata: Catedral", -- [3]
+			"Monasterio Escarlata: Cementerio", -- [4]
+		},
+		[136327] = {
+			"Cumbre de Roca Negra inferior", -- [1]
+		},
+		[136357] = {
+			"Castillo de Colmillo Oscuro", -- [1]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136333] = {
+			"La Masacre: Este", -- [1]
+			"La Masacre: Norte", -- [2]
+			"La Masacre: Oeste", -- [3]
+		},
+		[136355] = {
+			"Scholomance", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Entrada del servicio", -- [1]
+			"Stratholme - Puerta principal", -- [2]
+		},
+		[136332] = {
+			"Minas de la Muerte", -- [1]
+		},
+		[136358] = {
+			"Mazmorras de Ventormenta", -- [1]
+		},
+	},
+	["deDE"] = {
+		[136336] = {
+			"Gnomeregan", -- [1]
+		},
+		[136352] = {
+			"Hügel der Klingenhauer", -- [1]
+		},
+		[136325] = {
+			"Tiefschwarze Grotte", -- [1]
+		},
+		[136360] = {
+			"Versunkener Tempel", -- [1]
+		},
+		[136364] = {
+			"Höhlen des Wehklagens", -- [1]
+		},
+		[136368] = {
+			"Zul'Farrak", -- [1]
+		},
+		[136345] = {
+			"Maraudon - Klare Wasser", -- [1]
+			"Maraudon - Orangefarbene Kristalle", -- [2]
+			"Maraudon - Purpurfarbene Kristalle", -- [3]
+		},
+		[136353] = {
+			"Kral der Klingenhauer", -- [1]
+		},
+		[136326] = {
+			"Schwarzfelstiefen - Oberes Viertel", -- [1]
+			"Schwarzfelstiefen - Unteres Viertel", -- [2]
+		},
+		[136350] = {
+			"Flammenschlund", -- [1]
+		},
+		[136354] = {
+			"Scharlachrotes Kloster - Bibliothek", -- [1]
+			"Scharlachrotes Kloster - Friedhof", -- [2]
+			"Scharlachrotes Kloster - Kathedrale", -- [3]
+			"Scharlachrotes Kloster - Waffenkammer", -- [4]
+		},
+		[136327] = {
+			"Untere Schwarzfelsspitze", -- [1]
+		},
+		[136357] = {
+			"Burg Schattenfang", -- [1]
+		},
+		[136363] = {
+			"Uldaman", -- [1]
+		},
+		[136333] = {
+			"Düsterbruch - Nord", -- [1]
+			"Düsterbruch - Ost", -- [2]
+			"Düsterbruch - West", -- [3]
+		},
+		[136355] = {
+			"Scholomance", -- [1]
+		},
+		[136359] = {
+			"Stratholme - Dienstboteneingang", -- [1]
+			"Stratholme - Haupttor", -- [2]
+		},
+		[136332] = {
+			"Todesminen", -- [1]
+		},
+		[136358] = {
+			"Verlies von Sturmwind", -- [1]
+		},
+	},
+}
+L.RaidLocalization = {
+	["ptBR"] = {
+		[136327] = "Pico da Rocha Negra Superior",
+		[136321] = "Templo de Ahn'Qiraj",
+		[136329] = "Covil Asa Negra",
+		[329121] = "Covil da Onyxia",
+		[136369] = "Zul'Gurub",
+		[136346] = "Núcleo Derretido",
+		[136347] = "Naxxramas",
+		[136320] = "Ruínas de Ahn'Qiraj",
+	},
+	["ruRU"] = {
+		[136369] = "Зул'Гуруб",
+		[136321] = "Храм Ан'Киража",
+		[136329] = "Логово Крыла Тьмы",
+		[329121] = "Логово Ониксии",
+		[136320] = "Руины Ан'Киража",
+		[136346] = "Огненные Недра",
+		[136347] = "Наксрамас",
+		[136327] = "Верх. часть пика Черной горы",
+	},
+	["frFR"] = {
+		[136320] = "Ruines d’Ahn’Qiraj",
+		[136321] = "Temple d’Ahn’Qiraj",
+		[136329] = "Repaire de l’Aile noire",
+		[329121] = "Repaire d'Onyxia",
+		[136327] = "Sommet du pic Rochenoire",
+		[136346] = "Cœur du Magma",
+		[136347] = "Naxxramas",
+		[136369] = "Zul’Gurub",
+	},
+	["koKR"] = {
+		[136327] = "검은바위 첨탑 상층",
+		[136321] = "안퀴라즈 사원",
+		[136329] = "검은날개 둥지",
+		[329121] = "오닉시아의 둥지",
+		[136320] = "안퀴라즈 폐허",
+		[136346] = "화산 심장부",
+		[136347] = "낙스라마스",
+		[136369] = "줄구룹",
+	},
+	["esMX"] = {
+		[136327] = "Cumbre de Roca Negra superior",
+		[136321] = "Templo de Ahn'Qiraj",
+		[136329] = "Guarida de Alanegra",
+		[329121] = "Guarida de Onyxia",
+		[136320] = "Ruinas de Ahn'Qiraj",
+		[136346] = "Núcleo de Magma",
+		[136347] = "Naxxramas",
+		[136369] = "Zul'Gurub",
+	},
+	["enUS"] = {
+		[136320] = "Ahn'Qiraj Ruins",
+		[136321] = "Ahn'Qiraj Temple",
+		[136329] = "Blackwing Lair",
+		[329121] = "Onyxia's Lair",
+		[136369] = "Zul'Gurub",
+		[136346] = "Molten Core",
+		[136347] = "Naxxramas",
+		[136327] = "Upper Blackrock Spire",
+	},
+	["zhCN"] = {
+		[136320] = "安其拉废墟",
+		[136321] = "安其拉神殿",
+		[136329] = "黑翼之巢",
+		[329121] = "奥妮克希亚的巢穴",
+		[136327] = "黑石塔上层",
+		[136346] = "熔火之心",
+		[136347] = "纳克萨玛斯",
+		[136369] = "祖尔格拉布",
+	},
+	["zhTW"] = {
+		[136320] = "安其拉廢墟",
+		[136321] = "安其拉神廟",
+		[136329] = "黑翼之巢",
+		[329121] = "奧妮克希亞的巢穴",
+		[136369] = "祖爾格拉布",
+		[136346] = "熔火之心",
+		[136347] = "納克薩瑪斯",
+		[136327] = "黑石塔上層",
+	},
+	["esES"] = {
+		[136327] = "Cumbre de Roca Negra superior",
+		[136321] = "Templo de Ahn'Qiraj",
+		[136329] = "Guarida de Alanegra",
+		[329121] = "Guarida de Onyxia",
+		[136369] = "Zul'Gurub",
+		[136346] = "Núcleo de Magma",
+		[136347] = "Naxxramas",
+		[136320] = "Ruinas de Ahn'Qiraj",
+	},
+	["deDE"] = {
+		[136327] = "Obere Schwarzfelsspitze",
+		[136321] = "Tempel von Ahn'Qiraj",
+		[136329] = "Pechschwingenhort",
+		[329121] = "Onyxias Hort",
+		[136320] = "Ruinen von Ahn'Qiraj",
+		[136346] = "Geschmolzener Kern",
+		[136347] = "Naxxramas",
+		[136369] = "Zul'Gurub",
 	},
 }

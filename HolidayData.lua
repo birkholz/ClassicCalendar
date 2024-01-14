@@ -16,6 +16,18 @@ else
 	resetHour = 8
 end
 
+local WEEKDAYS = {
+	Sunday = 1,
+	Monday = 2,
+	Tuesday = 3,
+	Wednesday = 4,
+	Thursday = 5,
+	Friday = 6,
+	Saturday = 7
+}
+
+local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder) -- "Placeholder" = SoD
+
 local function addDaysToDate(eventDate, dayCount)
 	local dateSeconds = time(eventDate)
 	dateSeconds = dateSeconds + dayCount * SECONDS_IN_DAY
@@ -138,6 +150,30 @@ local function GetLunarFestivalEnd(year)
 	cny.hour = 9
 	cny.min = 0
 	return cny
+end
+
+local function GetDarkmoonStartDay(year, month)
+	local firstDayOfMonth = {
+		year=year,
+		month=month,
+		day=1
+	}
+	return changeWeekdayOfDate(firstDayOfMonth, WEEKDAYS.Monday, 1)
+end
+
+local function GetFollowingSunday(dateD)
+	return changeWeekdayOfDate(dateD, WEEKDAYS.Sunday, 1)
+end
+
+local function adjustMonthByOffset(dateD, offset)
+	dateD.month = dateD.month + offset
+	if dateD.month > 12 then
+		dateD.year = dateD.year + 1
+		dateD.month = 1
+	elseif dateD.month == 0 then
+		dateD.year = dateD.year - 1
+		dateD.month = 12
+	end
 end
 
 local ZIndexes = {
@@ -332,24 +368,27 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	-- },
-	{
+}
+
+local DarkmoonHolidays = {
+	elwynn={
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
 		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
 		endDate={ year=2023, month=12, day=24, hour=23, min=59 },
-		frequency=28,
+		frequency=isSoD and 28 or nil,
 		CVar="calendarShowDarkmoon",
 		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnEnd",
 		ZIndex=ZIndexes.medium
 	},
-	{
+	mulgore={
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
 		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
 		endDate={ year=2023, month=12, day=10, hour=23, min=59 },
-		frequency=28,
+		frequency=isSoD and 28 or nil,
 		CVar="calendarShowDarkmoon",
 		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreOngoing",
@@ -359,16 +398,6 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 }
 
 local holidaySchedule = {}
-
-local WEEKDAYS = {
-	Sunday = 1,
-	Monday = 2,
-	Tuesday = 3,
-	Wednesday = 4,
-	Thursday = 5,
-	Friday = 6,
-	Saturday = 7
-}
 
 local function getDSTDates(year)
 	-- Start of DST is 2nd Sunday of March
@@ -402,31 +431,71 @@ local function adjustDST(dateTime)
 	return dateTime
 end
 
+local function addHolidayToSchedule(holiday, schedule)
+	local startTime = time(holiday.startDate)
+	local endTime = time(holiday.endDate)
+
+	holiday.startDate = date("*t", startTime)
+	holiday.endDate = date("*t", endTime)
+	tinsert(schedule, holiday)
+	if holiday.frequency ~= nil then
+		local days = 0
+		while days < 365 do
+			local eventCopy = CopyTable(holiday)
+			startTime = startTime + (SECONDS_IN_DAY * holiday.frequency)
+			endTime = endTime + (SECONDS_IN_DAY * holiday.frequency)
+			eventCopy.startDate = date("*t", adjustDST(startTime))
+			eventCopy.endDate = date("*t", adjustDST(endTime))
+			tinsert(schedule, eventCopy)
+			days = days + holiday.frequency
+		end
+	end
+end
+
 function GetClassicHolidays()
 	if next(holidaySchedule) ~= nil then
 		return holidaySchedule
 	end
 
+	-- Seasonal holidays
 	for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
-		local startTime = time(holiday.startDate)
-		local endTime = time(holiday.endDate)
+		addHolidayToSchedule(holiday, holidaySchedule)
+	end
 
-		holiday.startDate = date("*t", startTime)
-		holiday.endDate = date("*t", endTime)
-		tinsert(holidaySchedule, holiday)
-		if holiday.frequency ~= nil then
-			local days = 0
-			while days < 365 do
-				local eventCopy = CopyTable(holiday)
-				startTime = startTime + (SECONDS_IN_DAY * holiday.frequency)
-				endTime = endTime + (SECONDS_IN_DAY * holiday.frequency)
-				eventCopy.startDate = date("*t", adjustDST(startTime))
-				eventCopy.endDate = date("*t", adjustDST(endTime))
-				tinsert(holidaySchedule, eventCopy)
-				days = days + holiday.frequency
+	-- Darkmoon
+	if isSoD then
+		for _, holiday in next, DarkmoonHolidays do
+			addHolidayToSchedule(holiday, holidaySchedule)
+		end
+	else
+		-- Darkmoon in Classic Era starts on the first Friday of every month
+		local isElwynn = true
+		local year = 2023
+		local month = 1
+
+		-- Starting from Jan 2024, add a year of Darkmoon events per year since 2024
+		for _ = 1, (currentCalendarTime.year - year + 1) * 12 do
+			month = month + 1
+			if month > 12 then
+				month = 1
+				year = year + 1
 			end
+			local holidayCopy = CopyTable(isElwynn and DarkmoonHolidays.mulgore or DarkmoonHolidays.elwynn)
+			local startDate = GetDarkmoonStartDay(year, month)
+			local endDate = addDaysToDate(startDate, 6)
+			startDate.hour = 0
+			startDate.min = 1
+			endDate.hour = 23
+			endDate.min = 59
+			holidayCopy.startDate = startDate
+			holidayCopy.endDate = endDate
+			addHolidayToSchedule(holidayCopy, holidaySchedule)
+
+			isElwynn = not isElwynn
 		end
 	end
+
+	-- Battleground weekends
 
 	table.sort(holidaySchedule, function(a,b)
 		if (a.startDate.year ~= b.startDate.year) then
@@ -437,4 +506,108 @@ function GetClassicHolidays()
 	end)
 
 	return holidaySchedule
+end
+
+function GetClassicRaidResets()
+	local raidResets
+	if isSoD then
+		local bfdName, _ = L.DungeonLocalization[localeString][136325][1]
+		local gnomerName, _ = L.DungeonLocalization[localeString][136336][1]
+		raidResets = {
+			{
+				name=bfdName,
+				firstReset = {
+					year=2023,
+					month=12,
+					day=3
+				},
+				frequency=3
+			},
+			{
+				name=gnomerName,
+				firstReset = {
+					year=2024,
+					month=2,
+					day=10
+				},
+				frequency=3
+			}
+		}
+	else
+		local MCName, _ = L.RaidLocalization[localeString][136346]
+		local OnyName, _ = L.RaidLocalization[localeString][329121]
+		local NaxxName, _ = L.RaidLocalization[localeString][136347]
+		local AQTempleName, _ = L.RaidLocalization[localeString][136321]
+		local AQRuinsName, _ = L.RaidLocalization[localeString][136320]
+		local BWLName, _ = L.RaidLocalization[localeString][136329]
+		local ZGName, _ = L.RaidLocalization[localeString][136369]
+		local UBRSName, _ = L.RaidLocalization[localeString][136327]
+		raidResets = {
+			{
+				name=MCName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=7
+			},
+			{
+				name=BWLName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=7
+			},
+			{
+				name=OnyName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=4
+				},
+				frequency=5
+			},
+			{
+				name=ZGName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=3
+			},
+			{
+				name=NaxxName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=7
+			},
+			{
+				name=AQRuinsName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=3
+			},
+			{
+				name=AQTempleName,
+				firstReset = {
+					year=2024,
+					month=1,
+					day=2
+				},
+				frequency=7
+			}
+		}
+	end
+
+	return raidResets
 end

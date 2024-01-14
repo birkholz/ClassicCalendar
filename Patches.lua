@@ -97,6 +97,9 @@ else
 	resetHour = 8
 end
 
+local isClassicEra = not C_Seasons.HasActiveSeason()
+local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() ~= Enum.SeasonID.Placeholder) -- "Placeholder" = SoD
+
 CALENDAR_FILTER_BATTLEGROUND = L.Options[localeString]["CALENDAR_FILTER_BATTLEGROUND"];
 
 -- Date Utilities
@@ -253,27 +256,6 @@ function newEventGetTextures(eventType)
 	return {}
 end
 
-local RaidResets = {
-	{
-		name=L.DungeonLocalization[localeString].Dungeons.BlackfathomDeeps.name,
-		firstReset = {
-			year=2023,
-			month=12,
-			day=3
-		},
-		frequency=3
-	},
-	-- {
-	-- 	name=L.DungeonLocalization[localeString].DungeonNames.Gnomeregan.name,
-	-- 	firstReset = {
-	-- 		year=2024,
-	-- 		month=2,
-	-- 		day=10
-	-- 	},
-	-- 	frequency=3
-	-- }
-}
-
 function stubbedGetNumDayEvents(monthOffset, monthDay)
 	-- Stubbing C_Calendar.getNumDayEvents to return fake events
 	local originalEventCount = C_Calendar.GetNumDayEvents(monthOffset, monthDay)
@@ -299,7 +281,7 @@ function stubbedGetNumDayEvents(monthOffset, monthDay)
 	end
 
 	if GetCVar("calendarShowResets") ~= "0" then
-		for _, raid in next, RaidResets do
+		for _, raid in next, GetClassicRaidResets() do
 			if dateGreaterThan(eventDate, raid.firstReset) and dateIsOnFrequency(eventDate, raid.firstReset, raid.frequency) then
 				originalEventCount = originalEventCount + 1
 			end
@@ -426,7 +408,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 		end
 
 		if GetCVar("calendarShowResets") ~= "0" then
-			for _, raid in next, RaidResets do
+			for _, raid in next, GetClassicRaidResets() do
 				if dateGreaterThan(eventDate, raid.firstReset) and dateIsOnFrequency(eventDate, raid.firstReset, raid.frequency) then
 					local eventTable = {
 						eventType=CalendarEventType.Other,
