@@ -3482,7 +3482,6 @@ function CalendarCreateEventFrame_OnEvent(self, event, ...)
 	if ( CalendarCreateEventFrame:IsShown() ) then
 		if ( event == "CALENDAR_UPDATE_EVENT" ) then
 			if ( C_Calendar.EventCanEdit() ) then
-				print("CALENDAR_UPDATE_EVENT")
 				CalendarCreateEventFrame_Update();
 			else
 				CalendarFrame_ShowEventFrame(CalendarViewEventFrame);

@@ -644,7 +644,6 @@ function copyEvent()
 			table.insert(inviteTable, C_Calendar.EventGetInvite(i))
 		end
 		C_Calendar.CloseEvent()
-	--elseif eventClipboard == true then
 	end
 end
 
@@ -656,16 +655,13 @@ function stubbedCalendarDayContextMenu_PasteEvent()
 		C_Calendar.CreateGuildSignUpEvent()
 		
 		local d = C_DateAndTime.GetCurrentCalendarTime()
-		print("M: "..monthInfo["month"]..", D: "..dayButton.day..", Y: "..d.year)
 		C_Calendar.EventSetDate(monthInfo["month"], dayButton.day, d.year)
 		C_Calendar.EventSetTime(eventInfo["startTime"]["hour"], eventInfo["startTime"]["minute"])
 		C_Calendar.EventSetTitle(eventInfo["title"])
 		C_Calendar.EventSetDescription(eventInfo["description"])
 		C_Calendar.EventSetType(eventInfo["eventType"])
-		C_Calendar.EventSetTextureID(eventInfo["textureIndex"])
+		if eventInfo["textureIndex"] ~= nil then C_Calendar.EventSetTextureID(eventInfo["textureIndex"]) end
 		C_Calendar.AddEvent()
-		
-		--eventClipboard = true -- TEST COMMENTED OUT
 	else -- If all other event types, pass to native function
 		eventInfo = {}
 		inviteTable = {}
