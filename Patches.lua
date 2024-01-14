@@ -582,3 +582,158 @@ function stubbedGetRaidInfo(monthOffset, day, eventIndex)
 		}
 	end
 end
+
+-- Guild Event Copying
+eventClipboard = false
+eventPasteGuildInvites = false
+eventUpdateGuildInvites = false
+eventType = ""
+eventInfo = {}
+inviteTable = {}
+dayButton = {}
+
+-- Returns true if "player" can edit event
+function stubbedContextMenuEventCanEdit(monthOffset, day, eventIndex)
+	local playerName = UnitName("player")
+	local eventInfoTemp = stubbedGetDayEvent(monthOffset, day, eventIndex)
+	if eventInfoTemp["modStatus"] == "CREATOR" or eventInfoTemp["modStatus"] == "MODERATOR" then
+		return true
+	else
+		return false
+	end
+end
+
+-- (DEPRECIATED/UNUSED) Returns true if "player" can remove event
+function stubbedContextMenuEventCanRemove(monthOffset, day, eventIndex)
+	local playerName = UnitName("player")
+	local eventInfoRemove = stubbedGetDayEvent(monthOffset, day, eventIndex)
+	if eventInfoRemove["modStatus"] == "CREATOR" then
+		return true
+	else
+		return false
+	end
+end
+
+-- Load in for UIMenu_AddButton:CALENDAR_COPY_EVENT event
+function stubbedCalendarDayContextMenu_CopyEvent(monthOffset, day, eventIndex)
+	eventInfo = stubbedGetDayEvent(monthOffset, day, eventIndex)
+	if eventInfo["calendarType"] == "GUILD_EVENT" then -- If "GUILD_EVENT" event type pass to modified functions
+		eventClipboard = true
+		eventType = "GUILD_EVENT"
+		C_Calendar.OpenEvent(monthOffset, day, eventIndex)
+	else -- If all other event types, pass to native function
+		eventClipboard = true
+		C_Calendar.ContextMenuEventCopy()
+	end
+end
+
+-- Returns true if event is copied
+function stubbedContextMenuEventClipboard()
+	return eventClipboard
+end
+
+-- Loads in data to be copied from Parent event
+function copyEvent()
+	if eventClipboard == true and eventType == "GUILD_EVENT" then
+		local descriptionTemp = C_Calendar.GetEventInfo()
+		eventInfo["description"] = descriptionTemp["description"]
+		eventInfo["textureIndex"] = descriptionTemp["textureIndex"]
+		local numInvites = C_Calendar.GetNumInvites()
+		inviteTable = {}
+		for i=1,numInvites do
+			table.insert(inviteTable, C_Calendar.EventGetInvite(i))
+		end
+		C_Calendar.CloseEvent()
+	--elseif eventClipboard == true then
+	end
+end
+
+-- Modified paste function
+function stubbedCalendarDayContextMenu_PasteEvent()
+	dayButton = CalendarContextMenu.dayButton
+	if eventInfo["calendarType"] == "GUILD_EVENT" then -- If "GUILD_EVENT" event type the create new event using copied data
+		local monthInfo = C_Calendar.GetMonthInfo(dayButton.monthOffset)
+		C_Calendar.CreateGuildSignUpEvent()
+		
+		local d = C_DateAndTime.GetCurrentCalendarTime()
+		print("M: "..monthInfo["month"]..", D: "..dayButton.day..", Y: "..d.year)
+		C_Calendar.EventSetDate(monthInfo["month"], dayButton.day, d.year)
+		C_Calendar.EventSetTime(eventInfo["startTime"]["hour"], eventInfo["startTime"]["minute"])
+		C_Calendar.EventSetTitle(eventInfo["title"])
+		C_Calendar.EventSetDescription(eventInfo["description"])
+		C_Calendar.EventSetType(eventInfo["eventType"])
+		C_Calendar.EventSetTextureID(eventInfo["textureIndex"])
+		C_Calendar.AddEvent()
+		
+		--eventClipboard = true -- TEST COMMENTED OUT
+	else -- If all other event types, pass to native function
+		eventInfo = {}
+		inviteTable = {}
+		eventClipboard = false
+		C_Calendar.ContextMenuEventPaste(dayButton.monthOffset, dayButton.day)
+	end
+end
+
+-- Gets newly created eventIndex and opens event for updating Invitation list
+function updateEventInvites(day, monthOffset)
+	local eventIndex = 0
+	if eventClipboard == true and monthOffset == dayButton.monthOffset and day == dayButton.day then
+		local numDayEvents = C_Calendar.GetNumDayEvents(dayButton.monthOffset, dayButton.day)
+		if numDayEvents ~= nil then
+			for i=1,numDayEvents do
+				local eventInfoTemp = stubbedGetDayEvent(dayButton.monthOffset, dayButton.day, i)
+				if eventInfoTemp["startTime"]["hour"] == eventInfo["startTime"]["hour"] and eventInfoTemp["startTime"]["minute"] == eventInfo["startTime"]["minute"] and eventInfoTemp["title"] == eventInfo["title"] then
+					eventIndex = i
+					break
+				end
+			end
+			C_Calendar.OpenEvent(dayButton.monthOffset, dayButton.day, eventIndex)
+			eventPasteGuildInvites = true
+		end
+		eventClipboard = false
+	end
+end
+
+-- Create invitations in the new event
+function pasteInvitations()
+	local canEditEvent = C_Calendar.EventCanEdit()
+	local canSendInvite = C_Calendar.CanSendInvite()
+	if eventClipboard == false and eventPasteGuildInvites == true and canSendInvite == true and canEditEvent == true then
+		for k, v in next, inviteTable do
+			if v["name"] ~= UnitName("player") then
+				C_Calendar.EventInvite(v["name"])
+			end
+		end
+		eventPasteGuildInvites = false
+		eventUpdateGuildInvites = true
+	end
+end
+
+-- Update newly created invitations in new event
+function updatePastedInvitions()
+	local canEditEvent = C_Calendar.EventCanEdit()
+	if eventClipboard == false and eventPasteGuildInvites == false and eventUpdateGuildInvites == true and canEditEvent == true then
+		local numInvites = C_Calendar.GetNumInvites()
+		local numMatched = 0
+		if numInvites > 0 then
+			local inviteExistingTable = {}
+			for k, v in next, inviteTable do
+				C_Calendar.EventSetInviteStatus(k, v["inviteStatus"])
+				local singleInvite = C_Calendar.EventGetInvite(k)
+				table.insert(inviteExistingTable, singleInvite)
+			end
+			for k, v in next, inviteTable do
+				if inviteTable["inviteStatus"] == inviteExistingTable["inviteStatus"] then
+					numMatched = numMatched + 1
+				end
+			end
+			if numMatched == numInvites then
+				C_Calendar.CloseEvent()
+				eventInfo = {}
+				inviteTable = {}
+				eventClipboard = false
+				eventUpdateGuildInvites = false
+			end
+		end
+	end
+end

@@ -1473,6 +1473,7 @@ local function ShouldDisplayEventOnCalendar(event)
 end
 
 function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventIndex, contextEventIndex)
+	updateEventInvites(day, monthOffset)
 	local dayButton = CalendarDayButtons[index];
 	local dayButtonName = dayButton:GetName();
 
@@ -2129,7 +2130,7 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 	local isAfterMaxDate = _CalendarFrame_IsAfterMaxCreateDate(month, day, year);
 	local validCreationDate = isTodayOrLater and not isAfterMaxDate;
 
-	local canPaste = validCreationDate and C_Calendar.ContextMenuEventClipboard();
+	local canPaste = validCreationDate and stubbedContextMenuEventClipboard(); -- C_Calendar.ContextMenuEventClipboard();
 
 	local showDay = validCreationDate and band(flags, CALENDAR_CONTEXTMENU_FLAG_SHOWDAY) ~= 0;
 	local showEvent = eventButton and band(flags, CALENDAR_CONTEXTMENU_FLAG_SHOWEVENT) ~= 0;
@@ -2166,7 +2167,7 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 		local event = stubbedGetDayEvent(monthOffset, day, eventIndex);
 		-- add context items for the selected event
 		if ( _CalendarFrame_IsPlayerCreatedEvent(event.calendarType) ) then
-			local canEdit = C_Calendar.ContextMenuEventCanEdit(monthOffset, day, eventIndex);
+			local canEdit = stubbedContextMenuEventCanEdit(monthOffset, day, eventIndex);
 			local canRemove = C_Calendar.ContextMenuEventCanRemove(monthOffset, day, eventIndex);
 			if ( canEdit ) then
 				-- spacer
@@ -2174,17 +2175,17 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 					UIMenu_AddButton(self, "");
 				end
 				-- copy
-				UIMenu_AddButton(self, CALENDAR_COPY_EVENT, nil, CalendarDayContextMenu_CopyEvent);
+				UIMenu_AddButton(self, CALENDAR_COPY_EVENT, nil, function () stubbedCalendarDayContextMenu_CopyEvent(monthOffset, day, eventIndex) end);
 				-- paste
 				if ( canPaste ) then
-					UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, CalendarDayContextMenu_PasteEvent);
+					UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, function () stubbedCalendarDayContextMenu_PasteEvent() end);
 				end
 			elseif ( canPaste ) then
 				if ( needSpacer ) then
 					UIMenu_AddButton(self, "");
 				end
 				-- paste
-				UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, CalendarDayContextMenu_PasteEvent);
+				UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, function () stubbedCalendarDayContextMenu_PasteEvent() end);
 				needSpacer = true;
 			end
 			if ( canRemove ) then
@@ -2246,14 +2247,14 @@ function CalendarDayContextMenu_Initialize(self, flags, dayButton, eventButton)
 			if ( needSpacer ) then
 				UIMenu_AddButton(self, "");
 			end
-			UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, CalendarDayContextMenu_PasteEvent);
+			UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, function () stubbedCalendarDayContextMenu_PasteEvent() end);
 		end
 	elseif ( canPaste ) then
 		-- add paste if we have a clipboard
 		if ( needSpacer ) then
 			UIMenu_AddButton(self, "");
 		end
-		UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, CalendarDayContextMenu_PasteEvent);
+		UIMenu_AddButton(self, CALENDAR_PASTE_EVENT, nil, function () stubbedCalendarDayContextMenu_PasteEvent() end);
 	end
 
 	if ( UIMenu_FinishInitializing(self) ) then
@@ -3451,7 +3452,7 @@ function CalendarCreateEventFrame_OnLoad(self)
 	self:RegisterEvent("CALENDAR_UPDATE_INVITE_LIST");
 	self:RegisterEvent("CALENDAR_NEW_EVENT");
 	self:RegisterEvent("CALENDAR_CLOSE_EVENT");
---	self:RegisterEvent("CALENDAR_ACTION_PENDING");
+	self:RegisterEvent("CALENDAR_ACTION_PENDING");
 	self:RegisterEvent("GUILD_ROSTER_UPDATE");
 	self:RegisterEvent("PLAYER_GUILD_UPDATE");
 --	self:RegisterEvent("GROUP_ROSTER_UPDATE");
@@ -3481,6 +3482,7 @@ function CalendarCreateEventFrame_OnEvent(self, event, ...)
 	if ( CalendarCreateEventFrame:IsShown() ) then
 		if ( event == "CALENDAR_UPDATE_EVENT" ) then
 			if ( C_Calendar.EventCanEdit() ) then
+				print("CALENDAR_UPDATE_EVENT")
 				CalendarCreateEventFrame_Update();
 			else
 				CalendarFrame_ShowEventFrame(CalendarViewEventFrame);
@@ -3505,8 +3507,10 @@ function CalendarCreateEventFrame_OnEvent(self, event, ...)
 			end
 		elseif ( event == "CALENDAR_CLOSE_EVENT" ) then
 			CalendarFrame_HideEventFrame(CalendarCreateEventFrame);
---[[
 		elseif ( event == "CALENDAR_ACTION_PENDING" ) then
+			pasteInvitations()
+			updatePastedInvitions()
+--[[
 			CalendarCreateEventInviteButton_Update();
 			CalendarCreateEventCreateButton_Update();
 --]]
@@ -3643,6 +3647,7 @@ function CalendarCreateEventFrame_Update()
 		CalendarEventFrameBlocker_Update();
 	elseif ( CalendarCreateEventFrame.mode == "edit" ) then
 		local eventInfo = C_Calendar.GetEventInfo();
+		copyEvent(eventInfo)
 		if ( not eventInfo.title ) then
 			CalendarFrame_HideEventFrame(CalendarCreateEventFrame);
 			CalendarClassButtonContainer_Hide();
