@@ -330,7 +330,10 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
 		ZIndex=ZIndexes.low
 	},
-	{
+}
+
+local battlegroundWeekends = {
+	warsongGulch={
 		name=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
 		startDate={ year=2023, month=12, day=15, hour=0, min=1 },
@@ -343,11 +346,11 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
 		ZIndex=ZIndexes.medium
 	},
-	{
+	arathiBasin={
 		name=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
-		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
-		endDate={ year=2024, month=2, day=20, hour=resetHour, min=0 },
+		startDate={ year=2024, month=1, day=19, hour=0, min=1 },
+		endDate={ year=2024, month=1, day=23, hour=resetHour, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
 		artConfig="BattlegroundsArt",
@@ -356,18 +359,18 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
 		ZIndex=ZIndexes.medium
 	},
-	-- {
-	--	 name=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
-	--	 description=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
-	--	 startDate={ year=2023, month=12, day=29, hour=0, min=1 },
-	--	 endDate={ year=2024, month=1, day=2, hour=resetHour, min=0 },
-	--  frequency=28,
-	--  CVar="calendarShowBattlegrounds",
-	--  artConfig="BattlegroundsArt",
-	--  startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
-	--  ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-	--  endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
-	-- },
+	alteracValley={
+		name=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarPVP"]["AlteracValley"]["description"],
+		startDate={ year=2024, month=1, day=5, hour=0, min=1 },
+		endDate={ year=2024, month=1, day=9, hour=resetHour, min=0 },
+		frequency=28,
+		CVar="calendarShowBattlegrounds",
+		artConfig="BattlegroundsArt",
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+	},
 }
 
 local DarkmoonHolidays = {
@@ -496,6 +499,15 @@ function GetClassicHolidays()
 	end
 
 	-- Battleground weekends
+	if isSoD then
+		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
+		-- addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
+		-- addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
+	else
+		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
+		addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
+		addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
+	end
 
 	table.sort(holidaySchedule, function(a,b)
 		if (a.startDate.year ~= b.startDate.year) then
