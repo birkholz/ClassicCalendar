@@ -497,8 +497,7 @@ function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 	local eventDesc
 
 	for _, holiday in next, GetClassicHolidays() do
-		-- No way to differentiate the locations of darkmoon faire
-		if eventName == holiday.name then
+		if event.iconTexture == holiday.startTexture then
 			eventDesc = holiday.description
 		end
 	end
