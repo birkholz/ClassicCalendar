@@ -81,5 +81,6 @@ globals = {
 	"InterfaceOptionsFramePanelContainer",
 	"InterfaceOptions_AddCategory",
 	"CopyTable",
-	"C_Seasons"
+	"C_Seasons",
+	"UnitFactionGroup"
 }

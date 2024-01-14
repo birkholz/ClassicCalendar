@@ -518,7 +518,7 @@ function GetClassicHolidays()
 
 	-- SoD Events
 	if isSoD then
-		for _, holiday in SoDEvents do
+		for _, holiday in next, SoDEvents do
 			addHolidayToSchedule(holiday, holidaySchedule)
 		end
 	end

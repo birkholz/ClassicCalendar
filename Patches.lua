@@ -98,7 +98,7 @@ else
 end
 
 local isClassicEra = not C_Seasons.HasActiveSeason()
-local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() ~= Enum.SeasonID.Placeholder) -- "Placeholder" = SoD
+local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder) -- "Placeholder" = SoD
 
 CALENDAR_FILTER_BATTLEGROUND = L.Options[localeString]["CALENDAR_FILTER_BATTLEGROUND"];
 
@@ -177,80 +177,81 @@ end
 
 function newEventGetTextures(eventType)
 	-- Stubbing C_Calendar.EventGetTextures to actually return textures, and only SoD-available raids/dungeons
-	if eventType == 0 then
-		-- Raids
-		return {
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.BlackfathomDeeps.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-BlackfathomDeeps"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.Gnomeregan.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-Gnomeregan"
+	if eventType == 0 then -- Raids
+		local raidTextures = {}
+		if isSoD then
+			raidTextures = {
+				{
+					title=L.DungeonLocalization[localeString][136325][1],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGIcon-BlackfathomDeeps"
+				},
+				{
+					title=L.DungeonLocalization[localeString][136336][1],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGIcon-Gnomeregan"
+				}
 			}
-		}
+		else
+			for textureID, raidName in next, L.RaidLocalization[localeString] do
+				tinsert(raidTextures, {
+					title=raidName,
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture=textureID
+				})
+			end
+		end
+
+		-- sort alphabetically ascending
+		table.sort(raidTextures, function(a,b)
+			return a.title < b.title
+		end)
+
+		return raidTextures
 	end
 
-	if eventType == 1 then
-		-- Dungeons, alphabetically sorted
-		return {
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.Deadmines.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-Deadmines"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.RazorfenKraul.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-RazorfenKraul"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.ScarletMonastery.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-ScarletMonastery"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.ShadowfangKeep.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-ShadowfangKeep"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.StormwindStockades.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-StormwindStockades"
-			},
-			{
-				title=L.DungeonLocalization[localeString].Dungeons.WailingCaverns.name,
-				isLfr=false,
-				difficultyId=0,
-				mapId=0,
-				expansionLevel=0,
-				iconTexture="Interface/LFGFrame/LFGIcon-WailingCaverns"
-			}
-		}
+	if eventType == 1 then -- Dungeons
+		local dungeonTextures = {}
+		local SoDDungeons = {[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true}
+		local faction, _ = UnitFactionGroup("player")
+		if faction == "Horde" then
+			-- Only add Ragefire Chasm if horde
+			SoDDungeons[136350] = true
+		else
+			-- Only add Stormwind Stockades if alliance
+			SoDDungeons[136358] = true
+		end
+
+		for textureID, wingNames in next, L.DungeonLocalization[localeString] do
+			if not isSoD or (isSoD and SoDDungeons[textureID]) then
+				for _, wingName in next, wingNames do
+					tinsert(dungeonTextures, {
+						title=wingName,
+						isLfr=false,
+						difficultyId=0,
+						mapId=0,
+						expansionLevel=0,
+						iconTexture=textureID
+					})
+				end
+			end
+		end
+
+		-- sort alphabetically ascending
+		table.sort(dungeonTextures, function(a,b)
+			return a.title < b.title
+		end)
+
+		return dungeonTextures
 	end
 
 	return {}
