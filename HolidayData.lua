@@ -297,26 +297,6 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ZIndex=ZIndexes.low
 	},
-	{
-		name="SoD Launch",
-		description="Season of Discovery officialy launched!",
-		startDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
-		endDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
-		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ZIndex=ZIndexes.highest
-	},
-	{
-		name="Phase 2 Launch",
-		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
-		startDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
-		endDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
-		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
-		ZIndex=ZIndexes.highest
-	},
 	-- Recurring events
 	{
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
@@ -400,6 +380,29 @@ local DarkmoonHolidays = {
 	}
 }
 
+local SoDEvents = {
+	{
+		name="SoD Launch",
+		description="Season of Discovery officialy launched!",
+		startDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
+		endDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Phase 2 Launch",
+		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
+		startDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
+		endDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	}
+}
+
 local holidaySchedule = {}
 
 local function getDSTDates(year)
@@ -455,6 +458,38 @@ local function addHolidayToSchedule(holiday, schedule)
 	end
 end
 
+local function GetClassicDarkmoons()
+	-- Darkmoon in Classic Era starts on the first Friday of every month
+	local isElwynn = true
+	local year = 2023
+	local month = 1
+
+	local darkmoonEvents = {}
+
+	-- Starting from Jan 2024, add a year of Darkmoon events per year since 2024
+	for _ = 1, (currentCalendarTime.year - year + 1) * 12 do
+		month = month + 1
+		if month > 12 then
+			month = 1
+			year = year + 1
+		end
+		local holidayCopy = CopyTable(isElwynn and DarkmoonHolidays.mulgore or DarkmoonHolidays.elwynn)
+		local startDate = GetDarkmoonStartDay(year, month)
+		local endDate = addDaysToDate(startDate, 6)
+		startDate.hour = 0
+		startDate.min = 1
+		endDate.hour = 23
+		endDate.min = 59
+		holidayCopy.startDate = startDate
+		holidayCopy.endDate = endDate
+		tinsert(holidaySchedule, holidayCopy)
+
+		isElwynn = not isElwynn
+	end
+
+	return darkmoonEvents
+end
+
 function GetClassicHolidays()
 	if next(holidaySchedule) ~= nil then
 		return holidaySchedule
@@ -466,36 +501,8 @@ function GetClassicHolidays()
 	end
 
 	-- Darkmoon
-	if isSoD then
-		for _, holiday in next, DarkmoonHolidays do
-			addHolidayToSchedule(holiday, holidaySchedule)
-		end
-	else
-		-- Darkmoon in Classic Era starts on the first Friday of every month
-		local isElwynn = true
-		local year = 2023
-		local month = 1
-
-		-- Starting from Jan 2024, add a year of Darkmoon events per year since 2024
-		for _ = 1, (currentCalendarTime.year - year + 1) * 12 do
-			month = month + 1
-			if month > 12 then
-				month = 1
-				year = year + 1
-			end
-			local holidayCopy = CopyTable(isElwynn and DarkmoonHolidays.mulgore or DarkmoonHolidays.elwynn)
-			local startDate = GetDarkmoonStartDay(year, month)
-			local endDate = addDaysToDate(startDate, 6)
-			startDate.hour = 0
-			startDate.min = 1
-			endDate.hour = 23
-			endDate.min = 59
-			holidayCopy.startDate = startDate
-			holidayCopy.endDate = endDate
-			addHolidayToSchedule(holidayCopy, holidaySchedule)
-
-			isElwynn = not isElwynn
-		end
+	for _, holiday in next, isSoD and DarkmoonHolidays or GetClassicDarkmoons() do
+		addHolidayToSchedule(holiday, holidaySchedule)
 	end
 
 	-- Battleground weekends
@@ -509,6 +516,14 @@ function GetClassicHolidays()
 		addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
 	end
 
+	-- SoD Events
+	if isSoD then
+		for _, holiday in SoDEvents do
+			addHolidayToSchedule(holiday, holidaySchedule)
+		end
+	end
+
+	-- Sort by ascending date
 	table.sort(holidaySchedule, function(a,b)
 		if (a.startDate.year ~= b.startDate.year) then
 			return a.startDate.year < b.startDate.year
