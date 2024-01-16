@@ -72,7 +72,7 @@ L.Options = {
 		["HideCalButtonDesc"] 			 = "Вы по-прежнему сможете получить доступ к календарю с помощью /cal или /calendar.",
 		["GeneralHeaderText"]			 = "Общие",
 		["ArtHeaderText"]				 = "Картинка",
-		["CALENDAR_FILTER_BATTLEGROUND"] = "PvP-потасовки",
+		["CALENDAR_FILTER_BATTLEGROUND"] = "PVP-выходных",
 	},
 	["koKR"] = {
 		["PVPArtText"] 				 	 = "",
