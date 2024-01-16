@@ -90,9 +90,15 @@ local state = {
 }
 
 local region = GetCVar("portal")
+if string.find(GetRealmName(), '(AU)') ~= nil then
+	region = "AU"
+end
+
 local resetHour
 if region == "EU" then
 	resetHour = 5
+elseif region == "AU" then
+	resetHour = 2
 else
 	resetHour = 8
 end

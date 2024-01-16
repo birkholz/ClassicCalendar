@@ -9,9 +9,15 @@ local tinsert = tinsert
 local CopyTable = CopyTable
 
 local region = GetCVar("portal")
+if string.find(GetRealmName(), '(AU)') ~= nil then
+	region = "AU"
+end
+
 local resetHour
 if region == "EU" then
 	resetHour = 5
+elseif region == "AU" then
+	resetHour = 2
 else
 	resetHour = 8
 end
@@ -523,6 +529,14 @@ function GetClassicHolidays()
 		end
 	end
 
+	-- AU reset is 18 hours after NA, so it's in the following day
+	if region == "AU" then
+		for _, holiday in next, holidaySchedule do
+			holiday.startDate = addDaysToDate(holiday.startDate, 1)
+			holiday.endDate = addDaysToDate(holiday.endDate, 1)
+		end
+	end
+
 	-- Sort by ascending date
 	table.sort(holidaySchedule, function(a,b)
 		if (a.startDate.year ~= b.startDate.year) then
@@ -634,6 +648,13 @@ function GetClassicRaidResets()
 				frequency=7
 			}
 		}
+	end
+
+	-- AU reset is 18 hours after NA, so it's in the following day
+	if region == "AU" then
+		for _, reset in next, raidResets do
+			reset.firstReset = addDaysToDate(reset.firstReset, 1)
+		end
 	end
 
 	return raidResets
