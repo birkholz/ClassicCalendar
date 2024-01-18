@@ -3,7 +3,6 @@ local L = CLASSIC_CALENDAR_L
 local AddonTitle = C_AddOns.GetAddOnMetadata(AddonName, "Title")
 
 local localeString = tostring(GetLocale())
-local localeStringOptions
 local CCOptions = CreateFrame("Frame")
 CCOptions:RegisterEvent("ADDON_LOADED")
 CCOptions:RegisterEvent("VARIABLES_LOADED")
@@ -41,21 +40,33 @@ end
 
 CCOptions:SetScript("OnEvent", CCOptionsHandler)
 
--- Checks localizations for Options and returns "enUS" if none exist
+-- Checks localizations for Options and falls back to enUS if any are missing
 
 local function checkLocale()
-	for _, v in next, L.Options[localeString] do
+	for k, v in next, L.Options[localeString] do
 		if v == "" then
-			localeStringOptions = "enUS"
-			break
+			L.Options[localeString][k] = L.Options["enUS"][k]
 		end
-		localeStringOptions = localeString
 	end
 end
 
 -- Runs function above
 
 checkLocale()
+
+-- Randomization of attribution names
+
+function shuffle(tbl)
+  for i = #tbl, 2, -1 do
+    local j = math.random(i)
+    tbl[i], tbl[j] = tbl[j], tbl[i]
+  end
+end
+
+local randomTox	 = {"Toxix-WildGrowth","Toxiix-WildGrowth"}
+shuffle(randomTox) -- Randomize displayed name
+local randomName = {randomTox[1], "Lovediodes-WildGrowth"}
+shuffle(randomName) -- Randomize order of displayed names
 
 -- INTERFACE OPTIONS (starts building the frame now)
 
@@ -95,7 +106,7 @@ lblTitle:SetPoint("TOPLEFT", CCIOFrame, "TOPLEFT", 12, -12)
 lblTitle:SetText("|cFFEFC502" .. AddonTitle .. " (v" .. C_AddOns.GetAddOnMetadata(AddonName, "Version") .. ")|r")
 
 -- HR line for General options
-local horizRule1 = createHorizontalRule(L.Options[localeStringOptions]["GeneralHeaderText"], lblTitle)
+local horizRule1 = createHorizontalRule(L.Options[localeString]["GeneralHeaderText"], lblTitle)
 
 -- Hide the Calendar Button
 
@@ -118,14 +129,14 @@ end)
 
 local chkIOHideCalButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 chkIOHideCalButtonText:SetPoint("LEFT", chkIOHideCalButton, "RIGHT", 0, 1)
-chkIOHideCalButtonText:SetText(L.Options[localeStringOptions]["HideCalButtonText"])
+chkIOHideCalButtonText:SetText(L.Options[localeString]["HideCalButtonText"])
 
 local chkIOHideCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 chkIOHideCalButtonDesc:SetPoint("LEFT", chkIOHideCalButton, "LEFT", 0, -24)
-chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeStringOptions]["HideCalButtonDesc"].."|r")
+chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["HideCalButtonDesc"].."|r")
 
 -- HR line for Art options
-local horizRule2 = createHorizontalRule(L.Options[localeStringOptions]["ArtHeaderText"], chkIOHideCalButtonDesc)
+local horizRule2 = createHorizontalRule(L.Options[localeString]["ArtHeaderText"], chkIOHideCalButtonDesc)
 
 -- PVP weekends
 
@@ -142,7 +153,7 @@ end)
 
 local chkIOUsePVPArtsText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 chkIOUsePVPArtsText:SetPoint("LEFT", chkIOUsePVPArts, "RIGHT", 0, 1)
-chkIOUsePVPArtsText:SetText(L.Options[localeStringOptions]["PVPArtText"])
+chkIOUsePVPArtsText:SetText(L.Options[localeString]["PVPArtText"])
 
 -- Childrens Week
 
@@ -159,7 +170,7 @@ end)
 
 local chkIOShowChildrensWeekText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 chkIOShowChildrensWeekText:SetPoint("LEFT", chkIOShowChildrensWeek, "RIGHT", 0, 1)
-chkIOShowChildrensWeekText:SetText(L.Options[localeStringOptions]["ChildrensWeekText"])
+chkIOShowChildrensWeekText:SetText(L.Options[localeString]["ChildrensWeekText"])
 
 -- Fireworks Spectacular
 
@@ -176,20 +187,24 @@ end)
 
 local chkIOShowFireworksSpectacularText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 chkIOShowFireworksSpectacularText:SetPoint("LEFT", chkIOShowFireworksSpectacular, "RIGHT", 0, 1)
-chkIOShowFireworksSpectacularText:SetText(L.Options[localeStringOptions]["FireworksSpectacularText"])
+chkIOShowFireworksSpectacularText:SetText(L.Options[localeString]["FireworksSpectacularText"])
 
--- HR line for Footer
+-- Attributions
 
-local hrLine2 = CCIOFrame:CreateLine()
-hrLine2:SetColorTexture(0.5, 0.5, 0.5)
-hrLine2:SetThickness(1)
-hrLine2:SetStartPoint("TOPLEFT", chkIOShowFireworksSpectacular, 0, -41)
-hrLine2:SetEndPoint("TOPLEFT", chkIOShowFireworksSpectacular, InterfaceOptionsFramePanelContainerWidth, -41)
+local attLine1 = createHorizontalRule(L.Options[localeString]["AuthorHeaderText"], chkIOShowFireworksSpectacular)
+
+local attLine2 = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+attLine2:SetPoint("CENTER", attLine1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/3), -16)
+attLine2:SetText("|cFF9CD6DE"..randomName[1].."|r")
+
+local attLine3 = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+attLine3:SetPoint("CENTER", attLine1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/3)*2, -16)
+attLine3:SetText("|cFF9CD6DE"..randomName[2].."|r")
 
 -- Discord Info
 
 local DiscordLogo = CCIOFrame:CreateTexture(nil, "OVERLAY")
-DiscordLogo:SetPoint("TOPLEFT", hrLine2, "BOTTOMLEFT", 0, -16) -- Second arguement is the previous local variable name
+DiscordLogo:SetPoint("TOPLEFT", attLine1, "BOTTOMLEFT", 0, -32) -- Second arguement is the previous local variable name
 DiscordLogo:SetSize(16, 16)
 DiscordLogo:SetTexture("Interface\\AddOns\\ClassicCalendar\\Textures\\DiscordLogo.tga")
 
