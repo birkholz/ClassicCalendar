@@ -63,9 +63,7 @@ function shuffle(tbl)
   end
 end
 
-local randomTox	 = {"Toxix-WildGrowth","Toxiix-WildGrowth"}
-shuffle(randomTox) -- Randomize displayed name
-local randomName = {randomTox[1], "Lovediodes-WildGrowth"}
+local randomName = {"Toxiix-WildGrowth", "Lovediodes-WildGrowth"}
 shuffle(randomName) -- Randomize order of displayed names
 
 -- INTERFACE OPTIONS (starts building the frame now)
