@@ -89,18 +89,6 @@ local state = {
 	currentMonthOffset=0
 }
 
-local region = GetCVar("portal")
-if string.find(GetRealmName(), '(AU)') ~= nil then
-	region = "AU"
-end
-
-local resetHour
-if region == "EU" then
-	resetHour = 5
-else
-	resetHour = 8
-end
-
 local isClassicEra = not C_Seasons.HasActiveSeason()
 local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder) -- "Placeholder" = SoD
 

@@ -82,5 +82,6 @@ globals = {
 	"InterfaceOptions_AddCategory",
 	"CopyTable",
 	"C_Seasons",
-	"UnitFactionGroup"
+	"UnitFactionGroup",
+	"GetRealmName"
 }
