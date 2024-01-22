@@ -63,7 +63,7 @@ function shuffle(tbl)
   end
 end
 
-local randomName = {"Toxiix-WildGrowth", "Lovediodes-WildGrowth"}
+local randomName = {"Toxiix-WildGrowth(NA)", "Lovediodes-WildGrowth(NA)"}
 shuffle(randomName) -- Randomize order of displayed names
 
 -- INTERFACE OPTIONS (starts building the frame now)
