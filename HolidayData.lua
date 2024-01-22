@@ -16,8 +16,6 @@ end
 local resetHour
 if region == "EU" then
 	resetHour = 5
-elseif region == "AU" then
-	resetHour = 2
 else
 	resetHour = 8
 end
@@ -529,14 +527,6 @@ function GetClassicHolidays()
 		end
 	end
 
-	-- AU reset is 18 hours after NA, so it's in the following day
-	if region == "AU" then
-		for _, holiday in next, holidaySchedule do
-			holiday.startDate = addDaysToDate(holiday.startDate, 1)
-			holiday.endDate = addDaysToDate(holiday.endDate, 1)
-		end
-	end
-
 	-- Sort by ascending date
 	table.sort(holidaySchedule, function(a,b)
 		if (a.startDate.year ~= b.startDate.year) then
@@ -560,7 +550,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2023,
 					month=12,
-					day=3
+					day=3,
+					hour=resetHour,
+					min=0
 				},
 				frequency=3
 			},
@@ -569,7 +561,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=2,
-					day=10
+					day=10,
+					hour=resetHour,
+					min=0
 				},
 				frequency=3
 			}
@@ -589,7 +583,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=7
 			},
@@ -598,7 +594,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=7
 			},
@@ -607,7 +605,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=4
+					day=4,
+					hour=resetHour,
+					min=0
 				},
 				frequency=5
 			},
@@ -616,7 +616,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=3
 			},
@@ -625,7 +627,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=7
 			},
@@ -634,7 +638,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=3
 			},
@@ -643,7 +649,9 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=1,
-					day=2
+					day=2,
+					hour=resetHour,
+					min=0
 				},
 				frequency=7
 			}
@@ -653,7 +661,12 @@ function GetClassicRaidResets()
 	-- AU reset is 18 hours after NA, so it's in the following day
 	if region == "AU" then
 		for _, reset in next, raidResets do
-			reset.firstReset = addDaysToDate(reset.firstReset, 1)
+			local dateSeconds = time(reset.firstReset)
+			local SECONDS_IN_HOUR = 60 * 60
+			local hour_offset = 18
+			-- Do we need to adjust this offset based on DST?
+			dateSeconds = dateSeconds + hour_offset * SECONDS_IN_HOUR
+			reset.firstReset = date("*t", dateSeconds)
 		end
 	end
 

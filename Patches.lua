@@ -97,8 +97,6 @@ end
 local resetHour
 if region == "EU" then
 	resetHour = 5
-elseif region == "AU" then
-	resetHour = 2
 else
 	resetHour = 8
 end
@@ -425,7 +423,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 							year=eventDate.year,
 							month=eventDate.month,
 							day=eventDate.day,
-							hour=resetHour,
+							hour=raid.firstReset.hour,
 							min=0
 						}))),
 						difficultyName="",
