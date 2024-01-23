@@ -11,6 +11,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "You'll still be able to access the calendar with /cal or /calendar",
 		["GeneralHeaderText"]			 = "General",
 		["ArtHeaderText"]				 = "Art",
+		["AuthorHeaderText"]			 = "Authors",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Battleground Call to Arms",
 	},
 	["frFR"] = {
@@ -21,6 +22,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Appel aux armes de champ de bataille",
 
 	},
@@ -32,6 +34,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Llamamiento a las armas de campo de batalla",
 	},
 	["esES"] = {
@@ -42,6 +45,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Llamamiento a las armas de campo de batalla",
 	},
 	["ptBR"] = {
@@ -52,6 +56,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Chamado às Armas em Campo de Batalha",
 	},
 	["deDE"] = {
@@ -62,6 +67,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "Schlachtfeldtag",
 	},
 	["ruRU"] = {
@@ -72,6 +78,7 @@ L.Options = {
 		["HideCalButtonDesc"] 			 = "Вы по-прежнему сможете получить доступ к календарю с помощью /cal или /calendar.",
 		["GeneralHeaderText"]			 = "Общие",
 		["ArtHeaderText"]				 = "Картинка",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "PVP-выходных",
 	},
 	["koKR"] = {
@@ -82,6 +89,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "전장으로 전장",
 	},
 	["zhTW"] = {
@@ -92,6 +100,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "戰場戰鬥的號角",
 	},
 	["zhCN"] = {
@@ -102,6 +111,7 @@ L.Options = {
 		["HideCalButtonDesc"]			 = "",
 		["GeneralHeaderText"]			 = "",
 		["ArtHeaderText"]				 = "",
+		["AuthorHeaderText"]			 = "",
 		["CALENDAR_FILTER_BATTLEGROUND"] = "战场的召唤",
 	},
 }
