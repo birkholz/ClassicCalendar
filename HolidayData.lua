@@ -388,8 +388,8 @@ local SoDEvents = {
 	{
 		name="SoD Launch",
 		description="Season of Discovery officialy launched!",
-		startDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
-		endDate={ year=2023, month=11, day=30, hour=resetHour, min=0 },
+		startDate={ year=2023, month=11, day=30, hour=14, min=0 },
+		endDate={ year=2023, month=11, day=30, hour=14, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
@@ -398,14 +398,38 @@ local SoDEvents = {
 	{
 		name="Phase 2 Launch",
 		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
-		startDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
-		endDate={ year=2024, month=2, day=8, hour=resetHour, min=0 },
+		startDate={ year=2024, month=2, day=8, hour=14, min=0 },
+		endDate={ year=2024, month=2, day=8, hour=14, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ZIndex=ZIndexes.highest
 	}
 }
+
+local function getSoDEvents()
+	-- these events are universal, so we need to adjust from server time
+	-- events are defined with NA's times (MST = UTC-7, MDT = UTC-6)
+	local events = SoDEvents
+	local adjustment = 0
+
+	if region == "EU" then
+		-- CET = UTC + 1, CEST = UTC+2
+		-- On Feb 8th, EU is 8 hours ahead
+		adjustment = 8
+	elseif region == "AU" then
+		-- AEST = UTC+10, AEDT = UTC+11
+		-- On Feb 8th, AU is 18 hours ahead
+		adjustment = 18
+	end
+
+	for _, event in next, SoDEvents do
+		event.startDate = date("*t", time(event.startDate) + (adjustment * 60 * 60))
+		event.endDate = date("*t", time(event.endDate) + (adjustment * 60 * 60))
+	end
+
+	return events
+end
 
 local holidaySchedule = {}
 
@@ -522,7 +546,7 @@ function GetClassicHolidays()
 
 	-- SoD Events
 	if isSoD then
-		for _, holiday in next, SoDEvents do
+		for _, holiday in next, getSoDEvents() do
 			addHolidayToSchedule(holiday, holidaySchedule)
 		end
 	end
