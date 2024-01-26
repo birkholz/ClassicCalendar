@@ -489,7 +489,7 @@ function newGetHolidayInfo(offsetMonths, monthDay, eventIndex)
 	local eventDesc
 
 	for _, holiday in next, GetClassicHolidays() do
-		if event.iconTexture == holiday.startTexture then
+		if event.title == holiday.name then
 			eventDesc = holiday.description
 		end
 	end
