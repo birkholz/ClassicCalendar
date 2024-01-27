@@ -23,7 +23,7 @@ local function CCOptionsHandler(self, event, arg1)
 				["ChildrensWeekArt"] = false,
 				["FireworksSpectacularArt"] = true,
 				["HideCalendarButton"] = false,
-				["StartDay"] = false
+				["StartDay"] = nil
 			}
 		end
 	end
@@ -118,7 +118,7 @@ UIDropDownMenu_SetWidth(startingWeekdayDropdown, 120)
 UIDropDownMenu_Initialize(startingWeekdayDropdown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
     info.func = self.SetValue
-    info.text, info.arg1, info.arg2 = L.Options[localeString]["SelectDefaultText"], L.Options[localeString]["SelectDefaultText"], 0
+    info.text, info.arg1, info.arg2 = L.Options[localeString]["SelectDefaultText"], L.Options[localeString]["SelectDefaultText"], nil
     UIDropDownMenu_AddButton(info)
     info.text, info.arg1, info.arg2 = WEEKDAY_SUNDAY, WEEKDAY_SUNDAY, 1
     UIDropDownMenu_AddButton(info)
@@ -138,8 +138,6 @@ end
 local function DropdownSelectionHandler()
 	if CCConfig.StartDay == false or CCConfig.StartDay == nil then
 		startingWeekdayText = L.Options[localeString]["SelectDayText"]
-	elseif CCConfig.StartDay == 0 then
-		startingWeekdayText = L.Options[localeString]["SelectDefaultText"]
 	elseif CCConfig.StartDay == 1 then
 		startingWeekdayText = WEEKDAY_SUNDAY
 	elseif CCConfig.StartDay == 2 then
