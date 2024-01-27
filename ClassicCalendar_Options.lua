@@ -23,7 +23,7 @@ local function CCOptionsHandler(self, event, arg1)
 				["ChildrensWeekArt"] = false,
 				["FireworksSpectacularArt"] = true,
 				["HideCalendarButton"] = false,
-				--["Dropdown"] = "Value1",
+				["StartDay"] = false
 			}
 		end
 	end
@@ -106,10 +106,57 @@ lblTitle:SetText("|cFFEFC502" .. AddonTitle .. " (v" .. C_AddOns.GetAddOnMetadat
 -- HR line for General options
 local horizRule1 = createHorizontalRule(L.Options[localeString]["GeneralHeaderText"], lblTitle)
 
+-- Set starting weekday
+
+local startingWeekdayDropdownText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+startingWeekdayDropdownText:SetPoint("TOPLEFT", horizRule1, "BOTTOMLEFT", 0, -20) -- Second arguement is the previous local variable name
+startingWeekdayDropdownText:SetText(L.Options[localeString]["StartWeekText"]..":")
+
+local startingWeekdayDropdown = CreateFrame("FRAME", "CCFontSize", CCIOFrame, "UIDropDownMenuTemplate")
+startingWeekdayDropdown:SetPoint("LEFT", startingWeekdayDropdownText, "RIGHT", 0, -3)
+UIDropDownMenu_SetWidth(startingWeekdayDropdown, 120)
+UIDropDownMenu_Initialize(startingWeekdayDropdown, function(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    info.func = self.SetValue
+    info.text, info.arg1, info.arg2 = L.Options[localeString]["SelectDefaultText"], L.Options[localeString]["SelectDefaultText"], 0
+    UIDropDownMenu_AddButton(info)
+    info.text, info.arg1, info.arg2 = WEEKDAY_SUNDAY, WEEKDAY_SUNDAY, 1
+    UIDropDownMenu_AddButton(info)
+    info.text, info.arg1, info.arg2 = WEEKDAY_MONDAY, WEEKDAY_MONDAY, 2
+    UIDropDownMenu_AddButton(info)
+end)
+
+local startingWeekdayText = L.Options[localeString]["SelectDayText"]
+
+function startingWeekdayDropdown:SetValue(newStartingWeekdayText, newStartingWeekdayNumber)
+	startingWeekdayText = newStartingWeekdayText
+	CCConfig.StartDay = newStartingWeekdayNumber
+    CloseDropDownMenus()
+end
+
+-- Loads current selected Start Week Day (if any) and updates dropdown menu text
+local function DropdownSelectionHandler()
+	if CCConfig.StartDay == false or CCConfig.StartDay == nil then
+		startingWeekdayText = L.Options[localeString]["SelectDayText"]
+	elseif CCConfig.StartDay == 0 then
+		startingWeekdayText = L.Options[localeString]["SelectDefaultText"]
+	elseif CCConfig.StartDay == 1 then
+		startingWeekdayText = WEEKDAY_SUNDAY
+	elseif CCConfig.StartDay == 2 then
+		startingWeekdayText = WEEKDAY_MONDAY
+	end
+end
+
+startingWeekdayDropdown:SetScript("OnShow", DropdownSelectionHandler)
+
+startingWeekdayDropdown:SetScript("OnUpdate", function(frame)
+	UIDropDownMenu_SetText(startingWeekdayDropdown, startingWeekdayText)
+end)
+
 -- Hide the Calendar Button
 
 local chkIOHideCalButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
-chkIOHideCalButton:SetPoint("TOPLEFT", horizRule1, "BOTTOMLEFT", 0, -16)
+chkIOHideCalButton:SetPoint("TOPLEFT", startingWeekdayDropdownText, "BOTTOMLEFT", 0, -16)
 
 chkIOHideCalButton:SetScript("OnUpdate", function(frame)
 	chkIOHideCalButton:SetChecked(CCConfig.HideCalendarButton)

@@ -689,7 +689,7 @@ local function _CalendarFrame_GetWeekdayIndex(index)
 	-- the expanded form for the left input to mod() is:
 	-- (index - 1) + (CALENDAR_FIRST_WEEKDAY - 1)
 	-- why the - 1 and then + 1 before return? because lua has 1-based indexes! awesome!
-	return mod(index - 2 + CALENDAR_FIRST_WEEKDAY, 7) + 1;
+	return mod(index - 2 + GetStartingWeekday(), 7) + 1;
 end
 
 local function _CalendarFrame_GetFullDate(weekday, month, day, year)
@@ -1275,7 +1275,7 @@ function CalendarFrame_Update()
 	--firstWeekday = _CalendarFrame_GetWeekdayIndex(firstWeekday);
 
 	-- set the previous month's days before the first day of the week
-	local viewablePrevMonthDays = mod((firstWeekday - CALENDAR_FIRST_WEEKDAY - 1) + 7, 7);
+	local viewablePrevMonthDays = mod((firstWeekday - GetStartingWeekday() - 1) + 7, 7);
 	day = prevNumDays - viewablePrevMonthDays;
 	isSelectedMonth = selectedMonth == prevMonth and selectedYear == prevYear;
 	isThisMonth = presentMonth == prevMonth and presentYear == prevYear;
@@ -1827,8 +1827,8 @@ function CalendarFrame_OpenToGuildEventIndex(guildEventIndex)
 	-- need to highlight the proper day/event in calendar
 	local monthInfo = C_Calendar.GetMonthInfo();
 	local firstDay = monthInfo.firstWeekday;
-	local buttonIndex = day + firstDay - CALENDAR_FIRST_WEEKDAY;
-	if ( firstDay < CALENDAR_FIRST_WEEKDAY ) then
+	local buttonIndex = day + firstDay - GetStartingWeekday();
+	if ( firstDay < GetStartingWeekday() ) then
 		buttonIndex = buttonIndex + 7;
 	end
 	local dayButton = _G["CalendarDayButton"..buttonIndex];

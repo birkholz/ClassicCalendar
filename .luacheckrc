@@ -33,6 +33,7 @@ globals = {
 	"UpdateCalendarState",
 	"CalendarButtonFrame",
 	"GetClassicRaidResets",
+	"GetStartingWeekday",
 
 	-- Stubbed functions made global to be called from the calendar code
 	"newEventGetTextures",
@@ -83,5 +84,14 @@ globals = {
 	"CopyTable",
 	"C_Seasons",
 	"UnitFactionGroup",
-	"GetRealmName"
+	"GetRealmName",
+	"UIDropDownMenu_Initialize",
+	"UIDropDownMenu_SetWidth",
+	"UIDropDownMenu_CreateInfo",
+	"UIDropDownMenu_AddButton",
+	"UIDropDownMenu_SetText",
+	"CloseDropDownMenus",
+	"CALENDAR_FIRST_WEEKDAY",
+	"WEEKDAY_SUNDAY",
+	"WEEKDAY_MONDAY"
 }

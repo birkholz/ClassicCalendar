@@ -564,3 +564,12 @@ function stubbedGetRaidInfo(monthOffset, day, eventIndex)
 		}
 	end
 end
+
+-- Replaced reads of GetStartingWeekday with this function so we can override it safely
+function GetStartingWeekday()
+	if CCConfig.StartDay > 0 then
+		return CCConfig.StartDay
+	else
+		return CALENDAR_FIRST_WEEKDAY
+	end
+end
