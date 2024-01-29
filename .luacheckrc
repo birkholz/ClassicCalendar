@@ -93,5 +93,16 @@ globals = {
 	"CloseDropDownMenus",
 	"CALENDAR_FIRST_WEEKDAY",
 	"WEEKDAY_SUNDAY",
-	"WEEKDAY_MONDAY"
+	"WEEKDAY_MONDAY",
+	"format",
+	"ChatTypeInfo",
+	"DEFAULT_CHAT_FRAME",
+	"CALENDAR_EVENT_ALARM_MESSAGE",
+	"UIFrameFlash",
+	"GameTimeCalendarEventAlarmTexture",
+	"C_Timer",
+	"RaidNotice_AddMessage",
+	"RaidWarningFrame",
+	"PlaySound",
+	"SOUNDKIT"
 }

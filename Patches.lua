@@ -1,3 +1,4 @@
+local addonName, ClassicCalendar = ...
 local L = CLASSIC_CALENDAR_L
 local localeString = tostring(GetLocale())
 local date = date
@@ -573,3 +574,59 @@ function GetStartingWeekday()
 		return CALENDAR_FIRST_WEEKDAY
 	end
 end
+
+-- Replacement for CALENDAR_EVENT_ALARM since it never fires
+local function AlarmUpcomingEvents()
+	local currentDate = C_DateAndTime.GetCurrentCalendarTime()
+	currentDate.min = currentDate.minute
+	local today = currentDate.monthDay
+	local currentTime = time(currentDate)
+	local numEvents = C_Calendar.GetNumDayEvents(0, today)
+
+	if ( numEvents <= 0 ) then
+		return
+	end
+
+	for i = 1, numEvents do
+		local event = C_Calendar.GetDayEvent(0, today, i);
+		-- We only alarm events created by players
+		if (event and event.calendarType == "PLAYER") then
+			event.startTime.min = event.startTime.minute
+			local eventTime = time(event.startTime)
+
+			-- Event must be 15 minutes away to match the localized strings
+			if eventTime == currentTime + 900 then
+				local title = event.title
+				local info = ChatTypeInfo["SYSTEM"]
+				local message = format(CALENDAR_EVENT_ALARM_MESSAGE, title)
+				DEFAULT_CHAT_FRAME:AddMessage(message, info.r, info.g, info.b, info.id)
+
+				if (CCConfig.FlashCalButton) then
+					UIFrameFlash(GameTimeCalendarEventAlarmTexture, 1.0, 1.0, -1)
+				end
+				if (CCConfig.SendRaidWarning) then
+					RaidNotice_AddMessage(RaidWarningFrame, message, ChatTypeInfo["RAID_WARNING"])
+				end
+				if (CCConfig.PlayAlarmSound) then
+					PlaySound(SOUNDKIT.ALARM_CLOCK_WARNING_2)
+				end
+			end
+		end
+	end
+end
+
+local function AlarmTimer()
+	-- Runs every minute and sends alarms for any upcoming events
+	AlarmUpcomingEvents()
+	C_Timer.After(60, AlarmTimer)
+end
+
+local loadFrame = CreateFrame("Frame")
+function loadFrame:OnEvent(event, arg1)
+	if arg1 == addonName then
+		AlarmTimer()
+	end
+end
+
+loadFrame:RegisterEvent("ADDON_LOADED")
+loadFrame:SetScript("OnEvent", loadFrame.OnEvent)

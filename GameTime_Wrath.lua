@@ -125,6 +125,7 @@ function CalendarButtonFrame_OnUpdate(self, elapsed)
 end
 
 function CalendarButtonFrame_OnClick(self)
+	UIFrameFlashStop(GameTimeCalendarEventAlarmTexture)
 	if ( GameTimeCalendarInvitesTexture:IsShown() ) then
 		if ( Calendar_Show ) then
 			Calendar_Show();

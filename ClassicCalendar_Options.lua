@@ -14,17 +14,26 @@ function GoToCCSettings(msg, editbox)
 	end
 end
 
+local defaultOptions = {
+	["BattlegroundsArt"] = false,
+	["ChildrensWeekArt"] = false,
+	["FireworksSpectacularArt"] = true,
+	["HideCalendarButton"] = false,
+	["StartDay"] = nil,
+	["SendRaidWarning"] = false,
+	["PlayAlarmSound"] = false,
+	["FlashCalButton"] = false
+}
+
 local function CCOptionsHandler(self, event, arg1)
 	-- If SavedVariable is not set, default settings
-	if event == "ADDON_LOADED" then
-		if CCConfig == nil or CCConfig == "" then
-			CCConfig = {
-				["BattlegroundsArt"] = false,
-				["ChildrensWeekArt"] = false,
-				["FireworksSpectacularArt"] = true,
-				["HideCalendarButton"] = false,
-				["StartDay"] = nil
-			}
+	if event == "ADDON_LOADED" and arg1 == AddonName then
+		CCConfig = CCConfig or defaultOptions
+
+		for key, value in pairs(defaultOptions) do
+			if CCConfig[key] == nil then
+				CCConfig[key] = value
+			end
 		end
 	end
 
@@ -178,8 +187,69 @@ local chkIOHideCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHig
 chkIOHideCalButtonDesc:SetPoint("LEFT", chkIOHideCalButton, "LEFT", 0, -24)
 chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["HideCalButtonDesc"].."|r")
 
+-- HR line for event warning options
+local horizRule3 = createHorizontalRule(L.Options[localeString]["EventWarningsHeaderText"], chkIOHideCalButtonDesc)
+
+local eventWarningsDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+eventWarningsDesc:SetPoint("LEFT", horizRule3, "LEFT", 0, -24)
+eventWarningsDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["EventWarningsDesc"].."|r")
+
+-- Flash Calendar Button
+
+local flashCalButtonButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
+flashCalButtonButton:SetPoint("TOPLEFT", eventWarningsDesc, "BOTTOMLEFT", 0, -8)
+
+flashCalButtonButton:SetScript("OnUpdate", function(frame)
+	flashCalButtonButton:SetChecked(CCConfig.FlashCalButton)
+end)
+
+flashCalButtonButton:HookScript("OnClick", function(frame)
+	local checked = frame:GetChecked()
+	CCConfig.FlashCalButton = checked
+end)
+
+local flashCalButtonButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+flashCalButtonButtonText:SetPoint("LEFT", flashCalButtonButton, "RIGHT", 0, 1)
+flashCalButtonButtonText:SetText(L.Options[localeString]["FlashCalButtonText"])
+
+-- Raid Warning
+
+local raidWarningButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
+raidWarningButton:SetPoint("TOPLEFT", flashCalButtonButton, "BOTTOMLEFT", 0, -8)
+
+raidWarningButton:SetScript("OnUpdate", function(frame)
+	raidWarningButton:SetChecked(CCConfig.SendRaidWarning)
+end)
+
+raidWarningButton:HookScript("OnClick", function(frame)
+	local checked = frame:GetChecked()
+	CCConfig.SendRaidWarning = checked
+end)
+
+local raidWarningButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+raidWarningButtonText:SetPoint("LEFT", raidWarningButton, "RIGHT", 0, 1)
+raidWarningButtonText:SetText(L.Options[localeString]["SendRaidWarningText"])
+
+-- Alarm Sound
+
+local alarmSoundButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
+alarmSoundButton:SetPoint("TOPLEFT", raidWarningButton, "BOTTOMLEFT", 0, -8)
+
+alarmSoundButton:SetScript("OnUpdate", function(frame)
+	alarmSoundButton:SetChecked(CCConfig.PlayAlarmSound)
+end)
+
+alarmSoundButton:HookScript("OnClick", function(frame)
+	local checked = frame:GetChecked()
+	CCConfig.PlayAlarmSound = checked
+end)
+
+local alarmSoundButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+alarmSoundButtonText:SetPoint("LEFT", alarmSoundButton, "RIGHT", 0, 1)
+alarmSoundButtonText:SetText(L.Options[localeString]["PlayAlarmSoundText"])
+
 -- HR line for Art options
-local horizRule2 = createHorizontalRule(L.Options[localeString]["ArtHeaderText"], chkIOHideCalButtonDesc)
+local horizRule2 = createHorizontalRule(L.Options[localeString]["ArtHeaderText"], alarmSoundButton)
 
 -- PVP weekends
 
