@@ -333,8 +333,8 @@ local battlegroundWeekends = {
 	arathiBasin={
 		name=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
-		startDate={ year=2024, month=1, day=19, hour=0, min=1 },
-		endDate={ year=2024, month=1, day=23, hour=resetHour, min=0 },
+		startDate={ year=2024, month=2, day=16, hour=0, min=1 },
+		endDate={ year=2024, month=2, day=20, hour=resetHour, min=0 },
 		frequency=28,
 		CVar="calendarShowBattlegrounds",
 		artConfig="BattlegroundsArt",
@@ -536,7 +536,7 @@ function GetClassicHolidays()
 	-- Battleground weekends
 	if isSoD then
 		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
-		-- addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
+		addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
 		-- addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
 	else
 		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
@@ -580,12 +580,24 @@ function GetClassicRaidResets()
 				},
 				frequency=3
 			},
+			-- First 2 Gnomer resets are weekly, before the 3-day reset starts
 			{
 				name=gnomerName,
 				firstReset = {
 					year=2024,
 					month=2,
-					day=10,
+					day=13,
+					hour=resetHour,
+					min=0
+				},
+				frequency=0
+			},
+			{
+				name=gnomerName,
+				firstReset = {
+					year=2024,
+					month=2,
+					day=20,
 					hour=resetHour,
 					min=0
 				},

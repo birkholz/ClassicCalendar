@@ -144,6 +144,10 @@ local function dateIsOnFrequency(eventDate, epochDate, frequency)
 		 eventDateTime = eventDateTime + 60*60
 	end
 
+	if frequency == 0 then
+		return eventDateTime == epochDateTime
+	end
+
 	return ((eventDateTime - epochDateTime) / (SECONDS_IN_DAY)) % frequency == 0
 end
 
