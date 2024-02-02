@@ -257,11 +257,13 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		ZIndex=ZIndexes.high
 	},
 	{
-		-- Confirmed, coincides with Chinese New Year, lasts a week
+		-- Unconfirmed, sorta coincides with Chinese New Year, lasts 2 weeks
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
 		startDate=GetLunarFestivalStart(currentCalendarTime.year),
 		endDate=GetLunarFestivalEnd(currentCalendarTime.year),
+		-- startDate={ year=2024, month=2, day=3, hour=resetHour, min=0 },
+		-- endDate={ year=2024, month=2, day=18, hour=resetHour, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd",
@@ -355,6 +357,35 @@ local battlegroundWeekends = {
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
 	},
+}
+
+local SoDBattlegroundWeekends = {
+	warsongGulch={
+		name=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarPVP"]["WarsongGulch"]["description"],
+		startDate={ year=2024, month=2, day=2, hour=0, min=1 },
+		endDate={ year=2024, month=2, day=6, hour=resetHour, min=0 },
+		frequency=28,
+		CVar="calendarShowBattlegrounds",
+		artConfig="BattlegroundsArt",
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		ZIndex=ZIndexes.medium
+	},
+	arathiBasin={
+		name=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarPVP"]["ArathiBasin"]["description"],
+		startDate={ year=2024, month=2, day=9, hour=0, min=1 },
+		endDate={ year=2024, month=2, day=13, hour=resetHour, min=0 },
+		frequency=28,
+		CVar="calendarShowBattlegrounds",
+		artConfig="BattlegroundsArt",
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		ZIndex=ZIndexes.medium
+	}
 }
 
 local DarkmoonHolidays = {
@@ -535,9 +566,8 @@ function GetClassicHolidays()
 
 	-- Battleground weekends
 	if isSoD then
-		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
-		addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
-		-- addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
+		addHolidayToSchedule(SoDBattlegroundWeekends.warsongGulch, holidaySchedule)
+		addHolidayToSchedule(SoDBattlegroundWeekends.arathiBasin, holidaySchedule)
 	else
 		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
 		addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
