@@ -143,6 +143,7 @@ end
 
 local function GetLunarFestivalStart(year)
 	local cny = GetChineseNewYear(year)
+	cny = addDaysToDate(cny, -7)
 	cny.hour = 9
 	cny.min = 0
 	return cny
@@ -260,10 +261,10 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- Unconfirmed, sorta coincides with Chinese New Year, lasts 2 weeks
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["LunarFestival"]["description"],
-		startDate=GetLunarFestivalStart(currentCalendarTime.year),
-		endDate=GetLunarFestivalEnd(currentCalendarTime.year),
-		-- startDate={ year=2024, month=2, day=3, hour=resetHour, min=0 },
-		-- endDate={ year=2024, month=2, day=18, hour=resetHour, min=0 },
+		-- startDate=GetLunarFestivalStart(currentCalendarTime.year),
+		-- endDate=GetLunarFestivalEnd(currentCalendarTime.year),
+		startDate={ year=2024, month=2, day=3, hour=resetHour, min=0 },
+		endDate={ year=2024, month=2, day=18, hour=resetHour, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd",
