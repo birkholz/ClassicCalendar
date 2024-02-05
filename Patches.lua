@@ -437,7 +437,7 @@ function stubbedGetDayEvent(monthOffset, monthDay, index)
 			end
 		end
 
-		if next(matchingEvents) == nil or matchingEvents[index - originalEventCount] == nil then
+		if #matchingEvents == 0 or matchingEvents[index - originalEventCount] == nil then
 			assert(false, string.format("Injected event expected for date: %s", dumpTable(eventDate)))
 		else
 			table.sort(matchingEvents, function(a,b)

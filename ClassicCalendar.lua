@@ -1536,6 +1536,7 @@ function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventInd
 	-- record the first event button
 	-- show viewable events
 	local firstEventButton;
+	local firstEventButtonType;
 	local eventIndex = 1;
 	local eventButtonIndex = 1;
 	local eventButton, eventButtonName, eventButtonBackground, eventButtonText1, eventButtonText2, eventColor;
@@ -1616,8 +1617,11 @@ function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventInd
 			-- show the event button
 			eventButton:Show();
 
-			-- record the first event button
-			firstEventButton = firstEventButton or eventButton;
+			-- record the first holiday button, or the first event button
+			if firstEventButton == nil or (event.calendarType == "HOLIDAY" and firstEventButtonType ~= "HOLIDAY") then
+				firstEventButton = eventButton
+			end
+			firstEventButtonType = event.calendarType
 
 			eventButtonIndex = eventButtonIndex + 1;
 		end
