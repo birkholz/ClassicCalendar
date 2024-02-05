@@ -198,9 +198,9 @@ local unlockCalButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighli
 unlockCalButtonText:SetPoint("LEFT", unlockCalButton, "RIGHT", 0, 1)
 unlockCalButtonText:SetText(L.Options[localeString]["UnlockCalButtonText"])
 
-local chkIOHideCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-chkIOHideCalButtonDesc:SetPoint("LEFT", unlockCalButton, "LEFT", 0, -24)
-chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["UnlockCalButtonDesc"].."|r")
+local unlockCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+unlockCalButtonDesc:SetPoint("LEFT", unlockCalButton, "LEFT", 0, -24)
+unlockCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["UnlockCalButtonDesc"].."|r")
 
 -- Hide the Calendar Button
 

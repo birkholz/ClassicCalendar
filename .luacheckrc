@@ -104,5 +104,6 @@ globals = {
 	"RaidNotice_AddMessage",
 	"RaidWarningFrame",
 	"PlaySound",
-	"SOUNDKIT"
+	"SOUNDKIT",
+	"MinimapCluster"
 }
