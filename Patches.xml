@@ -49,7 +49,7 @@
 			<OnLoad method="OnLoad"/>
 		</Scripts>
 	</Frame>
-	<Button name="CalendarButtonFrame" parent="MinimapCluster" frameStrata="HIGH">
+	<Button name="CalendarButtonFrame" parent="UIParent" frameStrata="HIGH" enableMouse="true" movable="true">
 		<Size>
 			<AbsDimension x="40" y="40"/>
 		</Size>
@@ -105,6 +105,8 @@
 			<OnEvent function="CalendarButtonFrame_OnEvent"/>
 			<OnUpdate function="CalendarButtonFrame_OnUpdate"/>
 			<OnClick function="CalendarButtonFrame_OnClick"/>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 		<ButtonText>
 			<Anchors>
@@ -125,3 +127,4 @@
 		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
 	</Button>
 </Ui>
+

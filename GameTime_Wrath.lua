@@ -39,6 +39,8 @@ function CalendarButtonFrame_OnLoad(self)
 	self.hour = 0;
 	self.flashTimer = 0.0;
 	CalendarButtonFrame_OnUpdate(self);
+
+	self:RegisterForDrag("LeftButton")
 end
 
 function CalendarButtonFrame_OnEnter(self)

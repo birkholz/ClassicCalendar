@@ -22,8 +22,25 @@ local defaultOptions = {
 	["StartDay"] = nil,
 	["SendRaidWarning"] = false,
 	["PlayAlarmSound"] = false,
-	["FlashCalButton"] = false
+	["FlashCalButton"] = false,
+	["UnlockCalendarButton"] = false,
 }
+
+local function ToggleCalButtonLock(checked)
+	if checked then
+		CalendarButtonFrame:SetMovable(true)
+		CalendarButtonFrame:SetScript("OnDragStart", CalendarButtonFrame.StartMoving)
+		CalendarButtonFrame:SetScript("OnDragStop", CalendarButtonFrame.StopMovingOrSizing)
+	else
+		CalendarButtonFrame:SetParent(MinimapCluster)
+		CalendarButtonFrame:SetMovable(false)
+		CalendarButtonFrame:ClearAllPoints()
+		CalendarButtonFrame:SetPoint("TOPRIGHT", MinimapCluster, "TOPRIGHT", 2, -24)
+		CalendarButtonFrame:SetScript("OnDragStart", function() end)
+		CalendarButtonFrame:SetScript("OnDragStop", function() end)
+	end
+end
+
 
 local function CCOptionsHandler(self, event, arg1)
 	-- If SavedVariable is not set, default settings
@@ -44,6 +61,8 @@ local function CCOptionsHandler(self, event, arg1)
 		if CCConfig.HideCalendarButton == true then
 			CalendarButtonFrame:Hide()
 		end
+
+		ToggleCalButtonLock(CCConfig.UnlockCalendarButton)
 	end
 end
 
@@ -160,10 +179,33 @@ startingWeekdayDropdown:SetScript("OnUpdate", function(frame)
 	UIDropDownMenu_SetText(startingWeekdayDropdown, startingWeekdayText)
 end)
 
+-- Unlock the Calendar Button
+
+local unlockCalButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
+unlockCalButton:SetPoint("TOPLEFT", startingWeekdayDropdownText, "BOTTOMLEFT", 0, -16)
+
+unlockCalButton:SetScript("OnUpdate", function(frame)
+	unlockCalButton:SetChecked(CCConfig.UnlockCalendarButton)
+end)
+
+unlockCalButton:HookScript("OnClick", function(frame)
+	local checked = frame:GetChecked()
+	CCConfig.UnlockCalendarButton = checked
+	ToggleCalButtonLock(checked)
+end)
+
+local unlockCalButtonText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+unlockCalButtonText:SetPoint("LEFT", unlockCalButton, "RIGHT", 0, 1)
+unlockCalButtonText:SetText(L.Options[localeString]["UnlockCalButtonText"])
+
+local chkIOHideCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+chkIOHideCalButtonDesc:SetPoint("LEFT", unlockCalButton, "LEFT", 0, -24)
+chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["UnlockCalButtonDesc"].."|r")
+
 -- Hide the Calendar Button
 
 local chkIOHideCalButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
-chkIOHideCalButton:SetPoint("TOPLEFT", startingWeekdayDropdownText, "BOTTOMLEFT", 0, -16)
+chkIOHideCalButton:SetPoint("TOPLEFT", unlockCalButton, "BOTTOMLEFT", 0, -24)
 
 chkIOHideCalButton:SetScript("OnUpdate", function(frame)
 	chkIOHideCalButton:SetChecked(CCConfig.HideCalendarButton)
