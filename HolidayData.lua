@@ -393,8 +393,8 @@ local DarkmoonHolidays = {
 	elwynn={
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireElwynn"]["description"],
-		startDate={ year=2023, month=12, day=18, hour=0, min=1 },
-		endDate={ year=2023, month=12, day=24, hour=23, min=59 },
+		startDate={ year=2023, month=12, day=18, hour=4, min=0 },
+		endDate={ year=2023, month=12, day=25, hour=4, min=0 },
 		frequency=isSoD and 28 or nil,
 		CVar="calendarShowDarkmoon",
 		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireElwynnStart",
@@ -405,8 +405,8 @@ local DarkmoonHolidays = {
 	mulgore={
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["DarkmoonFaireMulgore"]["description"],
-		startDate={ year=2023, month=12, day=4, hour=0, min=1 },
-		endDate={ year=2023, month=12, day=10, hour=23, min=59 },
+		startDate={ year=2023, month=12, day=4, hour=4, min=0 },
+		endDate={ year=2023, month=12, day=11, hour=4, min=0 },
 		frequency=isSoD and 28 or nil,
 		CVar="calendarShowDarkmoon",
 		startTexture="Interface/Calendar/Holidays/Calendar_DarkmoonFaireMulgoreStart",
