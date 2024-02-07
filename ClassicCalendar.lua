@@ -3099,7 +3099,7 @@ function CalendarViewEventFrame_Update()
 		SetDesaturation(CalendarViewEventIcon, true);
 		CalendarViewEventTypeName:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
 		CalendarViewEventCreatorName:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
-		CalendarViewEventDescriptionContainer:SetTextColor(GRAY_FONT_COLOR);
+		CalendarViewEventDescriptionContainer.ScrollingFont:SetTextColor(GRAY_FONT_COLOR);
 	else
 		-- set the event title
 		CalendarViewEventTitle:SetText(eventInfo.title);
