@@ -725,6 +725,15 @@ function GetClassicRaidResets()
 		}
 	end
 
+	-- EU weekly reset is on Wednesdays, so move forward all weekly raid resets by a day
+	if region == "EU" then
+		for _, reset in next, raidResets do
+			if reset.frequency == 7 then
+				reset.firstReset = addDaysToDate(reset.firstReset, 1)
+			end
+		end
+	end
+
 	-- AU reset is 18 hours after NA, so it's in the following day
 	if region == "AU" then
 		for _, reset in next, raidResets do
