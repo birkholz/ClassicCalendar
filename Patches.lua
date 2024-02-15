@@ -593,16 +593,35 @@ local function AlarmUpcomingEvents()
 
 	for i = 1, numEvents do
 		local event = C_Calendar.GetDayEvent(0, today, i);
-		-- We only alarm events created by players
-		if (event and event.calendarType == "PLAYER") then
+		-- We only alarm events created by players and that the player is in
+		local alarmInviteStatuses = {
+			Enum.CalendarStatus.Signedup,
+			Enum.CalendarStatus.Available,
+			Enum.CalendarStatus.Confirmed,
+			Enum.CalendarStatus.Tentative
+		}
+		if (event and event.calendarType == "PLAYER" and alarmInviteStatuses[event.inviteStatus] ~= nil) then
 			event.startTime.min = event.startTime.minute
 			local eventTime = time(event.startTime)
 
-			-- Event must be 15 minutes away to match the localized strings
-			if eventTime == currentTime + 900 then
+			local alarmMult = 60
+			if CCConfig.AlarmUnit == "Minute" then
+				alarmMult = 60
+			elseif CCConfig.AlarmUnit == "Hour" then
+				alarmMult = 3600
+			end
+			local alarmTime = CCConfig.AlarmNumber * alarmMult
+			if eventTime == currentTime + alarmTime then
 				local title = event.title
 				local info = ChatTypeInfo["SYSTEM"]
-				local message = format(CALENDAR_EVENT_ALARM_MESSAGE, title)
+				local message
+				if CCConfig.AlarmUnit == "Minute" and CCConfig.AlarmNumber == 15 then
+					-- Fully localized, but hardcoded to 15 minutes
+					message = format(CALENDAR_EVENT_ALARM_MESSAGE, title)
+				else
+					local pluralizedUnit = format(CCConfig.AlarmUnit == "hour" and D_HOURS or D_MINUTES, CCConfig.AlarmNumber)
+					message = format(L.Options[localeString]["EventAlarmMessage"], title, pluralizedUnit)
+				end
 				DEFAULT_CHAT_FRAME:AddMessage(message, info.r, info.g, info.b, info.id)
 
 				if (CCConfig.FlashCalButton) then
@@ -627,10 +646,8 @@ end
 
 local loadFrame = CreateFrame("Frame")
 function loadFrame:OnEvent(event, arg1)
-	if arg1 == addonName then
-		AlarmTimer()
-	end
+	AlarmTimer()
 end
 
-loadFrame:RegisterEvent("ADDON_LOADED")
+loadFrame:RegisterEvent("VARIABLES_LOADED")
 loadFrame:SetScript("OnEvent", loadFrame.OnEvent)

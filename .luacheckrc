@@ -105,5 +105,7 @@ globals = {
 	"RaidWarningFrame",
 	"PlaySound",
 	"SOUNDKIT",
-	"MinimapCluster"
+	"MinimapCluster",
+	"D_HOURS",
+	"D_MINUTES",
 }

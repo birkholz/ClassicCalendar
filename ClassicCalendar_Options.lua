@@ -24,6 +24,8 @@ local defaultOptions = {
 	["PlayAlarmSound"] = false,
 	["FlashCalButton"] = false,
 	["UnlockCalendarButton"] = false,
+	["AlarmNumber"] = 15,
+	["AlarmUnit"] = "minute"
 }
 
 local function ToggleCalButtonLock(checked)
@@ -33,6 +35,7 @@ local function ToggleCalButtonLock(checked)
 		CalendarButtonFrame:SetScript("OnDragStop", CalendarButtonFrame.StopMovingOrSizing)
 	else
 		CalendarButtonFrame:SetParent(MinimapCluster)
+		CalendarButtonFrame:SetFrameLevel(CalendarButtonFrame:GetFrameLevel() + 2)
 		CalendarButtonFrame:SetMovable(false)
 		CalendarButtonFrame:ClearAllPoints()
 		CalendarButtonFrame:SetPoint("TOPRIGHT", MinimapCluster, "TOPRIGHT", 2, -24)
@@ -40,33 +43,6 @@ local function ToggleCalButtonLock(checked)
 		CalendarButtonFrame:SetScript("OnDragStop", function() end)
 	end
 end
-
-
-local function CCOptionsHandler(self, event, arg1)
-	-- If SavedVariable is not set, default settings
-	if event == "ADDON_LOADED" and arg1 == AddonName then
-		CCConfig = CCConfig or defaultOptions
-
-		for key, value in pairs(defaultOptions) do
-			if CCConfig[key] == nil then
-				CCConfig[key] = value
-			end
-		end
-	end
-
-	if event == "VARIABLES_LOADED" then
-		SlashCmdList["CCCONFIG"] = GoToCCSettings;
-		SLASH_CCCONFIG1, SLASH_CCCONFIG2 = "/caloptions", "/calendaroptions"
-
-		if CCConfig.HideCalendarButton == true then
-			CalendarButtonFrame:Hide()
-		end
-
-		ToggleCalButtonLock(CCConfig.UnlockCalendarButton)
-	end
-end
-
-CCOptions:SetScript("OnEvent", CCOptionsHandler)
 
 -- Checks localizations for Options and falls back to enUS if any are missing
 
@@ -143,16 +119,20 @@ startingWeekdayDropdownText:SetText(L.Options[localeString]["StartWeekText"]..":
 local startingWeekdayDropdown = CreateFrame("FRAME", "CCFontSize", CCIOFrame, "UIDropDownMenuTemplate")
 startingWeekdayDropdown:SetPoint("LEFT", startingWeekdayDropdownText, "RIGHT", 0, -3)
 UIDropDownMenu_SetWidth(startingWeekdayDropdown, 120)
-UIDropDownMenu_Initialize(startingWeekdayDropdown, function(self, level, menuList)
+
+local function InitStartingWeekdayDropdown(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
     info.func = self.SetValue
     info.text, info.arg1, info.arg2 = L.Options[localeString]["SelectDefaultText"], L.Options[localeString]["SelectDefaultText"], nil
+	info.checked = CCConfig.StartDay == nil and true or false
     UIDropDownMenu_AddButton(info)
     info.text, info.arg1, info.arg2 = WEEKDAY_SUNDAY, WEEKDAY_SUNDAY, 1
+	info.checked = CCConfig.StartDay == 1 and true or false
     UIDropDownMenu_AddButton(info)
     info.text, info.arg1, info.arg2 = WEEKDAY_MONDAY, WEEKDAY_MONDAY, 2
+	info.checked = CCConfig.StartDay == 2 and true or false
     UIDropDownMenu_AddButton(info)
-end)
+end
 
 local startingWeekdayText = L.Options[localeString]["SelectDayText"]
 
@@ -229,17 +209,97 @@ local chkIOHideCalButtonDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHig
 chkIOHideCalButtonDesc:SetPoint("LEFT", chkIOHideCalButton, "LEFT", 0, -24)
 chkIOHideCalButtonDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["HideCalButtonDesc"].."|r")
 
--- HR line for event warning options
-local horizRule3 = createHorizontalRule(L.Options[localeString]["EventWarningsHeaderText"], chkIOHideCalButtonDesc)
+-- HR line for event alarm options
+local horizRule3 = createHorizontalRule(L.Options[localeString]["EventAlarmsHeaderText"], chkIOHideCalButtonDesc)
 
-local eventWarningsDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-eventWarningsDesc:SetPoint("LEFT", horizRule3, "LEFT", 0, -24)
-eventWarningsDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["EventWarningsDesc"].."|r")
+local eventAlarmsDesc = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+eventAlarmsDesc:SetPoint("LEFT", horizRule3, "LEFT", 0, -24)
+eventAlarmsDesc:SetText("|cFF9CD6DE"..L.Options[localeString]["EventAlarmsDesc"].."|r")
+
+--- Event alarm time
+
+local eventAlarmTimeText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+eventAlarmTimeText:SetPoint("TOPLEFT", eventAlarmsDesc, "BOTTOMLEFT", 0, -16)
+eventAlarmTimeText:SetText(L.Options[localeString]["EventAlarmFrontText"])
+
+local function InitEventAlarmNumberDropdown(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    info.func = self.SetValue
+	local startN, endN, stepN
+	if CCConfig.AlarmUnit == "minute" then
+		startN, endN, stepN = 5, 55, 5
+	elseif CCConfig.AlarmUnit == "hour" then
+		startN, endN, stepN = 1, 24, 1
+	end
+	for num = startN, endN, stepN do
+		info.text, info.arg1 = num, num
+		info.checked = CCConfig.AlarmNumber == num and true or false
+		UIDropDownMenu_AddButton(info)
+	end
+end
+
+local eventAlarmNumberDropdown = CreateFrame("FRAME", "CCFontSize", CCIOFrame, "UIDropDownMenuTemplate")
+eventAlarmNumberDropdown:SetPoint("LEFT", eventAlarmTimeText, "RIGHT", -12, -3)
+UIDropDownMenu_SetWidth(eventAlarmNumberDropdown, 48)
+
+function eventAlarmNumberDropdown:SetValue(newValue)
+	CCConfig.AlarmNumber = newValue
+    CloseDropDownMenus()
+end
+
+eventAlarmNumberDropdown:SetScript("OnUpdate", function(frame)
+	UIDropDownMenu_SetText(eventAlarmNumberDropdown, CCConfig.AlarmNumber)
+end)
+
+local eventAlarmUnitDropdown = CreateFrame("FRAME", "CCFontSize", CCIOFrame, "UIDropDownMenuTemplate")
+eventAlarmUnitDropdown:SetPoint("LEFT", eventAlarmNumberDropdown, "RIGHT", -32, 0)
+UIDropDownMenu_SetWidth(eventAlarmUnitDropdown, 80)
+
+local function InitEventAlarmUnitDropdown(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    info.func = self.SetValue
+    info.text, info.arg1 = "minutes", "minute"
+	info.checked = CCConfig.AlarmUnit == "minute" and true or false
+    UIDropDownMenu_AddButton(info)
+    info.text, info.arg1 = "hours", "hour"
+	info.checked = CCConfig.AlarmUnit == "hour" and true or false
+    UIDropDownMenu_AddButton(info)
+end
+
+function eventAlarmUnitDropdown:SetValue(newUnitText)
+	CCConfig.AlarmUnit = newUnitText
+	if newUnitText == "minute" then
+		CCConfig.AlarmNumber = 15
+	elseif newUnitText == "hour" then
+		CCConfig.AlarmNumber = 1
+	end
+	UIDropDownMenu_Initialize(eventAlarmNumberDropdown, InitEventAlarmNumberDropdown)
+    CloseDropDownMenus()
+end
+
+eventAlarmUnitDropdown:SetScript("OnUpdate", function(frame)
+	local pluralUnit
+	if CCConfig.AlarmUnit == "hour" then
+		if CCConfig.AlarmNumber == 1 then
+			pluralUnit = L.Options[localeString]["HourSingular"]
+		else
+			pluralUnit = L.Options[localeString]["HourPlural"]
+		end
+	else
+		pluralUnit = L.Options[localeString]["MinutePlural"]
+	end
+	UIDropDownMenu_SetText(eventAlarmUnitDropdown, pluralUnit)
+end)
+
+local eventAlarmTimeEndingText = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
+eventAlarmTimeEndingText:SetPoint("LEFT", eventAlarmUnitDropdown, "RIGHT", -8, 3)
+eventAlarmTimeEndingText:SetText(L.Options[localeString]["EventAlarmBackText"])
+
 
 -- Flash Calendar Button
 
 local flashCalButtonButton = CreateFrame("CheckButton", nil, CCIOFrame, "OptionsBaseCheckButtonTemplate")
-flashCalButtonButton:SetPoint("TOPLEFT", eventWarningsDesc, "BOTTOMLEFT", 0, -8)
+flashCalButtonButton:SetPoint("TOPLEFT", eventAlarmTimeText, "BOTTOMLEFT", 0, -16)
 
 flashCalButtonButton:SetScript("OnUpdate", function(frame)
 	flashCalButtonButton:SetChecked(CCConfig.FlashCalButton)
@@ -368,3 +428,36 @@ lblDiscord:SetPoint("LEFT", DiscordLogo, "RIGHT", 4, 0)
 lblDiscord:SetText("|cFFEFC502https://discord.gg/CMxKsBQFKp|r")
 
 InterfaceOptions_AddCategory(CCIOFrame);
+
+-- Loading handler
+
+local function CCOptionsHandler(self, event, arg1)
+	-- If SavedVariable is not set, default settings
+	if event == "ADDON_LOADED" and arg1 == AddonName then
+		CCConfig = CCConfig or defaultOptions
+
+		for key, value in pairs(defaultOptions) do
+			if CCConfig[key] == nil then
+				CCConfig[key] = value
+			end
+		end
+	end
+
+	if event == "VARIABLES_LOADED" then
+		SlashCmdList["CCCONFIG"] = GoToCCSettings;
+		SLASH_CCCONFIG1, SLASH_CCCONFIG2 = "/caloptions", "/calendaroptions"
+
+		if CCConfig.HideCalendarButton == true then
+			CalendarButtonFrame:Hide()
+		end
+
+		ToggleCalButtonLock(CCConfig.UnlockCalendarButton)
+
+		-- Delay loading the alarm dropdowns so they can use saved vars
+		UIDropDownMenu_Initialize(startingWeekdayDropdown, InitStartingWeekdayDropdown)
+		UIDropDownMenu_Initialize(eventAlarmNumberDropdown, InitEventAlarmNumberDropdown)
+		UIDropDownMenu_Initialize(eventAlarmUnitDropdown, InitEventAlarmUnitDropdown)
+	end
+end
+
+CCOptions:SetScript("OnEvent", CCOptionsHandler)

@@ -34,7 +34,7 @@ function CalendarButtonFrame_OnLoad(self)
 	self:GetFontString():SetDrawLayer("BACKGROUND");
 
 	self.timeOfDay = 0;
-	self:SetFrameLevel(self:GetFrameLevel() + 2);
+	-- self:SetFrameLevel(self:GetFrameLevel() + 2);
 	self.pendingCalendarInvites = 0;
 	self.hour = 0;
 	self.flashTimer = 0.0;
