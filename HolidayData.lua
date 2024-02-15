@@ -304,7 +304,36 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		endTexture="Interface/Calendar/Holidays/Calendar_Fireworks",
 		ZIndex=ZIndexes.low
 	},
-	-- Recurring events
+}
+
+local WeeklyHolidays = 	{
+	{
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
+		startDate={ year=2024, month=2, day=11, hour=14, min=0 },
+		endDate={ year=2024, month=2, day=11, hour=16, min=0 },
+		frequency=7,
+		CVar="calendarShowWeeklyHolidays",
+		startTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ZIndex=ZIndexes.low
+	},
+}
+
+local SoDWeeklyHolidays = {
+	{
+		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
+		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
+		startDate={ year=2024, month=2, day=14, hour=19, min=0 },
+		endDate={ year=2024, month=2, day=14, hour=21, min=0 },
+		frequency=7,
+		CVar="calendarShowWeeklyHolidays",
+		startTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		endTexture="Interface/Calendar/Holidays/Calendar_FishingExtravaganza",
+		ZIndex=ZIndexes.low
+	},
 	{
 		name=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["name"],
 		description=L.HolidayLocalization[localeString]["CalendarHolidays"]["StranglethornFishingExtravaganza"]["description"],
@@ -558,6 +587,17 @@ function GetClassicHolidays()
 	-- Seasonal holidays
 	for _, holiday in next, CLASSIC_CALENDAR_HOLIDAYS do
 		addHolidayToSchedule(holiday, holidaySchedule)
+	end
+
+	-- Weekly holidays
+	if isSoD then
+		for _, holiday in next, SoDWeeklyHolidays do
+			addHolidayToSchedule(holiday, holidaySchedule)
+		end
+	else
+		for _, holiday in next, WeeklyHolidays do
+			addHolidayToSchedule(holiday, holidaySchedule)
+		end
 	end
 
 	-- Darkmoon
