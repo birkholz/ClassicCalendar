@@ -441,9 +441,7 @@ local function CCOptionsHandler(self, event, arg1)
 				CCConfig[key] = value
 			end
 		end
-	end
 
-	if event == "VARIABLES_LOADED" then
 		SlashCmdList["CCCONFIG"] = GoToCCSettings;
 		SLASH_CCCONFIG1, SLASH_CCCONFIG2 = "/caloptions", "/calendaroptions"
 

@@ -652,6 +652,7 @@ function GetClassicRaidResets()
 				frequency=3
 			},
 			-- First 2 Gnomer resets are weekly, before the 3-day reset starts
+			-- All 3-day reset raids reset at the same time
 			{
 				name=gnomerName,
 				firstReset = {
@@ -669,6 +670,17 @@ function GetClassicRaidResets()
 					year=2024,
 					month=2,
 					day=20,
+					hour=resetHour,
+					min=0
+				},
+				frequency=0
+			},
+			{
+				name=gnomerName,
+				firstReset = {
+					year=2024,
+					month=2,
+					day=22,
 					hour=resetHour,
 					min=0
 				},
