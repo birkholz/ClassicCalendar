@@ -691,13 +691,17 @@ function GetClassicRaidResets()
 		}
 	else
 		local MCName, _ = L.RaidLocalization[localeString][136346]
-		local OnyName, _ = L.RaidLocalization[localeString][329121]
+		local OnyName, _ = L.RaidLocalization[localeString][136351]
 		local NaxxName, _ = L.RaidLocalization[localeString][136347]
 		local AQTempleName, _ = L.RaidLocalization[localeString][136321]
 		local AQRuinsName, _ = L.RaidLocalization[localeString][136320]
 		local BWLName, _ = L.RaidLocalization[localeString][136329]
 		local ZGName, _ = L.RaidLocalization[localeString][136369]
 		local UBRSName, _ = L.RaidLocalization[localeString][136327]
+		local regionHourAdjustment = 1
+		if region == "EU" then
+			regionHourAdjustment = -2
+		end
 		raidResets = {
 			{
 				name=MCName,
@@ -738,7 +742,7 @@ function GetClassicRaidResets()
 					year=2024,
 					month=1,
 					day=2,
-					hour=resetHour,
+					hour=resetHour + regionHourAdjustment,
 					min=0
 				},
 				frequency=3
@@ -760,7 +764,7 @@ function GetClassicRaidResets()
 					year=2024,
 					month=1,
 					day=2,
-					hour=resetHour,
+					hour=resetHour + regionHourAdjustment,
 					min=0
 				},
 				frequency=3
