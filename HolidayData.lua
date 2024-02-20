@@ -16,6 +16,8 @@ end
 local resetHour
 if region == "EU" then
 	resetHour = 5
+elseif region == "KR" then
+	resetHour = 6
 else
 	resetHour = 8
 end
