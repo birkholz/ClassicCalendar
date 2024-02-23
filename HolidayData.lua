@@ -266,7 +266,7 @@ local CLASSIC_CALENDAR_HOLIDAYS = {
 		-- startDate=GetLunarFestivalStart(currentCalendarTime.year),
 		-- endDate=GetLunarFestivalEnd(currentCalendarTime.year),
 		startDate={ year=2024, month=2, day=3, hour=resetHour, min=0 },
-		endDate={ year=2024, month=2, day=18, hour=resetHour, min=0 },
+		endDate={ year=2024, month=2, day=25, hour=resetHour, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalOngoing",
 		endTexture="Interface/Calendar/Holidays/Calendar_LunarFestivalEnd",
