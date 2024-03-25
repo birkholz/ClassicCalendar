@@ -460,9 +460,19 @@ local SoDEvents = {
 	},
 	{
 		name="Phase 2 Launch",
-		description="Season of Discovery Phase 2 officially arrives! And with it comes the Arathi Basin battleground (and its call to arms every 4 weeks), the Stranglethorn Fishing Extravaganza on Sundays, the Gnomeregan raid, and the Stranglethorn Vale PvP event!\r\n\r\n|c50666666(details to be determined)|r",
+		description="Season of Discovery Phase 2 officially arrives! And with it came the Arathi Basin battleground, the Stranglethorn Fishing Extravaganza, the Gnomeregan raid, and the Stranglethorn Vale PvP event!",
 		startDate={ year=2024, month=2, day=8, hour=14, min=0 },
 		endDate={ year=2024, month=2, day=8, hour=14, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Phase 3 Launch",
+		description="Season of Discovery Phase 2 officially arrives with the Sunken Temple 20 man raid!\r\n\r\n|c50666666(details to be determined)|r",
+		startDate={ year=2024, month=4, day=4, hour=14, min=0 },
+		endDate={ year=2024, month=4, day=4, hour=14, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
@@ -608,10 +618,11 @@ function GetClassicHolidays()
 	end
 
 	-- Battleground weekends
-	if isSoD then
-		addHolidayToSchedule(SoDBattlegroundWeekends.warsongGulch, holidaySchedule)
-		addHolidayToSchedule(SoDBattlegroundWeekends.arathiBasin, holidaySchedule)
-	else
+	-- if isSoD then
+		-- Disabling bg weekends in SoD because Blizz changed their schedule
+		-- addHolidayToSchedule(SoDBattlegroundWeekends.warsongGulch, holidaySchedule)
+		-- addHolidayToSchedule(SoDBattlegroundWeekends.arathiBasin, holidaySchedule)
+	if not isSoD then
 		addHolidayToSchedule(battlegroundWeekends.warsongGulch, holidaySchedule)
 		addHolidayToSchedule(battlegroundWeekends.arathiBasin, holidaySchedule)
 		addHolidayToSchedule(battlegroundWeekends.alteracValley, holidaySchedule)
