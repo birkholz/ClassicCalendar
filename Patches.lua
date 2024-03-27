@@ -193,6 +193,14 @@ function newEventGetTextures(eventType)
 					mapId=0,
 					expansionLevel=0,
 					iconTexture="Interface/LFGFrame/LFGIcon-Gnomeregan"
+				},
+				{
+					title=L.DungeonLocalization[localeString][136360][1],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-SUNKENTEMPLE"
 				}
 			}
 		else
@@ -218,7 +226,7 @@ function newEventGetTextures(eventType)
 
 	if eventType == 1 then -- Dungeons
 		local dungeonTextures = {}
-		local SoDDungeons = {[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true}
+		local SoDDungeons = {[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true,[136363]=true,[136352]=true,[136345]=true,[136368]=true,[136326]=true}
 		local faction, _ = UnitFactionGroup("player")
 		if faction == "Horde" then
 			-- Only add Ragefire Chasm if horde
