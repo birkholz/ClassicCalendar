@@ -470,7 +470,7 @@ local SoDEvents = {
 	},
 	{
 		name="Phase 3 Launch",
-		description="Season of Discovery Phase 2 officially arrives with the Sunken Temple 20 man raid!\r\n\r\n|c50666666(details to be determined)|r",
+		description="Season of Discovery Phase 3 officially arrives with level 50, Nightmare Incursions, and the Sunken Temple 20 man raid!",
 		startDate={ year=2024, month=4, day=4, hour=14, min=0 },
 		endDate={ year=2024, month=4, day=4, hour=14, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
