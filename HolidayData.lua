@@ -652,6 +652,7 @@ function GetClassicRaidResets()
 	if isSoD then
 		local bfdName, _ = L.DungeonLocalization[localeString][136325][1]
 		local gnomerName, _ = L.DungeonLocalization[localeString][136336][1]
+		local templeName, _ = L.DungeonLocalization[localeString][136360][1]
 		raidResets = {
 			{
 				name=bfdName,
@@ -698,7 +699,19 @@ function GetClassicRaidResets()
 					min=0
 				},
 				frequency=3
-			}
+			},
+			-- Weekly raids
+			{
+				name=templeName,
+				firstReset = {
+					year=2024,
+					month=4,
+					day=9,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
 		}
 	else
 		local MCName, _ = L.RaidLocalization[localeString][136346]

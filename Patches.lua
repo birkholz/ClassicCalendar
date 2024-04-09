@@ -139,9 +139,13 @@ local function dateIsOnFrequency(eventDate, epochDate, frequency)
 	local eventDateTime = time(SetMinTime(eventDate))
 	local epochDateTime = time(SetMinTime(epochDate))
 
-	if date("*t", eventDateTime).isdst then
+	if date("*t", eventDateTime).isdst and not date("*t", epochDateTime).isdst then
 		-- add an hour to DST datetimes
 		 eventDateTime = eventDateTime + 60*60
+	end
+
+	if date("*t", epochDateTime).isdst and not date("*t", eventDateTime).isdst then
+		epochDateTime = epochDateTime + 60*60
 	end
 
 	if frequency == 0 then
