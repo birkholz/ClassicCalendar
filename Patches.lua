@@ -205,6 +205,30 @@ function newEventGetTextures(eventType)
 					mapId=0,
 					expansionLevel=0,
 					iconTexture="Interface/LFGFrame/LFGICON-SUNKENTEMPLE"
+				},
+				{
+					title=L.RaidLocalization[localeString][136327],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-BLACKROCKSPIRE"
+				},
+				{
+					title=L.RaidLocalization[localeString][136351],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-RAID"
+				},
+				{
+					title=L.RaidLocalization[localeString][136346],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-MOLTENCORE"
 				}
 			}
 		else
@@ -230,7 +254,11 @@ function newEventGetTextures(eventType)
 
 	if eventType == 1 then -- Dungeons
 		local dungeonTextures = {}
-		local SoDDungeons = {[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true,[136363]=true,[136352]=true,[136345]=true,[136368]=true,[136326]=true}
+		local SoDDungeons = {
+			[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true,[136363]=true,[136352]=true,
+			[136345]=true,[136368]=true,[136326]=true,[136327]=true,[136333]=true,[136355]=true,[136359]=true
+			-- Plus a new mystery dungeon?
+		}
 		local faction, _ = UnitFactionGroup("player")
 		if faction == "Horde" then
 			-- Only add Ragefire Chasm if horde

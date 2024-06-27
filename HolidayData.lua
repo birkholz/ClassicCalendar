@@ -477,6 +477,36 @@ local SoDEvents = {
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
 		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Phase 4 Launch",
+		description="Season of Discovery Phase 4 officially arrives with level 60 and all original classic content, plus some new experiences unique to Season of Discovery! World bosses will arrive 1 week later, and initial level 60 raids 2 weeks later.",
+		startDate={ year=2024, month=7, day=11, hour=14, min=0 },
+		endDate={ year=2024, month=7, day=11, hour=14, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_AnniversaryStart",
+		ZIndex=ZIndexes.highest
+	},
+	{
+		name="World Bosses Launch",
+		description="Lord Kazzak and Azuregos world bosses become available globally as instanced raids, resetting twice weekly on Tuesdays and Saturdays.",
+		startDate={ year=2024, month=7, day=18, hour=14, min=0 },
+		endDate={ year=2024, month=7, day=18, hour=14, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Onyxia and Molten Core Launch",
+		description="Onyxia and Molten Core raids become available globally, resetting twice weekly on Tuesdays and Saturdays.",
+		startDate={ year=2024, month=7, day=25, hour=14, min=0 },
+		endDate={ year=2024, month=7, day=25, hour=14, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ZIndex=ZIndexes.highest
 	}
 }
 
@@ -653,6 +683,10 @@ function GetClassicRaidResets()
 		local bfdName, _ = L.DungeonLocalization[localeString][136325][1]
 		local gnomerName, _ = L.DungeonLocalization[localeString][136336][1]
 		local templeName, _ = L.DungeonLocalization[localeString][136360][1]
+		local azuregosName = "Azuregos" -- WIP, to be replaced with proper localization if possible?
+		local kazzakName = "Kazzak" -- WIP, to be replaced with proper localization if possible?
+		local mcName = L.RaidLocalization[localeString][136346]
+		local onyName = L.RaidLocalization[localeString][136351]
 		raidResets = {
 			{
 				name=bfdName,
@@ -712,6 +746,96 @@ function GetClassicRaidResets()
 				},
 				frequency=7
 			},
+			-- Twice-weekly raids
+			-- (one entry for Tuesdays, another for Saturdays)
+			{
+				name=azuregosName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=20,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=azuregosName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=23,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=kazzakName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=20,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=kazzakName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=23,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=mcName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=27,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=mcName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=30,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=onyName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=27,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=onyName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=30,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			}
 		}
 	else
 		local MCName, _ = L.RaidLocalization[localeString][136346]
