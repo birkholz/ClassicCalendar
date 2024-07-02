@@ -387,7 +387,8 @@ local battlegroundWeekends = {
 		artConfig="BattlegroundsArt",
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsStart",
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsOngoing",
-		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd"
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendBattlegroundsEnd",
+		ZIndex=ZIndexes.medium
 	},
 }
 
