@@ -1023,7 +1023,8 @@ function CalendarFrame_UpdateTimeFormat()
 	local militaryTime = GetCVarBool("timeMgrUseMilitaryTime");
 	if ( CalendarFrame:IsShown() and militaryTime ~= CalendarFrame.militaryTime ) then
 		-- update the main frame
-		CalendarFrame_Update();
+		--CalendarFrame_Update();
+		CalendarFrame_Update_Async();
 		local eventFrame = CalendarFrame.eventFrame;
 		if ( eventFrame ) then
 			-- update the event frame
@@ -1077,7 +1078,8 @@ end
 
 function CalendarFrame_OnEvent(self, event, ...)
 	if ( event == "CALENDAR_UPDATE_EVENT_LIST" ) then
-		CalendarFrame_Update();
+		--CalendarFrame_Update();
+		CalendarFrame_Update_Async();
 	elseif ( event == "CALENDAR_OPEN_EVENT" ) then
 		-- hide the invite context menu right off the bat, since it's probably going to be invalid
 		CalendarContextMenu_Hide(CalendarCreateEventInviteContextMenu_Initialize);
@@ -1117,7 +1119,8 @@ function CalendarFrame_OnShow(self)
 
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime();
 	stubbedSetAbsMonth(currentCalendarTime.month, currentCalendarTime.year);
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 
 	C_Calendar.OpenCalendar();
 
@@ -1223,8 +1226,9 @@ function CalendarFrame_Update_Async()
 	end
 
 	local func = function()
-		 CalendarFrame_Update()
-		 CalendarFrame_Update_Async_InProgress = true
+		CalendarFrame_Update_Async_InProgress = true
+		CalendarFrame_Update()
+		CalendarFrame_Update_Async_InProgress = false
 	end
 	AsyncHandler:Async(func,'CalendarFrame_Update')
 end
@@ -1805,7 +1809,8 @@ function CalendarFrame_OffsetMonth(offset)
 	StaticPopup_Hide("CALENDAR_DELETE_EVENT");
 	CalendarEventPickerFrame_Hide();
 	CalendarTexturePickerFrame_Hide();
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 end
 
 function CalendarFrame_UpdateMonthOffsetButtons()
@@ -1913,7 +1918,8 @@ end
 
 function CalendarFilterDropDown_OnClick(self)
 	SetCVar(CALENDAR_FILTER_CVARS[self:GetID()].cvar, UIDropDownMenuButton_GetChecked(self) and "1" or "0");
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 end
 
 function CalendarFrame_UpdateFilter()
