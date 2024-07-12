@@ -622,7 +622,7 @@ local CALENDAR_FILTER_CVARS = {
 
 local asyncConfig = {
 	type = "everyFrame",
-	maxTime = 40,
+	maxTime = 60,
 	maxTimeCombat = 8,
 	errorHandler = geterrorhandler()
 }
