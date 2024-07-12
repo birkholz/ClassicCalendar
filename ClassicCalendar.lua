@@ -620,6 +620,15 @@ local CALENDAR_FILTER_CVARS = {
 
 -- local data
 
+local asyncConfig = {
+	type = "everyFrame",
+	maxTime = 40,
+	maxTimeCombat = 8,
+	errorHandler = geterrorhandler()
+}
+
+AsyncHandler = LibStub("LibAsync"):GetHandler(asyncConfig)
+
 -- CalendarDayButtons is just a table of all the Calendar day buttons...the size of this table should
 -- equal CALENDAR_MAX_DAYS_PER_MONTH once the CalendarFrame is done loading
 local CalendarDayButtons = { };
@@ -1206,6 +1215,20 @@ function CalendarFrame_InitDay(buttonIndex)
 	end
 end
 
+local CalendarFrame_Update_Async_InProgress = false
+function CalendarFrame_Update_Async()
+	if CalendarFrame_Update_Async_InProgress then
+		AsyncHandler:CancelAsync('CalendarFrame_Update')
+		CalendarFrame_Update_Async_InProgress = false
+	end
+
+	local func = function()
+		 CalendarFrame_Update()
+		 CalendarFrame_Update_Async_InProgress = true
+	end
+	AsyncHandler:Async(func,'CalendarFrame_Update')
+end
+
 function CalendarFrame_Update()
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime();
 	local presentWeekday = currentCalendarTime.weekday;
@@ -1253,6 +1276,7 @@ function CalendarFrame_Update()
 		local weekday = _CalendarFrame_GetWeekdayIndex(i);
 		_G["CalendarWeekday"..i.."Name"]:SetText(CALENDAR_WEEKDAY_NAMES[weekday]);
 	end
+	coroutine.yield()
 
 	-- initialize hidden attributes
 	CalendarTodayFrame:Hide();
@@ -1305,6 +1329,7 @@ function CalendarFrame_Update()
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 	-- set the days of this month
 	day = 1;
@@ -1324,6 +1349,7 @@ function CalendarFrame_Update()
 
 		day = day + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 	-- set the special last-day-of-month texture
 	if ( buttonIndex < 36 and mod(buttonIndex - 1, 7) ~= 0 ) then
@@ -1379,6 +1405,7 @@ function CalendarFrame_Update()
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 
 	-- if this month didn't have a selected event...
