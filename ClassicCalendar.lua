@@ -627,7 +627,7 @@ local asyncConfig = {
 	errorHandler = geterrorhandler()
 }
 
-AsyncHandler = LibStub("LibAsync"):GetHandler(asyncConfig)
+local AsyncHandler = LibStub("LibAsync"):GetHandler(asyncConfig)
 
 -- CalendarDayButtons is just a table of all the Calendar day buttons...the size of this table should
 -- equal CALENDAR_MAX_DAYS_PER_MONTH once the CalendarFrame is done loading
