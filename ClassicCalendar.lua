@@ -1299,6 +1299,14 @@ function CalendarFrame_Update()
 	local isContextEventMonthOffset;
 	local day;
 
+	local dayEventsUpdates = {}
+
+	-- remove all old events 
+	for i = 1, 42 do
+		CalendarFrame_RemoveAllDayEvents(i);
+		coroutine.yield();
+	end
+
 	-- adjust the first week day
 	--firstWeekday = _CalendarFrame_GetWeekdayIndex(firstWeekday);
 
@@ -1326,10 +1334,8 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, -1, isSelectedDay, isContextEventDay, isToday, darkTopFlags, darkBottomFlags);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, -1,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
-
+		tinsert(dayEventsUpdates, {buttonIndex, day, -1, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});	
+		
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
 		buttonIndex = buttonIndex + 1;
@@ -1347,9 +1353,7 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, 0, isSelectedDay, isContextEventDay, isToday);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, 0,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
+		tinsert(dayEventsUpdates, {buttonIndex, day, 0, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});
 
 		day = day + 1;
 		buttonIndex = buttonIndex + 1;
@@ -1402,9 +1406,8 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, 1, isSelectedDay, isContextEventDay, isToday, darkTopFlags, darkBottomFlags);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, 1,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
+
+		tinsert(dayEventsUpdates, {buttonIndex, day, 1, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});
 
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
@@ -1445,6 +1448,11 @@ function CalendarFrame_Update()
 				CalendarContextMenu_Hide();
 			end
 		end
+	end	
+
+	for i, data in ipairs(dayEventsUpdates) do		
+		CalendarFrame_UpdateDayEvents(unpack(data));
+		coroutine.yield();
 	end
 end
 
@@ -1501,6 +1509,26 @@ local function ShouldDisplayEventOnCalendar(event)
 		shouldDisplayBeginEnd = false;
 	end
 	return shouldDisplayBeginEnd;
+end
+
+function CalendarFrame_RemoveAllDayEvents(index)
+	local dayButton = CalendarDayButtons[index];
+	local dayButtonName = dayButton:GetName();
+
+	local pendingInviteTex = _G[dayButtonName.."PendingInviteTexture"];
+	pendingInviteTex:Hide();
+	
+	local moreEventsButton = _G[dayButtonName.."MoreEventsButton"];
+	moreEventsButton:Hide();
+
+	local eventButton
+	for i = 1, CALENDAR_DAYBUTTON_MAX_VISIBLE_EVENTS do
+		eventButton = _G[dayButtonName.."EventButton"..i];
+		eventButton.eventIndex = nil;
+		eventButton:Hide();
+	end
+
+	CalendarFrame_UpdateDayTextures(dayButton, 0, nil, nil);
 end
 
 function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventIndex, contextEventIndex)
