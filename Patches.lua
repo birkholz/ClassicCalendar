@@ -95,6 +95,15 @@ local isSoD = C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() == En
 
 CALENDAR_FILTER_BATTLEGROUND = L.Options[localeString]["CALENDAR_FILTER_BATTLEGROUND"];
 
+-- TODO: Localize these strings
+COMMUNITIES_CALENDAR_CHAT_EVENT_BROADCAST_FORMAT = "%s: %s %s";
+COMMUNITIES_CALENDAR_CHAT_EVENT_TITLE_FORMAT = "[%s]";
+COMMUNITIES_CALENDAR_EVENT_FORMAT = "%s at %s";
+COMMUNITIES_CALENDAR_MOTD_FORMAT = "\"%s\"";
+COMMUNITIES_CALENDAR_ONGOING_EVENT_PREFIX = "Event occurring now";
+COMMUNITIES_CALENDAR_TODAY = "Today";
+COMMUNITIES_CALENDAR_TOOLTIP_TITLE = "Bulletin";
+
 -- Date Utilities
 
 local function dumpTable(o)
@@ -229,6 +238,22 @@ function newEventGetTextures(eventType)
 					mapId=0,
 					expansionLevel=0,
 					iconTexture="Interface/LFGFrame/LFGICON-MOLTENCORE"
+				},
+				{
+					title="Kazzak",
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-RAID"
+				},
+				{
+					title="Azuregos",
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-RAID"
 				}
 			}
 		else
@@ -691,3 +716,18 @@ end
 
 loadFrame:RegisterEvent("VARIABLES_LOADED")
 loadFrame:SetScript("OnEvent", loadFrame.OnEvent)
+
+function GetCalendarEventLink(monthOffset, monthDay, index)
+	local dayEvent = C_Calendar.GetDayEvent(monthOffset, monthDay, index)
+	if dayEvent then
+		-- return LinkUtil.FormatLink("calendarEvent", dayEvent.title, monthOffset, monthDay, index);
+		-- Calendar event links are not supported, so we return the title instead
+		return dayEvent.title
+	end
+
+	return nil
+end
+
+function ToggleCalendar()
+	Calendar_Toggle()
+end

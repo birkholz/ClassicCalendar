@@ -736,19 +736,41 @@ function GetClassicRaidResets()
 				frequency=3
 			},
 			-- Weekly raids
+			-- {
+			-- 	name=templeName,
+			-- 	firstReset = {
+			-- 		year=2024,
+			-- 		month=4,
+			-- 		day=9,
+			-- 		hour=resetHour,
+			-- 		min=0
+			-- 	},
+			-- 	frequency=7
+			-- },
+			-- Twice-weekly raids
+			-- (one entry for Tuesdays, another for Saturdays)
 			{
 				name=templeName,
 				firstReset = {
 					year=2024,
-					month=4,
+					month=7,
 					day=9,
 					hour=resetHour,
 					min=0
 				},
 				frequency=7
 			},
-			-- Twice-weekly raids
-			-- (one entry for Tuesdays, another for Saturdays)
+			{
+				name=templeName,
+				firstReset = {
+					year=2024,
+					month=7,
+					day=13,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
 			{
 				name=azuregosName,
 				firstReset = {
