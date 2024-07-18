@@ -820,17 +820,6 @@ function GetClassicRaidResets()
 				firstReset = {
 					year=2024,
 					month=7,
-					day=27,
-					hour=resetHour,
-					min=0
-				},
-				frequency=7
-			},
-			{
-				name=mcName,
-				firstReset = {
-					year=2024,
-					month=7,
 					day=30,
 					hour=resetHour,
 					min=0
