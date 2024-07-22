@@ -849,6 +849,13 @@ function GetClassicRaidResets()
 				frequency=7
 			}
 		}
+		if CCConfig.HideLevelUpRaidResets then
+			for i = #raidResets, 1, -1 do
+				if raidResets[i].name == bfdName or raidResets[i].name == gnomerName or raidResets[i].name == templeName then
+					table.remove(raidResets, i)
+				end
+			end
+		end
 	else
 		local MCName, _ = L.RaidLocalization[localeString][136346]
 		local OnyName, _ = L.RaidLocalization[localeString][136351]

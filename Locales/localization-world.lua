@@ -29,6 +29,7 @@ L.Options = {
 		["HourSingular"]				 = "hour",
 		["HourPlural"]					 = "hours",
 		["MinutePlural"]				 = "minutes",
+		["HideLevelUpRaidText"]			 = "[SoD] Hide level-up raid resets (BFD, Gnomeregan, ST)"
 	},
 	["frFR"] = {
 		["PVPArtText"] 					 = "",
