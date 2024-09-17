@@ -254,6 +254,22 @@ function newEventGetTextures(eventType)
 					mapId=0,
 					expansionLevel=0,
 					iconTexture="Interface/LFGFrame/LFGICON-RAID"
+				},
+				{
+					title=L.RaidLocalization[localeString][136329],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-BLACKWINGLAIR"
+				},
+				{
+					title=L.RaidLocalization[localeString][136369],
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-ZULGURUB"
 				}
 			}
 		else
@@ -282,7 +298,7 @@ function newEventGetTextures(eventType)
 		local SoDDungeons = {
 			[136332]=true,[136353]=true,[136354]=true,[136357]=true,[136364]=true,[136363]=true,[136352]=true,
 			[136345]=true,[136368]=true,[136326]=true,[136327]=true,[136333]=true,[136355]=true,[136359]=true
-			-- Plus a new mystery dungeon?
+			-- Plus Demon Fall Canyon, and whatever is coming in phase 5?
 		}
 		local faction, _ = UnitFactionGroup("player")
 		if faction == "Horde" then

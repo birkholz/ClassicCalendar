@@ -508,6 +508,16 @@ local SoDEvents = {
 		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
 		endTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
 		ZIndex=ZIndexes.highest
+	},
+	{
+		name="Phase 5 Launch",
+		description="Season of Discovery phase 5 officially arrives with Blackwing Lair and Zul'Gurub raids!",
+		startDate={ year=2024, month=9, day=26, hour=14, min=0 },
+		endDate={ year=2024, month=9, day=26, hour=14, min=0 },
+		startTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ongoingTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		endTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
+		ZIndex=ZIndexes.highest
 	}
 }
 
@@ -688,6 +698,8 @@ function GetClassicRaidResets()
 		local kazzakName = "Kazzak" -- WIP, to be replaced with proper localization if possible?
 		local mcName = L.RaidLocalization[localeString][136346]
 		local onyName = L.RaidLocalization[localeString][136351]
+		local bwlName = L.RaidLocalization[localeString][136329]
+		local zgName = L.RaidLocalization[localeString][136369]
 		raidResets = {
 			{
 				name=bfdName,
@@ -843,6 +855,28 @@ function GetClassicRaidResets()
 					year=2024,
 					month=7,
 					day=30,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=bwlName,
+				firstReset = {
+					year=2024,
+					month=10,
+					day=1,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=zgName,
+				firstReset = {
+					year=2024,
+					month=10,
+					day=1,
 					hour=resetHour,
 					min=0
 				},
