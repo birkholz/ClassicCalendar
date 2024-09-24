@@ -6,6 +6,10 @@
 ## X-WoWI-ID: 26678
 ## X-Curse-Project-ID: 960282
 
+# Libs
+Libs\LibStub\LibStub.lua
+Libs\LibAsync\LibAsync.xml
+
 locales\localization-world.lua
 ClassicCalendar_Options.lua
 HolidayData.lua

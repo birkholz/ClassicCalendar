@@ -688,7 +688,9 @@ function GetClassicHolidays()
 	return holidaySchedule
 end
 
+local raidResetsCache
 function GetClassicRaidResets()
+	if raidResetsCache then return raidResetsCache end
 	local raidResets
 	if isSoD then
 		local bfdName, _ = L.DungeonLocalization[localeString][136325][1]
@@ -1039,5 +1041,6 @@ function GetClassicRaidResets()
 		end
 	end
 
+	raidResetsCache = raidResets
 	return raidResets
 end

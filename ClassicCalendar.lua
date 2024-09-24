@@ -620,6 +620,15 @@ local CALENDAR_FILTER_CVARS = {
 
 -- local data
 
+local asyncConfig = {
+	type = "everyFrame",
+	maxTime = 60,
+	maxTimeCombat = 8,
+	errorHandler = geterrorhandler()
+}
+
+local AsyncHandler = LibStub("LibAsync"):GetHandler(asyncConfig)
+
 -- CalendarDayButtons is just a table of all the Calendar day buttons...the size of this table should
 -- equal CALENDAR_MAX_DAYS_PER_MONTH once the CalendarFrame is done loading
 local CalendarDayButtons = { };
@@ -1014,7 +1023,8 @@ function CalendarFrame_UpdateTimeFormat()
 	local militaryTime = GetCVarBool("timeMgrUseMilitaryTime");
 	if ( CalendarFrame:IsShown() and militaryTime ~= CalendarFrame.militaryTime ) then
 		-- update the main frame
-		CalendarFrame_Update();
+		--CalendarFrame_Update();
+		CalendarFrame_Update_Async();
 		local eventFrame = CalendarFrame.eventFrame;
 		if ( eventFrame ) then
 			-- update the event frame
@@ -1068,7 +1078,8 @@ end
 
 function CalendarFrame_OnEvent(self, event, ...)
 	if ( event == "CALENDAR_UPDATE_EVENT_LIST" ) then
-		CalendarFrame_Update();
+		--CalendarFrame_Update();
+		CalendarFrame_Update_Async();
 	elseif ( event == "CALENDAR_OPEN_EVENT" ) then
 		-- hide the invite context menu right off the bat, since it's probably going to be invalid
 		CalendarContextMenu_Hide(CalendarCreateEventInviteContextMenu_Initialize);
@@ -1108,7 +1119,8 @@ function CalendarFrame_OnShow(self)
 
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime();
 	stubbedSetAbsMonth(currentCalendarTime.month, currentCalendarTime.year);
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 
 	C_Calendar.OpenCalendar();
 
@@ -1206,6 +1218,21 @@ function CalendarFrame_InitDay(buttonIndex)
 	end
 end
 
+local CalendarFrame_Update_Async_InProgress = false
+function CalendarFrame_Update_Async()
+	if CalendarFrame_Update_Async_InProgress then
+		AsyncHandler:CancelAsync('CalendarFrame_Update')
+		CalendarFrame_Update_Async_InProgress = false
+	end
+
+	local func = function()
+		CalendarFrame_Update_Async_InProgress = true
+		CalendarFrame_Update()
+		CalendarFrame_Update_Async_InProgress = false
+	end
+	AsyncHandler:Async(func,'CalendarFrame_Update')
+end
+
 function CalendarFrame_Update()
 	local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime();
 	local presentWeekday = currentCalendarTime.weekday;
@@ -1253,6 +1280,7 @@ function CalendarFrame_Update()
 		local weekday = _CalendarFrame_GetWeekdayIndex(i);
 		_G["CalendarWeekday"..i.."Name"]:SetText(CALENDAR_WEEKDAY_NAMES[weekday]);
 	end
+	coroutine.yield()
 
 	-- initialize hidden attributes
 	CalendarTodayFrame:Hide();
@@ -1270,6 +1298,14 @@ function CalendarFrame_Update()
 	local isSelectedEventMonthOffset;
 	local isContextEventMonthOffset;
 	local day;
+
+	local dayEventsUpdates = {}
+
+	-- remove all old events 
+	for i = 1, 42 do
+		CalendarFrame_RemoveAllDayEvents(i);
+		coroutine.yield();
+	end
 
 	-- adjust the first week day
 	--firstWeekday = _CalendarFrame_GetWeekdayIndex(firstWeekday);
@@ -1298,13 +1334,12 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, -1, isSelectedDay, isContextEventDay, isToday, darkTopFlags, darkBottomFlags);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, -1,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
-
+		tinsert(dayEventsUpdates, {buttonIndex, day, -1, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});	
+		
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 	-- set the days of this month
 	day = 1;
@@ -1318,12 +1353,11 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, 0, isSelectedDay, isContextEventDay, isToday);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, 0,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
+		tinsert(dayEventsUpdates, {buttonIndex, day, 0, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});
 
 		day = day + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 	-- set the special last-day-of-month texture
 	if ( buttonIndex < 36 and mod(buttonIndex - 1, 7) ~= 0 ) then
@@ -1372,13 +1406,13 @@ function CalendarFrame_Update()
 		isContextEventDay = isContextEventMonthOffset and contextEventDay == day;
 
 		CalendarFrame_UpdateDay(buttonIndex, day, 1, isSelectedDay, isContextEventDay, isToday, darkTopFlags, darkBottomFlags);
-		CalendarFrame_UpdateDayEvents(buttonIndex, day, 1,
-			isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex,
-			isContextEventDay and contextEventIndex);
+
+		tinsert(dayEventsUpdates, {buttonIndex, day, 1, isSelectedEventMonthOffset and selectedEventDay == day and selectedEventIndex, isContextEventDay and contextEventIndex});
 
 		day = day + 1;
 		darkTexIndex = darkTexIndex + 1;
 		buttonIndex = buttonIndex + 1;
+		coroutine.yield()
 	end
 
 	-- if this month didn't have a selected event...
@@ -1414,6 +1448,11 @@ function CalendarFrame_Update()
 				CalendarContextMenu_Hide();
 			end
 		end
+	end	
+
+	for i, data in ipairs(dayEventsUpdates) do		
+		CalendarFrame_UpdateDayEvents(unpack(data));
+		coroutine.yield();
 	end
 end
 
@@ -1470,6 +1509,26 @@ local function ShouldDisplayEventOnCalendar(event)
 		shouldDisplayBeginEnd = false;
 	end
 	return shouldDisplayBeginEnd;
+end
+
+function CalendarFrame_RemoveAllDayEvents(index)
+	local dayButton = CalendarDayButtons[index];
+	local dayButtonName = dayButton:GetName();
+
+	local pendingInviteTex = _G[dayButtonName.."PendingInviteTexture"];
+	pendingInviteTex:Hide();
+	
+	local moreEventsButton = _G[dayButtonName.."MoreEventsButton"];
+	moreEventsButton:Hide();
+
+	local eventButton
+	for i = 1, CALENDAR_DAYBUTTON_MAX_VISIBLE_EVENTS do
+		eventButton = _G[dayButtonName.."EventButton"..i];
+		eventButton.eventIndex = nil;
+		eventButton:Hide();
+	end
+
+	CalendarFrame_UpdateDayTextures(dayButton, 0, nil, nil);
 end
 
 function CalendarFrame_UpdateDayEvents(index, day, monthOffset, selectedEventIndex, contextEventIndex)
@@ -1778,7 +1837,8 @@ function CalendarFrame_OffsetMonth(offset)
 	StaticPopup_Hide("CALENDAR_DELETE_EVENT");
 	CalendarEventPickerFrame_Hide();
 	CalendarTexturePickerFrame_Hide();
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 end
 
 function CalendarFrame_UpdateMonthOffsetButtons()
@@ -1886,7 +1946,8 @@ end
 
 function CalendarFilterDropDown_OnClick(self)
 	SetCVar(CALENDAR_FILTER_CVARS[self:GetID()].cvar, UIDropDownMenuButton_GetChecked(self) and "1" or "0");
-	CalendarFrame_Update();
+	--CalendarFrame_Update();
+	CalendarFrame_Update_Async();
 end
 
 function CalendarFrame_UpdateFilter()
