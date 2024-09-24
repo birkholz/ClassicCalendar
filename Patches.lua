@@ -270,6 +270,14 @@ function newEventGetTextures(eventType)
 					mapId=0,
 					expansionLevel=0,
 					iconTexture="Interface/LFGFrame/LFGICON-ZULGURUB"
+				},
+				{
+					title="Prince Thunderaan",
+					isLfr=false,
+					difficultyId=0,
+					mapId=0,
+					expansionLevel=0,
+					iconTexture="Interface/LFGFrame/LFGICON-RAID"
 				}
 			}
 		else

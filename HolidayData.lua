@@ -511,7 +511,7 @@ local SoDEvents = {
 	},
 	{
 		name="Phase 5 Launch",
-		description="Season of Discovery phase 5 officially arrives with Blackwing Lair and Zul'Gurub raids!",
+		description="Season of Discovery phase 5 officially arrives with Blackwing Lair and Zul'Gurub raids, and Prince Thunderaan world boss!",
 		startDate={ year=2024, month=9, day=26, hour=14, min=0 },
 		endDate={ year=2024, month=9, day=26, hour=14, min=0 },
 		startTexture="Interface/Calendar/Holidays/Calendar_WeekendWorldQuestStart",
@@ -696,6 +696,7 @@ function GetClassicRaidResets()
 		local templeName, _ = L.DungeonLocalization[localeString][136360][1]
 		local azuregosName = "Azuregos" -- WIP, to be replaced with proper localization if possible?
 		local kazzakName = "Kazzak" -- WIP, to be replaced with proper localization if possible?
+		local thunderName = "Prince Thunderaan" -- WIP, to be replaced with proper localization if possible?
 		local mcName = L.RaidLocalization[localeString][136346]
 		local onyName = L.RaidLocalization[localeString][136351]
 		local bwlName = L.RaidLocalization[localeString][136329]
@@ -873,6 +874,39 @@ function GetClassicRaidResets()
 			},
 			{
 				name=zgName,
+				firstReset = {
+					year=2024,
+					month=9,
+					day=28,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=zgName,
+				firstReset = {
+					year=2024,
+					month=10,
+					day=1,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=thunderName,
+				firstReset = {
+					year=2024,
+					month=9,
+					day=28,
+					hour=resetHour,
+					min=0
+				},
+				frequency=7
+			},
+			{
+				name=thunderName,
 				firstReset = {
 					year=2024,
 					month=10,
