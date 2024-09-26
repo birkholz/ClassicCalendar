@@ -9,8 +9,9 @@ CCOptions:RegisterEvent("VARIABLES_LOADED")
 
 function GoToCCSettings(msg, editbox)
 	if msg == "" or msg == nil then
-		InterfaceOptionsFrame_OpenToCategory(AddonTitle)
-		InterfaceOptionsFrame_OpenToCategory(AddonTitle) -- Second call works around the issue detailed at Stanzilla/WoWUIBugs/issues/89
+		-- InterfaceOptionsFrame_OpenToCategory(AddonTitle)
+		-- InterfaceOptionsFrame_OpenToCategory(AddonTitle) -- Second call works around the issue detailed at Stanzilla/WoWUIBugs/issues/89
+		Settings.OpenToCategory(AddonTitle)
 	end
 end
 
@@ -59,24 +60,12 @@ end
 
 checkLocale()
 
--- Randomization of attribution names
-
-local function shuffle(tbl)
-  for i = #tbl, 2, -1 do
-    local j = math.random(i)
-    tbl[i], tbl[j] = tbl[j], tbl[i]
-  end
-end
-
-local randomName = {"Toxix-WildGrowth(NA)", "Lovediodes-WildGrowth(NA)"}
--- shuffle(randomName) -- Randomize order of displayed names
-
 -- INTERFACE OPTIONS (starts building the frame now)
 
 local CCIOFrame = CreateFrame("Frame")
 CCIOFrame.name = AddonTitle
 
-local InterfaceOptionsFramePanelContainerWidth = InterfaceOptionsFramePanelContainer:GetWidth()
+local InterfaceOptionsFramePanelContainerWidth = SettingsPanel.Container.SettingsCanvas:GetWidth() - 48
 
 local function createHorizontalRule(text, anchorFrame)
 	local hrLine_p1 = CCIOFrame:CreateLine()
@@ -428,12 +417,8 @@ chkIOShowFireworksSpectacularText:SetText(L.Options[localeString]["FireworksSpec
 local attLine1 = createHorizontalRule(L.Options[localeString]["AuthorHeaderText"], chkIOShowFireworksSpectacular)
 
 local attLine2 = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-attLine2:SetPoint("CENTER", attLine1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/3), -16)
-attLine2:SetText("|cFF9CD6DE"..randomName[1].."|r")
-
-local attLine3 = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
-attLine3:SetPoint("CENTER", attLine1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/3)*2, -16)
-attLine3:SetText("|cFF9CD6DE"..randomName[2].."|r")
+attLine2:SetPoint("CENTER", attLine1, "LEFT", (InterfaceOptionsFramePanelContainerWidth/2), -16)
+attLine2:SetText("|cFF9CD6DEToxix-WildGrowth(NA)|r")
 
 -- Discord Info
 
@@ -446,7 +431,8 @@ local lblDiscord = CCIOFrame:CreateFontString(nil, nil, "GameFontHighlight")
 lblDiscord:SetPoint("LEFT", DiscordLogo, "RIGHT", 4, 0)
 lblDiscord:SetText("|cFFEFC502https://discord.gg/CMxKsBQFKp|r")
 
-InterfaceOptions_AddCategory(CCIOFrame);
+local category = Settings.RegisterCanvasLayoutCategory(CCIOFrame, "Classic Calendar")
+Settings.RegisterAddOnCategory(category)
 
 -- Loading handler
 

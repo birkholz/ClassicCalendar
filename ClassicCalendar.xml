@@ -369,21 +369,6 @@
 				</Anchors>
 			</Button>
 
-			<!-- Context menus -->
-			<Frame name="CalendarContextMenu" inherits="UIMenuTemplate" frameStrata="FULLSCREEN" enableMouse="true" clampedToScreen="true" hidden="true">
-				<Scripts>
-					<OnLoad inherit="prepend" function="CalendarContextMenu_OnLoad"/>
-					<OnHide function="CalendarContextMenu_OnHide"/>
-				</Scripts>
-			</Frame>
-			<Frame name="CalendarInviteStatusContextMenu" inherits="UIMenuTemplate" frameStrata="FULLSCREEN" enableMouse="true" hidden="true" parent="CalendarContextMenu">
-				<Scripts>
-					<OnLoad inherit="prepend" function="CalendarInviteStatusContextMenu_OnLoad"/>
-					<OnShow function="CalendarInviteStatusContextMenu_OnShow"/>
-					<OnEvent function="CalendarInviteStatusContextMenu_OnEvent"/>
-				</Scripts>
-			</Frame>
-
 			<!-- Modal frame support -->
 			<Frame name="CalendarModalDummy" enableMouse="true" enableKeyboard="true" hidden="true">
 				<Size x="655" y="624"/>
@@ -711,7 +696,6 @@
 			<OnLoad function="CalendarViewEventFrame_OnLoad"/>
 			<OnEvent function="CalendarViewEventFrame_OnEvent"/>
 			<OnShow function="CalendarViewEventFrame_OnShow"/>
-			<OnHide function="CalendarViewEventFrame_OnHide"/>
 		</Scripts>
 	</Frame>
 

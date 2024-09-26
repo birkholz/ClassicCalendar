@@ -1,6 +1,6 @@
-## Interface: 11503
+## Interface: 11504
 ## Title: Classic Calendar
-## Version: 0.6.4beta
+## Version: 0.7.0beta
 ## SavedVariables: CCConfig
 ## X-Wago-ID: nKW1ZrNE
 ## X-WoWI-ID: 26678

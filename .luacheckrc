@@ -117,5 +117,7 @@ globals = {
 	"COMMUNITIES_CALENDAR_TODAY",
 	"COMMUNITIES_CALENDAR_TOOLTIP_TITLE",
 	"COMMUNITIES_CALENDAR_CHAT_EVENT_BROADCAST_FORMAT",
-	"GetCalendarEventLink"
+	"GetCalendarEventLink",
+	"SettingsPanel",
+	"Settings"
 }
